@@ -1,36 +1,17 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	id("org.springframework.boot") version "3.1.3"
-	id("io.spring.dependency-management") version "1.1.3"
-	kotlin("jvm") version "1.8.22"
-	kotlin("plugin.spring") version "1.8.22"
-}
-
-group = "hs.kr.equus.application"
-version = "0.0.1-SNAPSHOT"
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-	mavenCentral()
+	kotlin("plugin.allopen") version PluginVersions.ALLOPEN_VERSION
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	// spring transaction
+	implementation(Dependencies.SPRING_TRANSACTION)
+
+	// bytebuddy
+	implementation(Dependencies.BYTEBUDDY)
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "17"
-	}
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
+allOpen {
+	annotation("team.comit.simtong.global.annotation.UseCase")
+	annotation("team.comit.simtong.global.annotation.ReadOnlyUseCase")
 }

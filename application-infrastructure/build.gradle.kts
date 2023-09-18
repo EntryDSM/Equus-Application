@@ -1,36 +1,80 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	id("org.springframework.boot") version "3.1.3"
-	id("io.spring.dependency-management") version "1.1.3"
-	kotlin("jvm") version "1.8.22"
-	kotlin("plugin.spring") version "1.8.22"
-}
-
-group = "hs.kr.equus.application"
-version = "0.0.1-SNAPSHOT"
-
-java {
-	sourceCompatibility = JavaVersion.VERSION_17
-}
-
-repositories {
-	mavenCentral()
+	id("org.springframework.boot") version PluginVersions.SPRING_BOOT_VERSION
+	id("io.spring.dependency-management") version PluginVersions.DEPENDENCY_MANAGER_VERSION
+	kotlin("plugin.spring") version PluginVersions.SPRING_PLUGIN_VERSION
+	kotlin("plugin.jpa") version PluginVersions.JPA_PLUGIN_VERSION
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// impl project
+	implementation(project(":application-domain"))
+
+	// web
+	implementation(Dependencies.SPRING_WEB)
+
+	// validation
+	implementation(Dependencies.SPRING_VALIDATION)
+
+	// kotlin
+	implementation(Dependencies.JACKSON)
+
+	// security
+	implementation(Dependencies.SPRING_SECURITY)
+
+	//jwt
+	implementation(Dependencies.JWT)
+
+	// database
+	implementation(Dependencies.SPRING_DATA_JPA)
+	runtimeOnly(Dependencies.MYSQL_CONNECTOR)
+	implementation(Dependencies.REDIS)
+	implementation(Dependencies.SPRING_REDIS)
+
+	// querydsl
+	implementation(Dependencies.QUERYDSL)
+	kapt(Dependencies.QUERYDSL_PROCESSOR)
+
+	// aws
+	implementation(Dependencies.SPRING_AWS)
+
+	// mapstruct
+	implementation(Dependencies.MAPSTRUCT)
+	kapt(Dependencies.MAPSTRUCT_PROCESSOR)
+
+	// read-file
+	implementation(Dependencies.COMMONS_IO)
+	implementation(Dependencies.POI)
+	implementation(Dependencies.POI_OOXML)
+
+	// sentry
+	implementation(Dependencies.SENTRY)
+
+	// configuration
+	annotationProcessor(Dependencies.CONFIGURATION_PROCESSOR)
+
+	// s3mock
+	testImplementation(Dependencies.S3MOCK)
 }
 
-tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "17"
+kapt {
+	arguments {
+		arg("mapstruct.defaultComponentModel", "spring")
+		arg("mapstruct.unmappedTargetPolicy", "ignore")
 	}
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
+}
+
+noArg {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
+}
+
+tasks.getByName<Jar>("bootJar") {
+	enabled = false
 }

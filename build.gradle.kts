@@ -29,10 +29,8 @@ subprojects {
 }
 
 allprojects {
-	group = "team.comit"
+	group = "hs.kr.equus"
 	version = "0.0.1-SNAPSHOT"
-
-	apply(plugin = "jacoco")
 
 	tasks {
 		compileKotlin {
@@ -56,26 +54,44 @@ allprojects {
 	}
 }
 
-tasks.register<JacocoReport>("jacocoRootReport") {
-	subprojects {
-		this@subprojects.plugins.withType<JacocoPlugin>().configureEach {
-			this@subprojects.tasks.matching {
-				it.extensions.findByType<JacocoTaskExtension>() != null
-			}
-				.configureEach {
-					sourceSets(this@subprojects.the<SourceSetContainer>().named("main").get())
-					executionData(this)
-				}
-		}
-	}
+val ktlint: Configuration by configurations.creating
 
-	reports {
-		xml.outputLocation.set(File("${buildDir}/reports/jacoco/test/jacocoTestReport.xml"))
-		xml.required.set(true)
-		html.required.set(false)
+dependencies {
+	ktlint(Dependencies.KTLINT) {
+		attributes {
+			attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+		}
 	}
 }
 
-tasks.getByName<Jar>("jar") {
-	enabled = false
+val outputDir = "${project.buildDir}/reports/ktlint/"
+val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
+
+val ktlintCheck by tasks.creating(JavaExec::class) {
+	inputs.files(inputFiles)
+	outputs.dir(outputDir)
+
+	description = "Check Kotlin code style."
+	classpath = ktlint
+	mainClass.set("com.pinterest.ktlint.Main")
+	args = listOf("**/*.kt", "**/*.kts")
+}
+
+// Formatting all source files
+val ktlintFormat by tasks.creating(JavaExec::class) {
+	inputs.files(inputFiles)
+	outputs.dir(outputDir)
+
+	description = "Fix Kotlin code style deviations."
+	classpath = ktlint
+	mainClass.set("com.pinterest.ktlint.Main")
+	args = listOf("-F", "**/*.kt")
+	jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+	kotlinOptions {
+		freeCompilerArgs = listOf("-Xjsr305=strict")
+		jvmTarget = "17"
+	}
 }

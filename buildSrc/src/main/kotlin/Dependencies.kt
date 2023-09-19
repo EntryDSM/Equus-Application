@@ -1,5 +1,8 @@
 object Dependencies {
 
+    // ktlint
+    const val KTLINT = "com.pinterest:ktlint:${DependencyVersions.KTLINT_VERSION}"
+
     // kotlin
     const val KOTLIN_REFLECT = "org.jetbrains.kotlin:kotlin-reflect"
     const val KOTLIN_JDK = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

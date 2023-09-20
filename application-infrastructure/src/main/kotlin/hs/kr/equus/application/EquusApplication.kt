@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class EquusApplication
 
 fun main(args: Array<String>) {
-	runApplication<EquusApplication>(*args)
+    runApplication<EquusApplication>(*args)
 }

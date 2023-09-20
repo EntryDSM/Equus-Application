@@ -10,8 +10,3 @@ dependencies {
 	// bytebuddy
 	implementation(Dependencies.BYTEBUDDY)
 }
-
-allOpen {
-	annotation("team.comit.simtong.global.annotation.UseCase")
-	annotation("team.comit.simtong.global.annotation.ReadOnlyUseCase")
-}

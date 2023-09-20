@@ -4,10 +4,7 @@ import hs.kr.equus.application.global.exception.BusinessException
 
 sealed class ScoreExceptions(
     override val status: Int,
-    override val message: String
+    override val message: String,
 ) : BusinessException(status, message) {
-
-    companion object {
-
-    }
+    companion object {}
 }

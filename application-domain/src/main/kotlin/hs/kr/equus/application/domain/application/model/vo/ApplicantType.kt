@@ -12,16 +12,17 @@ data class ApplicantType(
         checkIsSocialNotSelectRemark()
     }
 
-    private fun checkIsNotSocialSelectRemark() {
-        if (!isSocial() && applicationRemark != null)
+    private fun checkIsNotSocialSelectRemark() =
+        require(!isSocial() && applicationRemark == null) {
             throw IllegalArgumentException("사회통합전형 전용 사항입니다")
-    }
+        }
 
-    private fun checkIsSocialNotSelectRemark() {
-        if (isSocial() && applicationRemark == null)
+    private fun checkIsSocialNotSelectRemark() =
+        require(isSocial() && applicationRemark != null) {
             throw IllegalArgumentException("세부사항을 입력해주세요")
-    }
+        }
 
     fun isCommon(): Boolean = this.applicationType == ApplicationType.COMMON
+
     private fun isSocial(): Boolean = this.applicationType == ApplicationType.SOCIAL
 }

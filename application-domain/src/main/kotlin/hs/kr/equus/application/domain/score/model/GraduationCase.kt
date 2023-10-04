@@ -13,5 +13,5 @@ data class GraduationCase(
     val latenessCount: Int,
     val earlyLeaveCount: Int,
     val subjectGrade: SubjectGrade,
-    val receiptCode: UUID
+    val receiptCode: UUID,
 ) : ApplicationCase(id, receiptCode)

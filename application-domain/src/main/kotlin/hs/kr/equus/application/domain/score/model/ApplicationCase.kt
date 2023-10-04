@@ -4,5 +4,5 @@ import java.util.UUID
 
 abstract class ApplicationCase(
     id: UUID,
-    receiptCode: UUID
+    receiptCode: UUID,
 )

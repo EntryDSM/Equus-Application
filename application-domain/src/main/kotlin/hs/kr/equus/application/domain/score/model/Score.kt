@@ -13,5 +13,5 @@ data class Score(
     val thirdBeforeScore: BigDecimal,
     val thirdGradeScore: BigDecimal,
     val totalGradeScore: BigDecimal,
-    val totalScore: BigDecimal
+    val totalScore: BigDecimal,
 )

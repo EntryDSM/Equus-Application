@@ -1,6 +1,6 @@
-package hs.kr.equus.application.domain.graduation_info.model
+package hs.kr.equus.application.domain.graduationInfo.model
 
-import hs.kr.equus.application.domain.graduation_info.model.vo.StudentNumber
+import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
 import hs.kr.equus.application.global.annotation.domain.Aggregate
 import java.time.LocalDate
 import java.util.UUID
@@ -12,5 +12,5 @@ class Graduation(
     val graduatedAt: LocalDate,
     val studentNumber: StudentNumber,
     val schoolTel: String,
-    val schoolId: UUID
+    val schoolId: UUID,
 ) : GraduationInfo(receiptCode)

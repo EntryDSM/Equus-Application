@@ -8,5 +8,5 @@ import java.util.UUID
 data class QualificationCase(
     val id: UUID,
     val averageScore: BigDecimal,
-    val receiptCode: UUID
+    val receiptCode: UUID,
 ) : ApplicationCase(id, receiptCode)

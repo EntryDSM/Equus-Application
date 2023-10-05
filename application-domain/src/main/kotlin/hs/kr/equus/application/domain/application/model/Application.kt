@@ -8,7 +8,7 @@ import java.util.UUID
 
 @Aggregate
 data class Application(
-    val receiptCode: UUID = UUID(0, 0),
+    val receiptCode: Long,
     val sex: Sex?,
     val isDaejeon: Boolean?,
     val address: Address?,

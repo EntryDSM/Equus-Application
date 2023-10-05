@@ -6,6 +6,6 @@ import java.util.UUID
 
 @Aggregate
 data class Qualification(
-    val receiptCode: UUID,
+    val receiptCode: Long,
     val qualifiedAt: LocalDate,
 ) : GraduationInfo(receiptCode)

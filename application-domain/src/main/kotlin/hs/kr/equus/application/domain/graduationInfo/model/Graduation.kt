@@ -6,11 +6,11 @@ import java.time.LocalDate
 import java.util.UUID
 
 @Aggregate
-class Graduation(
-    val receiptCode: UUID,
+data class Graduation(
     val isGraduated: Boolean,
     val graduatedAt: LocalDate,
     val studentNumber: StudentNumber,
     val schoolTel: String,
     val schoolId: UUID,
+    val receiptCode: Long,
 ) : GraduationInfo(receiptCode)

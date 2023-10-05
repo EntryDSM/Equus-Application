@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.score.model
 import java.util.UUID
 
 abstract class ApplicationCase(
-    id: UUID,
-    receiptCode: UUID,
-)
+    receiptCode: Long,
+) {
+    val id: UUID = UUID(0, 0)
+}

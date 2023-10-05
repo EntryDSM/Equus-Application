@@ -6,7 +6,7 @@ import java.util.*
 
 @Aggregate
 data class Score(
-    val id: UUID = UUID(0 ,0),
+    val id: UUID = UUID(0, 0),
     val attendanceScore: Int,
     val volunteerScore: BigDecimal,
     val thirdBeforeBeforeScore: BigDecimal,

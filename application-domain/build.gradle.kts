@@ -10,3 +10,8 @@ dependencies {
 	// bytebuddy
 	implementation(Dependencies.BYTEBUDDY)
 }
+
+allOpen {
+	annotation("hs.kr.equus.application.global.annotation.UseCase")
+	annotation("hs.kr.equus.application.global.annotation.ReadOnlyUseCase")
+}

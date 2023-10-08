@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.annotation.domain
+package hs.kr.equus.application.global.annotation
 
 /**
  *

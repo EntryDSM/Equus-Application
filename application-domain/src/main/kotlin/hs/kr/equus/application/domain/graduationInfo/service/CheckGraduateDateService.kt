@@ -13,13 +13,11 @@ class CheckGraduateDateService {
     ) {
         var baseYear = LocalDate.now().year
 
-        if (checkIsProspectiveGraduate(educationalStatus)) {
+        if (checkIsProspectiveGraduate(educationalStatus))
             baseYear += 1
-        }
 
-        require(baseYear > graduateDate.year) {
+        if (baseYear < graduateDate.year)
             throw GraduationInfoExceptions.InvalidGraduateDate()
-        }
     }
 
     private fun checkIsProspectiveGraduate(educationalStatus: EducationalStatus) =

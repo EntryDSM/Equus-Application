@@ -1,4 +1,4 @@
-package hs.kr.equus.application.domain.user.model.vo
+package hs.kr.equus.application.domain.user.model
 
 import hs.kr.equus.application.global.annotation.domain.Aggregate
 import java.util.*

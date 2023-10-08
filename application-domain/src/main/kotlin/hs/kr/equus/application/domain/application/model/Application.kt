@@ -3,7 +3,7 @@ package hs.kr.equus.application.domain.application.model
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.Sex
-import hs.kr.equus.application.global.annotation.domain.Aggregate
+import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
 import java.util.*
 
@@ -14,7 +14,7 @@ data class Application(
     val isDaejeon: Boolean? = null,
     var isOutOfHeadcount: Boolean? = null,
     val birthDate: LocalDate? = null,
-    val imageFileName: String? = null,
+    val photoFileName: String? = null,
     val applicantName: String? = null,
     val applicantTel: String? = null,
     val ParentName: String? = null,

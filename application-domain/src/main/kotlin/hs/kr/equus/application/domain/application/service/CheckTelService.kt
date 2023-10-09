@@ -3,7 +3,7 @@ package hs.kr.equus.application.domain.application.service
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.spi.ApplicationQueryUserPort
 import hs.kr.equus.application.global.annotation.DomainService
-import java.util.*
+import java.util.UUID
 
 @DomainService
 class CheckTelService(

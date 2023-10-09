@@ -5,7 +5,7 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.Sex
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 @Aggregate
 data class Application(

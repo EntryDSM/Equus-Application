@@ -24,7 +24,7 @@ class CheckGraduateDateServiceTest {
         assertDoesNotThrow {
             checkGraduateDateService.checkIsInvalidYear(
                 educationalStatus = EducationalStatus.GRADUATE,
-                graduateDate = graduateDate
+                graduateDate = graduateDate,
             )
         }
     }
@@ -34,7 +34,7 @@ class CheckGraduateDateServiceTest {
         assertThrows<GraduationInfoExceptions.InvalidGraduateDate> {
             checkGraduateDateService.checkIsInvalidYear(
                 educationalStatus = EducationalStatus.GRADUATE,
-                graduateDate = nextYear
+                graduateDate = nextYear,
             )
         }
     }
@@ -44,7 +44,7 @@ class CheckGraduateDateServiceTest {
         assertDoesNotThrow {
             checkGraduateDateService.checkIsInvalidYear(
                 educationalStatus = EducationalStatus.PROSPECTIVE_GRADUATE,
-                graduateDate = nextYear
+                graduateDate = nextYear,
             )
         }
     }
@@ -54,7 +54,7 @@ class CheckGraduateDateServiceTest {
         assertThrows<GraduationInfoExceptions.InvalidGraduateDate> {
             checkGraduateDateService.checkIsInvalidYear(
                 educationalStatus = EducationalStatus.PROSPECTIVE_GRADUATE,
-                graduateDate = laterYears
+                graduateDate = laterYears,
             )
         }
     }

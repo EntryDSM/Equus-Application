@@ -6,7 +6,6 @@ sealed class GraduationInfoExceptions(
     override val status: Int,
     override val message: String,
 ) : BusinessException(status, message) {
-
     class InvalidGraduateDate(message: String = INVALID_GRADUATE_DATE) : GraduationInfoExceptions(404, message)
 
     companion object {

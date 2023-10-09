@@ -9,15 +9,17 @@ import java.time.LocalDate
 class CheckGraduateDateService {
     fun checkIsInvalidYear(
         educationalStatus: EducationalStatus,
-        graduateDate: LocalDate
+        graduateDate: LocalDate,
     ) {
         var baseYear = LocalDate.now().year
 
-        if (checkIsProspectiveGraduate(educationalStatus))
+        if (checkIsProspectiveGraduate(educationalStatus)) {
             baseYear += 1
+        }
 
-        if (baseYear < graduateDate.year)
+        if (baseYear < graduateDate.year) {
             throw GraduationInfoExceptions.InvalidGraduateDate()
+        }
     }
 
     private fun checkIsProspectiveGraduate(educationalStatus: EducationalStatus) =

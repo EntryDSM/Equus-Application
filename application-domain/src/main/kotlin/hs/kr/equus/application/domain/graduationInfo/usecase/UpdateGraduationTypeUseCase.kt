@@ -19,7 +19,7 @@ class UpdateGraduationTypeUseCase(
     fun execute(request: UpdateGraduationTypeRequest) {
         checkGraduateDateService.checkIsInvalidYear(
             request.educationalStatus,
-            request.graduateDate
+            request.graduateDate,
         )
 
         val userId = graduationInfoSecurityPort.getCurrentUserId()

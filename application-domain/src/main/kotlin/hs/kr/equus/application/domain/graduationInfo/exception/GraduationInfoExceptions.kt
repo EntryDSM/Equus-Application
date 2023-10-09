@@ -6,5 +6,10 @@ sealed class GraduationInfoExceptions(
     override val status: Int,
     override val message: String,
 ) : BusinessException(status, message) {
-    companion object {}
+
+    class InvalidGraduateDate(message: String = INVALID_GRADUATE_DATE) : GraduationInfoExceptions(404, message)
+
+    companion object {
+        private const val INVALID_GRADUATE_DATE = "졸업일이 잘못되었습니다"
+    }
 }

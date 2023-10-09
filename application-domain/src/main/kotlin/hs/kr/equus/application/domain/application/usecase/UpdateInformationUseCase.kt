@@ -18,15 +18,17 @@ class UpdateInformationUseCase(
         val userId = applicationSecurityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
 
-        commandApplicationPort.save(
-            application.copy(
-                sex = request.sex,
-                birthDate = request.birthDate,
-                applicantName = request.applicantName,
-                applicantTel = checkTelService.checkParentPutApplicantTel(userId, request.applicantTel),
-                ParentName = request.parentName,
-                ParentTel = request.parentTel,
-            ),
-        )
+        request.run {
+            commandApplicationPort.save(
+                application.copy(
+                    sex = sex,
+                    birthDate = birthDate,
+                    applicantName = applicantName,
+                    applicantTel = checkTelService.checkParentPutApplicantTel(userId, applicantTel),
+                    ParentName = parentName,
+                    ParentTel = parentTel,
+                ),
+            )
+        }
     }
 }

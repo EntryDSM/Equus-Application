@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.annotation.usecase
+package hs.kr.equus.application.global.annotation
 
 import org.springframework.transaction.annotation.Transactional
 

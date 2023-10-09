@@ -11,18 +11,18 @@ import java.util.UUID
 
 @EquusTest
 class ApplicationTest {
-
-    private val application = Application(
-        receiptCode = 1L,
-        userId = UUID.randomUUID(),
-    )
+    private val application =
+        Application(
+            receiptCode = 1L,
+            userId = UUID.randomUUID(),
+        )
 
     @Test
     fun `사회전형 입력 성공`() {
         assertDoesNotThrow {
             application.copy(
                 applicationType = ApplicationType.SOCIAL,
-                applicationRemark = ApplicationRemark.BASIC_LIVING
+                applicationRemark = ApplicationRemark.BASIC_LIVING,
             )
         }
     }
@@ -32,7 +32,7 @@ class ApplicationTest {
         assertThrows<IllegalArgumentException> {
             application.copy(
                 applicationType = ApplicationType.SOCIAL,
-                applicationRemark = null
+                applicationRemark = null,
             )
         }
     }
@@ -42,7 +42,7 @@ class ApplicationTest {
         assertDoesNotThrow {
             application.copy(
                 applicationType = ApplicationType.COMMON,
-                applicationRemark = null
+                applicationRemark = null,
             )
         }
     }
@@ -52,7 +52,7 @@ class ApplicationTest {
         assertThrows<IllegalArgumentException> {
             application.copy(
                 applicationType = ApplicationType.COMMON,
-                applicationRemark = ApplicationRemark.BASIC_LIVING
+                applicationRemark = ApplicationRemark.BASIC_LIVING,
             )
         }
     }

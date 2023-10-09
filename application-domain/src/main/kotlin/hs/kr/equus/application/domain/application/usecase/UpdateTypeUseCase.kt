@@ -16,13 +16,15 @@ class UpdateTypeUseCase(
         val userId = applicationSecurityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
 
-        commandApplicationPort.save(
-            application.copy(
-                applicationType = request.applicationType,
-                applicationRemark = request.applicationRemark,
-                isDaejeon = request.isDaejeon,
-                isOutOfHeadcount = request.isOutOfHeadcount
+        request.run {
+            commandApplicationPort.save(
+                application.copy(
+                    applicationType = applicationType,
+                    applicationRemark = applicationRemark,
+                    isDaejeon = isDaejeon,
+                    isOutOfHeadcount = isOutOfHeadcount,
+                ),
             )
-        )
+        }
     }
 }

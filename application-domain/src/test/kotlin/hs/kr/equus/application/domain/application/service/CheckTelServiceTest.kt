@@ -47,8 +47,7 @@ class CheckTelServiceTest {
             .willReturn(user)
 
         assert(
-            checkTelService.checkParentPutApplicantTel(userId, phoneNumber)
-                    == "010-0000-0000",
+            checkTelService.checkParentPutApplicantTel(userId, phoneNumber) == "010-0000-0000",
         )
     }
 
@@ -67,8 +66,7 @@ class CheckTelServiceTest {
             .willReturn(user)
 
         assert(
-            checkTelService.checkParentPutApplicantTel(userId, phoneNumber)
-                    == phoneNumber,
+            checkTelService.checkParentPutApplicantTel(userId, phoneNumber) == phoneNumber,
         )
     }
 }

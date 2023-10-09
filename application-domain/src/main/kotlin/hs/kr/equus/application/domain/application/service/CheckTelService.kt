@@ -11,7 +11,7 @@ class CheckTelService(
 ) {
     fun checkParentPutApplicantTel(
         userId: UUID,
-        applicantTel: String
+        applicantTel: String,
     ): String {
         val user = applicationQueryUserPort.queryUserByUserId(userId)
         return if (user.isParent) Application.DEFAULT_TEL else applicantTel

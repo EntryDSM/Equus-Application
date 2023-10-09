@@ -26,46 +26,49 @@ class CheckTelServiceTest {
 
     @BeforeEach
     fun setUp() {
-        checkTelService = CheckTelService(
-            applicationQueryUserPort
-        )
+        checkTelService =
+            CheckTelService(
+                applicationQueryUserPort,
+            )
     }
 
     @Test
     fun `학부모일 경우`() {
-        val user = User(
-            id = userId,
-            isParent = true,
-            phoneNumber = phoneNumber,
-            password = password,
-            name = name
-        )
+        val user =
+            User(
+                id = userId,
+                isParent = true,
+                phoneNumber = phoneNumber,
+                password = password,
+                name = name,
+            )
 
         given(applicationQueryUserPort.queryUserByUserId(userId))
             .willReturn(user)
 
         assert(
             checkTelService.checkParentPutApplicantTel(userId, phoneNumber)
-                == "010-0000-0000"
+                    == "010-0000-0000",
         )
     }
 
     @Test
     fun `학생일 경우`() {
-        val user = User(
-            id = userId,
-            isParent = false,
-            phoneNumber = phoneNumber,
-            password = password,
-            name = name
-        )
+        val user =
+            User(
+                id = userId,
+                isParent = false,
+                phoneNumber = phoneNumber,
+                password = password,
+                name = name,
+            )
 
         given(applicationQueryUserPort.queryUserByUserId(userId))
             .willReturn(user)
 
         assert(
             checkTelService.checkParentPutApplicantTel(userId, phoneNumber)
-                == phoneNumber
+                    == phoneNumber,
         )
     }
 }

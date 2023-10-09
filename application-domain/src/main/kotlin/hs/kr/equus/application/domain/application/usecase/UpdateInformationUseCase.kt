@@ -25,8 +25,8 @@ class UpdateInformationUseCase(
                 applicantName = request.applicantName,
                 applicantTel = checkTelService.checkParentPutApplicantTel(userId, request.applicantTel),
                 ParentName = request.parentName,
-                ParentTel = request.parentTel
-            )
+                ParentTel = request.parentTel,
+            ),
         )
     }
 }

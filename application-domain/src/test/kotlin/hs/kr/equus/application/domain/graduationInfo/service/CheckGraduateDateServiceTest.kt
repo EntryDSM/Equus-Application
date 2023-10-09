@@ -10,7 +10,6 @@ import java.time.LocalDate
 
 @EquusTest
 class CheckGraduateDateServiceTest {
-
     private val checkGraduateDateService = CheckGraduateDateService()
 
     private val graduateDate = LocalDate.now()

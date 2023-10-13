@@ -33,7 +33,7 @@ data class Application(
     }
 
     init {
-        require (checkSocialPutRemark() || checkNotSocialNoRemark())
+        require(checkSocialPutRemark() || checkNotSocialNoRemark())
     }
 
     private fun checkSocialPutRemark() = isSocial() && applicationRemark != null

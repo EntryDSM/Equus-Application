@@ -19,7 +19,7 @@ class UpdateIntroduceUseCase(
         commandApplicationPort.save(
             application.copy(
                 selfIntroduce = request.content,
-            )
+            ),
         )
     }
 }

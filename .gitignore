@@ -262,3 +262,17 @@ buildSrc/build/kotlin/compileKotlin/cacheable/last-build.bin
 buildSrc/build/kotlin/compileKotlin/local-state/build-history.bin
 
 buildSrc/build/libs/buildSrc.jar
+
+.gradle/8.2.1/executionHistory/executionHistory.bin
+
+.gradle/8.2.1/executionHistory/executionHistory.lock
+
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+
+.gradle/buildOutputCleanup/outputFiles.bin
+
+.gradle/file-system.probe
+
+.idea/compiler.xml
+
+buildSrc/.gradle/file-system.probe

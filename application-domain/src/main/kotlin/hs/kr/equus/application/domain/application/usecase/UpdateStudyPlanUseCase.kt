@@ -19,7 +19,7 @@ class UpdateStudyPlanUseCase(
         commandApplicationPort.save(
             application.copy(
                 studyPlan = request.content,
-            )
+            ),
         )
     }
 }

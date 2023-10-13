@@ -1,6 +1,6 @@
 package hs.kr.equus.application.domain.score.model
 
-import hs.kr.equus.application.global.annotation.domain.Aggregate
+import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal
 
 @Aggregate

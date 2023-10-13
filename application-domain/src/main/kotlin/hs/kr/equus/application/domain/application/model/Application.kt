@@ -33,14 +33,12 @@ data class Application(
     }
 
     init {
-        if (!isSocial() && applicationRemark != null) {
-            throw IllegalArgumentException("사회통합전형 전용 사항입니다")
-        }
-
-        if (isSocial() && applicationRemark == null) {
-            throw IllegalArgumentException("세부사항을 입력해주세요")
-        }
+        require (checkSocialPutRemark() || checkNotSocialNoRemark())
     }
+
+    private fun checkSocialPutRemark() = isSocial() && applicationRemark != null
+
+    private fun checkNotSocialNoRemark() = !isSocial() && applicationRemark == null
 
     fun isSocial() = applicationType == ApplicationType.SOCIAL
 }

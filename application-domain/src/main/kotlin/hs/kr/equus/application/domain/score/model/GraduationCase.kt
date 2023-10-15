@@ -1,7 +1,7 @@
 package hs.kr.equus.application.domain.score.model
 
 import hs.kr.equus.application.domain.score.model.vo.SubjectGrade
-import hs.kr.equus.application.global.annotation.domain.Aggregate
+import hs.kr.equus.application.global.annotation.Aggregate
 
 @Aggregate
 data class GraduationCase(

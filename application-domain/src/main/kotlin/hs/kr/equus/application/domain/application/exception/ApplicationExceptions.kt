@@ -10,7 +10,7 @@ sealed class ApplicationExceptions(
         ApplicationExceptions(404, message)
 
     class ApplicationExistsException(message: String = APPLICATION_EXISTS) :
-            ApplicationExceptions(409, message)
+        ApplicationExceptions(409, message)
 
     class InvalidApplicationRemarkException(message: String = INVALID_APPLICATION_REMARK) :
         ApplicationExceptions(401, message)

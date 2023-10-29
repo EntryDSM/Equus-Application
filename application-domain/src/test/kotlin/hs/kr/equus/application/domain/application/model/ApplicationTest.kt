@@ -47,7 +47,7 @@ class ApplicationTest {
             )
         }
     }
-    
+
     @Test
     fun `일반전형으로 세부사항 미입력시 성공`() {
         assertDoesNotThrow {

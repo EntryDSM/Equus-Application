@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.spi.*
 import hs.kr.equus.application.domain.graduationInfo.usecase.dto.request.UpdateSchoolInfoRequest
@@ -17,7 +18,10 @@ class UpdateSchoolInfoUseCase(
 ) {
     fun execute(request: UpdateSchoolInfoRequest) {
         val userId = securityPort.getCurrentUserId()
+
         val receiptCode = graduationInfoQueryApplicationPort.queryReceiptCodeByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
+
         val graduation = queryGraduationPort.queryGraduationByReceiptCode(receiptCode)
             ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
@@ -30,7 +34,7 @@ class UpdateSchoolInfoUseCase(
                 graduation.copy(
                     studentNumber = studentNumber,
                     schoolCode = schoolCode,
-                )
+                ),
             )
         }
     }

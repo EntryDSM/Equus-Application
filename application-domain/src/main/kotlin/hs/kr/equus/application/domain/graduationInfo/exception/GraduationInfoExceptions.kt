@@ -8,6 +8,7 @@ sealed class GraduationInfoExceptions(
 ) : BusinessException(status, message) {
     class InvalidGraduateDate(message: String = INVALID_GRADUATE_DATE) :
         GraduationInfoExceptions(400, message)
+
     class EducationalStatusUnmatchedException(message: String = EDUCATIONAL_STATUS_UNMATCHED) :
         GraduationInfoExceptions(400, message)
 

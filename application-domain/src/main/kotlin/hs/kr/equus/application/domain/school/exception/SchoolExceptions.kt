@@ -8,6 +8,7 @@ sealed class SchoolExceptions(
 ) : BusinessException(status, message) {
     class InvalidSchoolTypeException(message: String = INVALID_SCHOOL_TYPE) :
         SchoolExceptions(401, message)
+
     class SchoolNotFoundException(message: String = SCHOOL_NOT_FOUND) :
         SchoolExceptions(404, message)
 

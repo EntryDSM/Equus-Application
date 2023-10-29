@@ -1,22 +1,24 @@
 package hs.kr.equus.application.domain.application.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.service.CheckTelService
-import hs.kr.equus.application.domain.application.spi.ApplicationSecurityPort
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInformationRequest
 import hs.kr.equus.application.global.annotation.UseCase
+import hs.kr.equus.application.global.security.spi.SecurityPort
 
 @UseCase
 class UpdateInformationUseCase(
-    private val applicationSecurityPort: ApplicationSecurityPort,
+    private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,
     private val commandApplicationPort: CommandApplicationPort,
     private val checkTelService: CheckTelService,
 ) {
     fun execute(request: UpdateInformationRequest) {
-        val userId = applicationSecurityPort.getCurrentUserId()
+        val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         request.run {
             commandApplicationPort.save(
@@ -25,8 +27,11 @@ class UpdateInformationUseCase(
                     birthDate = birthDate,
                     applicantName = applicantName,
                     applicantTel = checkTelService.checkParentPutApplicantTel(userId, applicantTel),
-                    ParentName = parentName,
-                    ParentTel = parentTel,
+                    parentName = parentName,
+                    parentTel = parentTel,
+                    streetAddress = streetAddress,
+                    postalCode = postalCode,
+                    detailAddress = detailAddress,
                 ),
             )
         }

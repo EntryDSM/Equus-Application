@@ -1,32 +1,34 @@
 package hs.kr.equus.application.domain.application.usecase
 
-import hs.kr.equus.application.domain.application.spi.ApplicationPhotoPort
-import hs.kr.equus.application.domain.application.spi.ApplicationSecurityPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
+import hs.kr.equus.application.global.photo.spi.PhotoPort
+import hs.kr.equus.application.global.security.spi.SecurityPort
 
 @ReadOnlyUseCase
 class GetInformationUseCase(
-    private val applicationSecurityPort: ApplicationSecurityPort,
+    private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,
-    private val applicationPhotoPort: ApplicationPhotoPort,
+    private val photoPort: PhotoPort,
 ) {
     fun execute(): GetInformationResponse {
-        val userId = applicationSecurityPort.getCurrentUserId()
+        val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
 
-        return GetInformationResponse(
-            sex = application.sex,
-            birthDate = application.birthDate,
-            photoUrl = application.photoFileName?.let { applicationPhotoPort.getPhotoUrl(it) },
-            applicantName = application.applicantName,
-            applicantTel = application.applicantTel,
-            parentName = application.ParentName,
-            parentTel = application.ParentTel,
-            streetAddress = application.streetAddress,
-            postalCode = application.postalCode,
-            detailAddress = application.detailAddress,
-        )
+        return application.run {
+            GetInformationResponse(
+                sex = sex,
+                birthDate = birthDate,
+                photoUrl = photoFileName?.let { photoPort.getPhotoUrl(it) },
+                applicantName = applicantName,
+                applicantTel = applicantTel,
+                parentName = parentName,
+                parentTel = parentTel,
+                streetAddress = streetAddress,
+                postalCode = postalCode,
+                detailAddress = detailAddress,
+            )
+        }
     }
 }

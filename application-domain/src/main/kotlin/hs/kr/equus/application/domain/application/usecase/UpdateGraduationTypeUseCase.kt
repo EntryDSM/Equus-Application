@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateGraduationTypeRequest
@@ -30,11 +31,12 @@ class UpdateGraduationTypeUseCase(
 
         val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         commandApplicationPort.save(
             application.copy(
-                educationalStatus = request.educationalStatus
-            )
+                educationalStatus = request.educationalStatus,
+            ),
         )
 
         updateGraduationInfo(
@@ -54,8 +56,8 @@ class UpdateGraduationTypeUseCase(
                 Qualification(
                     receiptCode = receiptCode,
                     qualifiedDate = graduateDate,
-                    educationalStatus = educationalStatus
-                )
+                    educationalStatus = educationalStatus,
+                ),
             )
             applicationQueryGraduationPort.queryGraduationByReceiptCode(receiptCode)?.let {
                 applicationCommandGraduationPort.delete(it)
@@ -65,8 +67,8 @@ class UpdateGraduationTypeUseCase(
                 Graduation(
                     receiptCode = receiptCode,
                     graduateDate = graduateDate,
-                    educationalStatus = educationalStatus
-                )
+                    educationalStatus = educationalStatus,
+                ),
             )
             applicationQueryQualificationPort.queryQualificationByReceiptCode(receiptCode)?.let {
                 applicationCommandQualificationPort.delete(it)

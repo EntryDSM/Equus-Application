@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.global.annotation.UseCase
@@ -17,6 +18,7 @@ class UploadPhotoUseCase(
     fun execute(file: File) {
         val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         application.photoFileName?.let {
             photoPort.delete(application.photoFileName, "/entry_info") // todo 경로 상수로 바꿔야함
@@ -25,7 +27,7 @@ class UploadPhotoUseCase(
         commandApplicationPort.save(
             application.copy(
                 photoFileName = photoPort.upload(file),
-            )
+            ),
         )
     }
 }

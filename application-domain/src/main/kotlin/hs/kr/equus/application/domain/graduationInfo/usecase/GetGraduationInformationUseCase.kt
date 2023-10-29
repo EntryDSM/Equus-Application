@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationQueryApplicationPort
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationQuerySchoolPort
@@ -19,10 +20,10 @@ class GetGraduationInformationUseCase(
     private val graduationQuerySchoolPort: GraduationQuerySchoolPort,
 ) {
     fun execute(): GetGraduationInformationResponse {
-
         val userId = securityPort.getCurrentUserId()
 
         val application = graduationQueryApplicationPort.queryApplicationByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduation = queryGraduationInfoPort.queryGraduationByReceiptCode(application.receiptCode!!)
             ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
@@ -44,7 +45,7 @@ class GetGraduationInformationUseCase(
             studentNumber = graduation.studentNumber,
             schoolCode = school.code,
             schoolTel = school.tel,
-            schoolName = school.name
+            schoolName = school.name,
         )
     }
 }

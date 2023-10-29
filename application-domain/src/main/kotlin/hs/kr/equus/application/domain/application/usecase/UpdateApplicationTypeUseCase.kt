@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateApplicationTypeRequest
@@ -15,6 +16,7 @@ class UpdateApplicationTypeUseCase(
     fun execute(request: UpdateApplicationTypeRequest) {
         val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         request.run {
             commandApplicationPort.save(

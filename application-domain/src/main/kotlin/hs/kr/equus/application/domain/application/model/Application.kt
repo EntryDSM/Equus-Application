@@ -2,7 +2,6 @@ package hs.kr.equus.application.domain.application.model
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
-
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
@@ -34,15 +33,16 @@ data class Application(
 ) {
     companion object {
         const val DEFAULT_TEL = "010-0000-0000"
-        val SOCIAL_REMARKS = listOf(
-            ApplicationRemark.ONE_PARENT,
-            ApplicationRemark.FROM_NORTH,
-            ApplicationRemark.MULTICULTURAL,
-            ApplicationRemark.BASIC_LIVING,
-            ApplicationRemark.LOWEST_INCOME,
-            ApplicationRemark.TEEN_HOUSEHOLDER,
-            ApplicationRemark.PROTECTED_CHILDREN,
-        )
+        val SOCIAL_REMARKS =
+            listOf(
+                ApplicationRemark.ONE_PARENT,
+                ApplicationRemark.FROM_NORTH,
+                ApplicationRemark.MULTICULTURAL,
+                ApplicationRemark.BASIC_LIVING,
+                ApplicationRemark.LOWEST_INCOME,
+                ApplicationRemark.TEEN_HOUSEHOLDER,
+                ApplicationRemark.PROTECTED_CHILDREN,
+            )
     }
 
     init {
@@ -51,11 +51,9 @@ data class Application(
         }
     }
 
-    private fun checkSocialSelectOtherRemark(): Boolean =
-        isSocial() && applicationRemark !in SOCIAL_REMARKS
+    private fun checkSocialSelectOtherRemark(): Boolean = isSocial() && applicationRemark !in SOCIAL_REMARKS
 
-    private fun checkNotSocialSelectSocialRemark() =
-        !isSocial() && applicationRemark in SOCIAL_REMARKS
+    private fun checkNotSocialSelectSocialRemark() = !isSocial() && applicationRemark in SOCIAL_REMARKS
 
     fun isSocial() = applicationType == ApplicationType.SOCIAL
 }

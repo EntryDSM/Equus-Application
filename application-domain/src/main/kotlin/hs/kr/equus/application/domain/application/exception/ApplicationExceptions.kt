@@ -15,7 +15,6 @@ sealed class ApplicationExceptions(
     class InvalidApplicationRemarkException(message: String = INVALID_APPLICATION_REMARK) :
         ApplicationExceptions(401, message)
 
-
     companion object {
         private const val APPLICATION_NOT_FOUND = "해당 원서가 존재하지 않습니다"
         private const val APPLICATION_EXISTS = "원서가 이미 존재합니다"

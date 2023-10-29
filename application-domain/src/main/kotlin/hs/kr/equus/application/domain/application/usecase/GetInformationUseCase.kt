@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
@@ -15,6 +16,7 @@ class GetInformationUseCase(
     fun execute(): GetInformationResponse {
         val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         return application.run {
             GetInformationResponse(

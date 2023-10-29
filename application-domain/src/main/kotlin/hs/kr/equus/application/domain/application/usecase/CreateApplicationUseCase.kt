@@ -25,21 +25,19 @@ class CreateApplicationUseCase(
         commandApplicationPort.save(createWithUserInfo(user))
     }
 
-    fun createWithUserInfo(
-        user: User,
-    ): Application {
+    fun createWithUserInfo(user: User): Application {
         return user.run {
             if (isParent) {
                 Application(
                     parentName = name,
                     parentTel = phoneNumber,
-                    userId = id
+                    userId = id,
                 )
             } else {
                 Application(
                     applicantName = name,
                     applicantTel = phoneNumber,
-                    userId = id
+                    userId = id,
                 )
             }
         }

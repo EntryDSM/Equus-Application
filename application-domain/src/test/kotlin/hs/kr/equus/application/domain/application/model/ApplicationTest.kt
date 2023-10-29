@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.model
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.global.annotation.EquusTest
@@ -29,7 +30,7 @@ class ApplicationTest {
 
     @Test
     fun `사회전형으로 세부사항 미입력시 실패`() {
-        assertThrows<IllegalArgumentException> {
+        assertThrows<ApplicationExceptions.InvalidApplicationRemarkException> {
             application.copy(
                 applicationType = ApplicationType.SOCIAL,
                 applicationRemark = null,
@@ -38,7 +39,18 @@ class ApplicationTest {
     }
 
     @Test
-    fun `일반전형 입력 성공`() {
+    fun `사회전형으로 제외되는 사항 입력시 실패`() {
+        assertThrows<ApplicationExceptions.InvalidApplicationRemarkException> {
+            application.copy(
+                applicationType = ApplicationType.SOCIAL,
+                applicationRemark = ApplicationRemark.PRIVILEGED_ADMISSION,
+            )
+        }
+    }
+
+
+    @Test
+    fun `일반전형으로 세부사항 미입력시 성공`() {
         assertDoesNotThrow {
             application.copy(
                 applicationType = ApplicationType.COMMON,
@@ -48,8 +60,18 @@ class ApplicationTest {
     }
 
     @Test
-    fun `일반전형으로 세부사항 입력시 실패`() {
-        assertThrows<IllegalArgumentException> {
+    fun `일반전형으로 세부사항 입력시 성공`() {
+        assertDoesNotThrow {
+            application.copy(
+                applicationType = ApplicationType.COMMON,
+                applicationRemark = ApplicationRemark.PRIVILEGED_ADMISSION,
+            )
+        }
+    }
+
+    @Test
+    fun `일반전형으로 사회전형용 사항 입력시 실패`() {
+        assertThrows<ApplicationExceptions.InvalidApplicationRemarkException> {
             application.copy(
                 applicationType = ApplicationType.COMMON,
                 applicationRemark = ApplicationRemark.BASIC_LIVING,

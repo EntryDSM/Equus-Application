@@ -5,4 +5,6 @@ import java.util.UUID
 
 interface QueryApplicationPort {
     fun queryApplicationByUserId(userId: UUID): Application?
+
+    fun isExistsApplicationByUserId(userId: UUID): Boolean
 }

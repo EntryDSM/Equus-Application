@@ -65,4 +65,13 @@ object Dependencies {
 
     // sentry
     const val SENTRY = "io.sentry:sentry-spring-boot-starter:${DependencyVersions.SENTRY_VERSION}"
+
+    // Kafka
+    const val KAFKA = "org.springframework.kafka:spring-kafka"
+
+    // open feign
+    const val OPEN_FEIGN = "org.springframework.cloud:spring-cloud-starter-openfeign:${DependencyVersions.OPEN_FEIGN_VERSION}"
+
+    // Cloud Config
+    const val CLOUD_CONFIG = "org.springframework.cloud:spring-cloud-config-client"
 }

@@ -28,13 +28,12 @@ class GetGraduationInformationUseCase(
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduation: Graduation =
-                application.educationalStatus?.let {
-                    queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
-                        application.receiptCode!!,
-                        it,
-                    ) as Graduation
-                } ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
-
+            application.educationalStatus?.let {
+                queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
+                    application.receiptCode!!,
+                    it,
+                ) as Graduation
+            } ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
         val school =
             graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }

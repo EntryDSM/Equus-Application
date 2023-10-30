@@ -10,6 +10,6 @@ data class Qualification(
         receiptCode,
         qualifiedDate,
         isProspectiveGraduate,
-) {
+    ) {
     override fun hasEmptyInfo(): Boolean = false
 }

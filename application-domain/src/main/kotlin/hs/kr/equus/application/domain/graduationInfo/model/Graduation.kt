@@ -14,6 +14,6 @@ data class Graduation(
         receiptCode,
         graduateDate,
         isProspectiveGraduate,
-) {
+    ) {
     override fun hasEmptyInfo(): Boolean = studentNumber == null || schoolCode == null
 }

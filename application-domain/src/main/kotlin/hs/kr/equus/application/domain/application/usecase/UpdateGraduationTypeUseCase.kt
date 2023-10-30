@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.application.exception.ApplicationException
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateGraduationTypeRequest
+import hs.kr.equus.application.domain.graduationInfo.factory.GraduationInfoFactory
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.model.Qualification
 import hs.kr.equus.application.domain.graduationInfo.service.CheckGraduateDateService
@@ -18,10 +19,9 @@ class UpdateGraduationTypeUseCase(
     private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,
     private val commandApplicationPort: CommandApplicationPort,
-    private val applicationQueryGraduationPort: ApplicationQueryGraduationPort,
-    private val applicationCommandGraduationPort: ApplicationCommandGraduationPort,
-    private val applicationQueryQualificationPort: ApplicationQueryQualificationPort,
-    private val applicationCommandQualificationPort: ApplicationCommandQualificationPort,
+    private val applicationCommandGraduationInfoPort: ApplicationCommandGraduationInfoPort,
+    private val applicationQueryGraduationInfoPort: ApplicationQueryGraduationInfoPort,
+    private val graduationInfoFactory: GraduationInfoFactory,
 ) {
     fun execute(request: UpdateGraduationTypeRequest) {
         checkGraduateDateService.checkIsInvalidYear(
@@ -34,47 +34,41 @@ class UpdateGraduationTypeUseCase(
             queryApplicationPort.queryApplicationByUserId(userId)
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
+        application.run {
+            if (educationalStatus != request.educationalStatus) {
+                educationalStatus?.let {
+                    deleteOtherCase(
+                        receiptCode!!,
+                        educationalStatus,
+                    )
+                }
+            }
+        }
+
         commandApplicationPort.save(
             application.copy(
                 educationalStatus = request.educationalStatus,
             ),
         )
 
-        updateGraduationInfo(
-            application.receiptCode!!,
-            request.graduateDate,
-            request.educationalStatus,
+        applicationCommandGraduationInfoPort.save(
+            graduationInfoFactory.createGraduationInfo(
+                receiptCode = application.receiptCode!!,
+                educationalStatus = request.educationalStatus,
+                graduationDate = request.graduateDate,
+            )
         )
     }
 
-    private fun updateGraduationInfo(
-        // TODO 팩토리 패턴으로 옮기기
+    private fun deleteOtherCase(
         receiptCode: Long,
-        graduateDate: LocalDate,
         educationalStatus: EducationalStatus,
     ) {
-        if (educationalStatus == EducationalStatus.QUALIFICATION_EXAM) {
-            applicationCommandQualificationPort.save(
-                Qualification(
-                    receiptCode = receiptCode,
-                    qualifiedDate = graduateDate,
-                    educationalStatus = educationalStatus,
-                ),
-            )
-            applicationQueryGraduationPort.queryGraduationByReceiptCode(receiptCode)?.let {
-                applicationCommandGraduationPort.delete(it)
-            }
-        } else {
-            applicationCommandGraduationPort.save(
-                Graduation(
-                    receiptCode = receiptCode,
-                    graduateDate = graduateDate,
-                    educationalStatus = educationalStatus,
-                ),
-            )
-            applicationQueryQualificationPort.queryQualificationByReceiptCode(receiptCode)?.let {
-                applicationCommandQualificationPort.delete(it)
-            }
+        applicationQueryGraduationInfoPort.queryByReceiptCodeAndEducationalStatus(
+            receiptCode,
+            educationalStatus,
+        )?.let {
+            applicationCommandGraduationInfoPort.delete(it)
         }
     }
 }

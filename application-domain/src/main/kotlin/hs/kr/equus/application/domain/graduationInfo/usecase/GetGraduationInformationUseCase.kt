@@ -1,7 +1,6 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryApplicationPort
@@ -29,12 +28,14 @@ class GetGraduationInformationUseCase(
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduation: Graduation =
-            (application.educationalStatus?.let {
-                queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
-                    application.receiptCode!!,
-                    it,
-                )
-            } ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()) as Graduation
+            (
+                    application.educationalStatus?.let {
+                        queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
+                            application.receiptCode!!,
+                            it,
+                        )
+                    } ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
+                    ) as Graduation
 
         val school =
             graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }

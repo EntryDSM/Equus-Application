@@ -11,9 +11,9 @@ data class Graduation(
     val studentNumber: StudentNumber? = null,
     val schoolCode: String? = null,
 ) : GraduationInfo(
-    receiptCode,
-    graduateDate,
-    isProspectiveGraduate,
+        receiptCode,
+        graduateDate,
+        isProspectiveGraduate,
 ) {
     override fun hasEmptyInfo(): Boolean = studentNumber == null || schoolCode == null
 }

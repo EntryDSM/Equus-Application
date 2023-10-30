@@ -56,7 +56,7 @@ class UpdateGraduationTypeUseCase(
                 receiptCode = application.receiptCode!!,
                 educationalStatus = request.educationalStatus,
                 graduationDate = request.graduateDate,
-            )
+            ),
         )
     }
 

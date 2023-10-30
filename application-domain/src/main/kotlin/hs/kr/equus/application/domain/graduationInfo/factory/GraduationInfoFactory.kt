@@ -19,7 +19,7 @@ class GraduationInfoFactory {
                 return Qualification(
                     receiptCode = receiptCode,
                     qualifiedDate = graduationDate,
-                    isProspectiveGraduate = false
+                    isProspectiveGraduate = false,
                 )
 
             EducationalStatus.GRADUATE ->

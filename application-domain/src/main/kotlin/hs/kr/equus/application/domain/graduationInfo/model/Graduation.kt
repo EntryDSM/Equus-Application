@@ -7,11 +7,13 @@ import java.time.LocalDate
 data class Graduation(
     val receiptCode: Long,
     val graduateDate: LocalDate,
-    val educationalStatus: EducationalStatus,
+    val isProspectiveGraduate: Boolean,
     val studentNumber: StudentNumber? = null,
     val schoolCode: String? = null,
-) : GraduationInfo(receiptCode) {
+) : GraduationInfo(
+    receiptCode,
+    graduateDate,
+    isProspectiveGraduate,
+) {
     override fun hasEmptyInfo(): Boolean = studentNumber == null || schoolCode == null
-
-    override fun isProspectiveGraduate(): Boolean = educationalStatus == EducationalStatus.PROSPECTIVE_GRADUATE
 }

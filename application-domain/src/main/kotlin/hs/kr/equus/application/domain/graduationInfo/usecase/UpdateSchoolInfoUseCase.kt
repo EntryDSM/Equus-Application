@@ -2,6 +2,8 @@ package hs.kr.equus.application.domain.graduationInfo.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
+import hs.kr.equus.application.domain.graduationInfo.model.Graduation
+import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 import hs.kr.equus.application.domain.graduationInfo.spi.*
 import hs.kr.equus.application.domain.graduationInfo.usecase.dto.request.UpdateSchoolInfoRequest
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
@@ -11,23 +13,27 @@ import hs.kr.equus.application.global.security.spi.SecurityPort
 @UseCase
 class UpdateSchoolInfoUseCase(
     private val securityPort: SecurityPort,
-    private val graduationInfoQueryApplicationPort: GraduationQueryApplicationPort,
-    private val queryGraduationPort: QueryGraduationPort,
-    private val commandGraduationInfoPort: CommandGraduationPort,
-    private val graduationQuerySchoolPort: GraduationQuerySchoolPort,
+    private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
+    private val queryGraduationInfoPort: QueryGraduationInfoPort,
+    private val commandGraduationInfoPort: CommandGraduationInfoPort,
+    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
 ) {
     fun execute(request: UpdateSchoolInfoRequest) {
         val userId = securityPort.getCurrentUserId()
 
-        val receiptCode =
-            graduationInfoQueryApplicationPort.queryReceiptCodeByUserId(userId)
+        val application =
+            graduationInfoQueryApplicationPort.queryApplicationByUserId(userId)
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduation =
-            queryGraduationPort.queryGraduationByReceiptCode(receiptCode)
-                ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
+            (application.educationalStatus?.let {
+                queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
+                    application.receiptCode!!,
+                    it,
+                )
+            } ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()) as Graduation
 
-        if (!graduationQuerySchoolPort.isExistsSchoolBySchoolCode(request.schoolCode)) {
+        if (!graduationInfoQuerySchoolPort.isExistsSchoolBySchoolCode(request.schoolCode)) {
             throw SchoolExceptions.SchoolNotFoundException()
         }
 

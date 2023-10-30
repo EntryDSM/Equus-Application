@@ -54,6 +54,15 @@ dependencies {
 
 	// s3mock
 	testImplementation(Dependencies.S3MOCK)
+
+	// Feign Client
+	implementation(Dependencies.OPEN_FEIGN)
+
+	// Cloud Config
+	implementation(Dependencies.CLOUD_CONFIG)
+
+	// Kafka
+	implementation(Dependencies.KAFKA)
 }
 
 kapt {

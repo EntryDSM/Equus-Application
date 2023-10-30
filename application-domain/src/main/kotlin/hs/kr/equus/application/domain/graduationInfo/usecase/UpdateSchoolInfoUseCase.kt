@@ -24,7 +24,7 @@ class UpdateSchoolInfoUseCase(
             graduationInfoQueryApplicationPort.queryApplicationByUserId(userId)
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val graduation: Graduation =
+        val graduation =
             application.educationalStatus?.let {
                 queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
                     application.receiptCode!!,

@@ -19,13 +19,15 @@ class UpdateSchoolInfoUseCase(
     fun execute(request: UpdateSchoolInfoRequest) {
         val userId = securityPort.getCurrentUserId()
 
-        val receiptCode = graduationInfoQueryApplicationPort.queryReceiptCodeByUserId(userId)
-            ?: throw ApplicationExceptions.ApplicationNotFoundException()
+        val receiptCode =
+            graduationInfoQueryApplicationPort.queryReceiptCodeByUserId(userId)
+                ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val graduation = queryGraduationPort.queryGraduationByReceiptCode(receiptCode)
-            ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
+        val graduation =
+            queryGraduationPort.queryGraduationByReceiptCode(receiptCode)
+                ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-        if (graduationQuerySchoolPort.isExistsSchoolBySchoolCode(request.schoolCode)) {
+        if (!graduationQuerySchoolPort.isExistsSchoolBySchoolCode(request.schoolCode)) {
             throw SchoolExceptions.SchoolNotFoundException()
         }
 

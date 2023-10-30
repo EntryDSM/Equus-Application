@@ -30,8 +30,9 @@ class UpdateGraduationTypeUseCase(
         )
 
         val userId = securityPort.getCurrentUserId()
-        val application = queryApplicationPort.queryApplicationByUserId(userId)
-            ?: throw ApplicationExceptions.ApplicationNotFoundException()
+        val application =
+            queryApplicationPort.queryApplicationByUserId(userId)
+                ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         commandApplicationPort.save(
             application.copy(
@@ -46,7 +47,8 @@ class UpdateGraduationTypeUseCase(
         )
     }
 
-    private fun updateGraduationInfo( // TODO 팩토리 패턴으로 옮기기
+    private fun updateGraduationInfo(
+        // TODO 팩토리 패턴으로 옮기기
         receiptCode: Long,
         graduateDate: LocalDate,
         educationalStatus: EducationalStatus,

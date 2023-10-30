@@ -17,8 +17,9 @@ class UploadPhotoUseCase(
 ) {
     fun execute(file: File) {
         val userId = securityPort.getCurrentUserId()
-        val application = queryApplicationPort.queryApplicationByUserId(userId)
-            ?: throw ApplicationExceptions.ApplicationNotFoundException()
+        val application =
+            queryApplicationPort.queryApplicationByUserId(userId)
+                ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         application.photoFileName?.let {
             photoPort.delete(application.photoFileName, "/entry_info") // todo 경로 상수로 바꿔야함

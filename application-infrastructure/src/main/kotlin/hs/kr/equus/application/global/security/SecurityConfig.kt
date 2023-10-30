@@ -10,7 +10,7 @@ import org.springframework.web.cors.CorsUtils
 
 @Configuration
 class SecurityConfig(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) {
     @Bean
     protected fun filterChain(http: HttpSecurity): SecurityFilterChain {

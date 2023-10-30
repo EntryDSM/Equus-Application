@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse
 class GlobalExceptionFilter(
     private val objectMapper: ObjectMapper,
 ) : OncePerRequestFilter() {
-
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

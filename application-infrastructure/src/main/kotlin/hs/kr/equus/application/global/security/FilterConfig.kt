@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component
 
 @Component
 class FilterConfig(
-    private val objectMapper: ObjectMapper
+    private val objectMapper: ObjectMapper,
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
     override fun configure(builder: HttpSecurity) {
         builder.addFilterBefore(
             JwtFilter(),
-            UsernamePasswordAuthenticationFilter::class.java
+            UsernamePasswordAuthenticationFilter::class.java,
         )
         builder.addFilterBefore(GlobalExceptionFilter(objectMapper), JwtFilter::class.java)
     }

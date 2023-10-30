@@ -22,4 +22,4 @@ import org.springframework.context.annotation.FilterType
         ),
     ],
 )
-class GlobalComponentScan {}
+class GlobalComponentScan

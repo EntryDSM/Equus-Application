@@ -16,7 +16,7 @@ class JwtFilter : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         val userId: String? = request.getHeader("Request-User-Id")
         val role: UserRole? = request.getHeader("Request-User-Role")?.let { UserRole.valueOf(it) }
@@ -40,5 +40,5 @@ class JwtFilter : OncePerRequestFilter() {
 enum class UserRole {
     ROOT,
     ADMIN,
-    USER
+    USER,
 }

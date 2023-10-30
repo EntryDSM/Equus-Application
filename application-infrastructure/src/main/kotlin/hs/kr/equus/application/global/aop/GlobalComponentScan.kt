@@ -17,10 +17,9 @@ import org.springframework.context.annotation.FilterType
             classes = [
                 UseCase::class,
                 ReadOnlyUseCase::class,
-                DomainService::class
-            ]
-        )
-    ]
+                DomainService::class,
+            ],
+        ),
+    ],
 )
-class GlobalComponentScan {
-}
+class GlobalComponentScan {}

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConstructorBinding
 @ConfigurationProperties("domain")
 class DomainPropertiesConfig(
-    model: Map<String, String>
+    model: Map<String, String>,
 ) {
     init {
         DomainProperties.putAll(model)

@@ -22,14 +22,17 @@ class GetGraduationInformationUseCase(
     fun execute(): GetGraduationInformationResponse {
         val userId = securityPort.getCurrentUserId()
 
-        val application = graduationQueryApplicationPort.queryApplicationByUserId(userId)
-            ?: throw ApplicationExceptions.ApplicationNotFoundException()
+        val application =
+            graduationQueryApplicationPort.queryApplicationByUserId(userId)
+                ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val graduation = queryGraduationInfoPort.queryGraduationByReceiptCode(application.receiptCode!!)
-            ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
+        val graduation =
+            queryGraduationInfoPort.queryGraduationByReceiptCode(application.receiptCode!!)
+                ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-        val school = graduation.schoolCode?.let { graduationQuerySchoolPort.querySchoolBySchoolCode(it) }
-            ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school =
+            graduation.schoolCode?.let { graduationQuerySchoolPort.querySchoolBySchoolCode(it) }
+                ?: throw SchoolExceptions.SchoolNotFoundException()
 
         return GetGraduationInformationResponse(
             sex = application.sex,

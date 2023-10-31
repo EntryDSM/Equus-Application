@@ -29,7 +29,7 @@ class CreateApplicationUseCase(
             commandApplicationPort.save(createWithUserInfo(user)).receiptCode
 
         applicationCommandStatusPort.save(
-            Status(receiptCode = receiptCode)
+            Status(receiptCode = receiptCode),
         )
     }
 

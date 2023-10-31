@@ -1,7 +1,6 @@
 package hs.kr.equus.application.domain.status.model
 
 import hs.kr.equus.application.global.annotation.Aggregate
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Aggregate

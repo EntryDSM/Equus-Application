@@ -2,9 +2,11 @@ package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.Application
+import hs.kr.equus.application.domain.application.spi.ApplicationCommandStatusPort
 import hs.kr.equus.application.domain.application.spi.ApplicationQueryUserPort
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
+import hs.kr.equus.application.domain.status.model.Status
 import hs.kr.equus.application.domain.user.model.User
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
@@ -15,6 +17,7 @@ class CreateApplicationUseCase(
     private val queryApplicationPort: QueryApplicationPort,
     private val commandApplicationPort: CommandApplicationPort,
     private val applicationQueryUserPort: ApplicationQueryUserPort,
+    private val applicationCommandStatusPort: ApplicationCommandStatusPort,
 ) {
     fun execute() {
         val userId = securityPort.getCurrentUserId()
@@ -22,7 +25,12 @@ class CreateApplicationUseCase(
         if (queryApplicationPort.isExistsApplicationByUserId(userId)) {
             throw ApplicationExceptions.ApplicationExistsException()
         }
-        commandApplicationPort.save(createWithUserInfo(user))
+        val receiptCode =
+            commandApplicationPort.save(createWithUserInfo(user)).receiptCode
+
+        applicationCommandStatusPort.save(
+            Status(receiptCode = receiptCode),
+        )
     }
 
     fun createWithUserInfo(user: User): Application {

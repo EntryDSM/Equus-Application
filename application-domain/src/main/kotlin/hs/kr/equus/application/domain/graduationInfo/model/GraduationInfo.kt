@@ -1,9 +1,13 @@
 package hs.kr.equus.application.domain.graduationInfo.model
 
+import java.time.LocalDate
+
 abstract class GraduationInfo(
+    graduationDate: LocalDate,
+    isProspectiveGraduate: Boolean,
     receiptCode: Long,
 ) {
-    abstract fun hasEmptyInfo(): Boolean
+    val id: Long = 0
 
-    abstract fun isProspectiveGraduate(): Boolean
+    abstract fun hasEmptyInfo(): Boolean
 }

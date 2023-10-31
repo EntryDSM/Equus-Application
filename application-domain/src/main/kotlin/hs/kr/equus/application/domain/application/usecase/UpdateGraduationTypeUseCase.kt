@@ -1,16 +1,13 @@
 package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
+import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateGraduationTypeRequest
-import hs.kr.equus.application.domain.graduationInfo.model.Graduation
-import hs.kr.equus.application.domain.graduationInfo.model.Qualification
+import hs.kr.equus.application.domain.graduationInfo.factory.GraduationInfoFactory
 import hs.kr.equus.application.domain.graduationInfo.service.CheckGraduateDateService
-import hs.kr.equus.application.domain.graduationInfo.spi.*
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
-import java.time.LocalDate
 
 @UseCase
 class UpdateGraduationTypeUseCase(
@@ -18,10 +15,9 @@ class UpdateGraduationTypeUseCase(
     private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,
     private val commandApplicationPort: CommandApplicationPort,
-    private val applicationQueryGraduationPort: ApplicationQueryGraduationPort,
-    private val applicationCommandGraduationPort: ApplicationCommandGraduationPort,
-    private val applicationQueryQualificationPort: ApplicationQueryQualificationPort,
-    private val applicationCommandQualificationPort: ApplicationCommandQualificationPort,
+    private val applicationCommandGraduationInfoPort: ApplicationCommandGraduationInfoPort,
+    private val applicationQueryGraduationInfoPort: ApplicationQueryGraduationInfoPort,
+    private val graduationInfoFactory: GraduationInfoFactory,
 ) {
     fun execute(request: UpdateGraduationTypeRequest) {
         checkGraduateDateService.checkIsInvalidYear(
@@ -34,47 +30,28 @@ class UpdateGraduationTypeUseCase(
             queryApplicationPort.queryApplicationByUserId(userId)
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
+        if (application.educationalStatus != request.educationalStatus) {
+            deleteOtherCase(application)
+        }
+
         commandApplicationPort.save(
             application.copy(
                 educationalStatus = request.educationalStatus,
             ),
         )
 
-        updateGraduationInfo(
-            application.receiptCode!!,
-            request.graduateDate,
-            request.educationalStatus,
+        applicationCommandGraduationInfoPort.save(
+            graduationInfoFactory.createGraduationInfo(
+                receiptCode = application.receiptCode,
+                educationalStatus = request.educationalStatus,
+                graduationDate = request.graduateDate,
+            ),
         )
     }
 
-    private fun updateGraduationInfo(
-        // TODO 팩토리 패턴으로 옮기기
-        receiptCode: Long,
-        graduateDate: LocalDate,
-        educationalStatus: EducationalStatus,
-    ) {
-        if (educationalStatus == EducationalStatus.QUALIFICATION_EXAM) {
-            applicationCommandQualificationPort.save(
-                Qualification(
-                    receiptCode = receiptCode,
-                    qualifiedDate = graduateDate,
-                    educationalStatus = educationalStatus,
-                ),
-            )
-            applicationQueryGraduationPort.queryGraduationByReceiptCode(receiptCode)?.let {
-                applicationCommandGraduationPort.delete(it)
-            }
-        } else {
-            applicationCommandGraduationPort.save(
-                Graduation(
-                    receiptCode = receiptCode,
-                    graduateDate = graduateDate,
-                    educationalStatus = educationalStatus,
-                ),
-            )
-            applicationQueryQualificationPort.queryQualificationByReceiptCode(receiptCode)?.let {
-                applicationCommandQualificationPort.delete(it)
-            }
+    private fun deleteOtherCase(application: Application) {
+        applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)?.let {
+            applicationCommandGraduationInfoPort.delete(it)
         }
     }
 }

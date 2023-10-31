@@ -2,18 +2,12 @@ package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.Application
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateGraduationTypeRequest
-import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.factory.GraduationInfoFactory
-import hs.kr.equus.application.domain.graduationInfo.model.Graduation
-import hs.kr.equus.application.domain.graduationInfo.model.Qualification
 import hs.kr.equus.application.domain.graduationInfo.service.CheckGraduateDateService
-import hs.kr.equus.application.domain.graduationInfo.spi.*
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
-import java.time.LocalDate
 
 @UseCase
 class UpdateGraduationTypeUseCase(
@@ -55,9 +49,7 @@ class UpdateGraduationTypeUseCase(
         )
     }
 
-    private fun deleteOtherCase(
-        application: Application,
-    ) {
+    private fun deleteOtherCase(application: Application) {
         applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)?.let {
             applicationCommandGraduationInfoPort.delete(it)
         }

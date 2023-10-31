@@ -14,23 +14,23 @@ class GraduationInfoFactory {
         educationalStatus: EducationalStatus,
         graduationDate: LocalDate,
     ): GraduationInfo {
-        when (educationalStatus) {
+        return when (educationalStatus) {
             EducationalStatus.QUALIFICATION_EXAM ->
-                return Qualification(
+                Qualification(
                     receiptCode = receiptCode,
                     qualifiedDate = graduationDate,
                     isProspectiveGraduate = false,
                 )
 
             EducationalStatus.GRADUATE ->
-                return Graduation(
+                Graduation(
                     receiptCode = receiptCode,
                     graduateDate = graduationDate,
                     isProspectiveGraduate = false,
                 )
 
             EducationalStatus.PROSPECTIVE_GRADUATE ->
-                return Graduation(
+                Graduation(
                     receiptCode = receiptCode,
                     graduateDate = graduationDate,
                     isProspectiveGraduate = true,

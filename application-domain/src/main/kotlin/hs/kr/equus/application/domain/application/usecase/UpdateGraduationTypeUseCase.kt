@@ -1,9 +1,11 @@
 package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateGraduationTypeRequest
+import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.factory.GraduationInfoFactory
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.model.Qualification
@@ -34,15 +36,8 @@ class UpdateGraduationTypeUseCase(
             queryApplicationPort.queryApplicationByUserId(userId)
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        application.run {
-            if (educationalStatus != request.educationalStatus) {
-                educationalStatus?.let {
-                    deleteOtherCase(
-                        receiptCode!!,
-                        educationalStatus,
-                    )
-                }
-            }
+        if (application.educationalStatus != request.educationalStatus) {
+            deleteOtherCase(application)
         }
 
         commandApplicationPort.save(
@@ -61,13 +56,9 @@ class UpdateGraduationTypeUseCase(
     }
 
     private fun deleteOtherCase(
-        receiptCode: Long,
-        educationalStatus: EducationalStatus,
+        application: Application,
     ) {
-        applicationQueryGraduationInfoPort.queryByReceiptCodeAndEducationalStatus(
-            receiptCode,
-            educationalStatus,
-        )?.let {
+        applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)?.let {
             applicationCommandGraduationInfoPort.delete(it)
         }
     }

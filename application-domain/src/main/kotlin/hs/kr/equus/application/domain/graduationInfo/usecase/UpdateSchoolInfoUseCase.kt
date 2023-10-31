@@ -25,12 +25,8 @@ class UpdateSchoolInfoUseCase(
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduation =
-            application.educationalStatus?.let {
-                queryGraduationInfoPort.queryGraduationInfoByReceiptCodeAndEducationalStatus(
-                    application.receiptCode!!,
-                    it,
-                ) as Graduation
-            } ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
+            queryGraduationInfoPort.queryGraduationInfoByApplication(application) as Graduation?
+                ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
         if (!graduationInfoQuerySchoolPort.isExistsSchoolBySchoolCode(request.schoolCode)) {
             throw SchoolExceptions.SchoolNotFoundException()

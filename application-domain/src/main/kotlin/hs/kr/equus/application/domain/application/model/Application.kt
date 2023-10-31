@@ -11,7 +11,7 @@ import java.util.UUID
 
 @Aggregate
 data class Application(
-    val receiptCode: Long? = null,
+    val receiptCode: Long = 0,
     val sex: Sex? = null,
     val isDaejeon: Boolean? = null,
     var isOutOfHeadcount: Boolean? = null,

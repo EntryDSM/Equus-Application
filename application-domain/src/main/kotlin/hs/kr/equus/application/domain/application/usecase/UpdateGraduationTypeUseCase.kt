@@ -42,7 +42,7 @@ class UpdateGraduationTypeUseCase(
 
         applicationCommandGraduationInfoPort.save(
             graduationInfoFactory.createGraduationInfo(
-                receiptCode = application.receiptCode!!,
+                receiptCode = application.receiptCode,
                 educationalStatus = request.educationalStatus,
                 graduationDate = request.graduateDate,
             ),

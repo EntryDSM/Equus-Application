@@ -5,15 +5,15 @@ import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
 import java.time.LocalDate
 
 data class Graduation(
-    val receiptCode: Long,
     val graduateDate: LocalDate,
     val isProspectiveGraduate: Boolean,
     val studentNumber: StudentNumber? = null,
     val schoolCode: String? = null,
+    val receiptCode: Long = 0,
 ) : GraduationInfo(
-        receiptCode,
         graduateDate,
         isProspectiveGraduate,
+        receiptCode,
     ) {
     override fun hasEmptyInfo(): Boolean = studentNumber == null || schoolCode == null
 }

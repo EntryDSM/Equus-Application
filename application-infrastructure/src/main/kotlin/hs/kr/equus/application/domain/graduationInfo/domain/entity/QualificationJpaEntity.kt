@@ -6,7 +6,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "tbl_qualification")
-class QualificationJpaEntity (
+class QualificationJpaEntity(
     override val id: Long?,
     override val isProspectiveGraduate: Boolean,
     override val receiptCode: Long,

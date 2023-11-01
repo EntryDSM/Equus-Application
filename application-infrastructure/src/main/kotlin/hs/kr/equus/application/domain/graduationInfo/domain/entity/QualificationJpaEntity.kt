@@ -12,9 +12,9 @@ class QualificationJpaEntity (
     override val receiptCode: Long,
     qualifiedDate: LocalDate,
 ) : GraduationInfoEntity(
-    id = id,
-    graduateDate = qualifiedDate,
-    isProspectiveGraduate = isProspectiveGraduate,
-    receiptCode = receiptCode,
-)
+        id = id,
+        graduateDate = qualifiedDate,
+        isProspectiveGraduate = isProspectiveGraduate,
+        receiptCode = receiptCode,
+    )
 

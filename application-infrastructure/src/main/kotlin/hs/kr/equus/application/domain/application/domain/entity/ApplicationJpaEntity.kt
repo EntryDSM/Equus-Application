@@ -16,28 +16,28 @@ class ApplicationJpaEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val receiptCode: Long,
     @Enumerated(EnumType.STRING)
-    val sex: Sex? = null,
-    val isDaejeon: Boolean? = null,
-    var isOutOfHeadcount: Boolean? = null,
-    val birthDate: LocalDate? = null,
-    val photoFileName: String? = null,
+    val sex: Sex?,
+    val isDaejeon: Boolean?,
+    var isOutOfHeadcount: Boolean?,
+    val birthDate: LocalDate?,
+    val photoFileName: String?,
     @Enumerated(EnumType.STRING)
-    val educationalStatus: EducationalStatus? = null,
-    val applicantName: String? = null,
+    val educationalStatus: EducationalStatus?,
+    val applicantName: String?,
     @Column(columnDefinition = "char(11)")
-    val applicantTel: String? = null,
-    val parentName: String? = null,
+    val applicantTel: String?,
+    val parentName: String?,
     @Column(columnDefinition = "char(11)")
-    val parentTel: String? = null,
-    val streetAddress: String? = null,
-    val postalCode: String? = null,
-    val detailAddress: String? = null,
+    val parentTel: String?,
+    val streetAddress: String?,
+    val postalCode: String?,
+    val detailAddress: String?,
     @Enumerated(EnumType.STRING)
-    val applicationType: ApplicationType? = null,
+    val applicationType: ApplicationType?,
     @Enumerated(EnumType.STRING)
-    val applicationRemark: ApplicationRemark? = null,
-    val studyPlan: String? = null,
-    val selfIntroduce: String? = null,
+    val applicationRemark: ApplicationRemark?,
+    val studyPlan: String?,
+    val selfIntroduce: String?,
     @field:NotNull
     @Column(unique = true)
     val userId: UUID,

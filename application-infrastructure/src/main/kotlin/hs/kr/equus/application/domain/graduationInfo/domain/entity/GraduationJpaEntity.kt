@@ -17,8 +17,8 @@ class GraduationJpaEntity(
     val studentNumber: StudentNumber? = null,
     val schoolCode: String? = null,
 ) : GraduationInfoEntity(
-        id,
-        graduateDate,
-        isProspectiveGraduate,
-        receiptCode,
+        id = id,
+        graduateDate = graduateDate,
+        isProspectiveGraduate = isProspectiveGraduate,
+        receiptCode = receiptCode,
     )

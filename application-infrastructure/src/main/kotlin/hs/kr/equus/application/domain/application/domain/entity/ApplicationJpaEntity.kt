@@ -15,47 +15,29 @@ class ApplicationJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val receiptCode: Long,
-
     @Enumerated(EnumType.STRING)
     val sex: Sex? = null,
-
     val isDaejeon: Boolean? = null,
-
     var isOutOfHeadcount: Boolean? = null,
-
     val birthDate: LocalDate? = null,
-
     val photoFileName: String? = null,
-
     @Enumerated(EnumType.STRING)
     val educationalStatus: EducationalStatus? = null,
-
     val applicantName: String? = null,
-
     @Column(columnDefinition = "char(11)")
     val applicantTel: String? = null,
-
     val parentName: String? = null,
-
     @Column(columnDefinition = "char(11)")
     val parentTel: String? = null,
-
     val streetAddress: String? = null,
-
     val postalCode: String? = null,
-
     val detailAddress: String? = null,
-
     @Enumerated(EnumType.STRING)
     val applicationType: ApplicationType? = null,
-
     @Enumerated(EnumType.STRING)
     val applicationRemark: ApplicationRemark? = null,
-
     val studyPlan: String? = null,
-
     val selfIntroduce: String? = null,
-
     @field:NotNull
     @Column(unique = true)
     val userId: UUID,

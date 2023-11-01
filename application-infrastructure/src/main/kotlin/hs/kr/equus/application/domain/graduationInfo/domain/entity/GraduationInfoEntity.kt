@@ -13,11 +13,8 @@ abstract class GraduationInfoEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,
-
     val graduateDate: LocalDate,
-
     val isProspectiveGraduate: Boolean,
-
     @NotNull
     val receiptCode: Long,
 ) : BaseTimeEntity()

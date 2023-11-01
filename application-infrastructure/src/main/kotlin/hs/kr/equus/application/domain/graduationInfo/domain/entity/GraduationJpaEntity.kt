@@ -10,16 +10,11 @@ import javax.persistence.Table
 @Table(name = "tbl_graduation")
 class GraduationJpaEntity(
     override val id: Long?,
-
     override val graduateDate: LocalDate,
-
     override val isProspectiveGraduate: Boolean,
-
     override val receiptCode: Long,
-
     @Embedded
     val studentNumber: StudentNumber? = null,
-
     val schoolCode: String? = null,
 ) : GraduationInfoEntity(
     id,

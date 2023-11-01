@@ -8,11 +8,8 @@ import javax.persistence.Table
 @Table(name = "tbl_qualification")
 class QualificationJpaEntity (
     override val id: Long?,
-
     override val isProspectiveGraduate: Boolean,
-
     override val receiptCode: Long,
-
     qualifiedDate: LocalDate,
 ) : GraduationInfoEntity(
     id = id,

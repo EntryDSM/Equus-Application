@@ -1,6 +1,5 @@
 package hs.kr.equus.application.domain.graduationInfo.model
 
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
 import java.time.LocalDate
 

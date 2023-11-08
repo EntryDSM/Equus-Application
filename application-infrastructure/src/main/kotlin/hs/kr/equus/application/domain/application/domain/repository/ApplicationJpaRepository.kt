@@ -6,4 +6,6 @@ import java.util.UUID
 
 interface ApplicationJpaRepository : CrudRepository<ApplicationJpaEntity, Long> {
     fun findByUserId(userId: UUID): ApplicationJpaEntity?
+    fun existsByUserId(userId: UUID): Boolean
+    fun findReceiptCodeByUserId(userId: UUID): Long?
 }

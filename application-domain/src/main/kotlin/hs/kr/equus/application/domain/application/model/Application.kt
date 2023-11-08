@@ -36,7 +36,7 @@ data class Application(
     companion object {
         @JvmField
         val DEFAULT_TEL = getProperty(DomainPropertiesPrefix.DEFAULT_TEL)
-        val SOCIAL_REMARKS =
+        private val SOCIAL_REMARKS =
             listOf(
                 ApplicationRemark.ONE_PARENT,
                 ApplicationRemark.FROM_NORTH,

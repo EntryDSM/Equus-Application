@@ -1,4 +1,4 @@
-package hs.kr.equus.application.domain.file.presentation;
+package hs.kr.equus.application.domain.file.presentation
 
 import hs.kr.equus.application.domain.file.presentation.converter.ImageFileConverter
 import hs.kr.equus.application.domain.file.presentation.dto.response.UploadImageWebResponse

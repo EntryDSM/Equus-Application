@@ -4,9 +4,8 @@ import hs.kr.equus.application.global.exception.BusinessException
 
 sealed class FileExceptions(
     override val status: Int,
-    override val message: String
+    override val message: String,
 ) : BusinessException(status, message) {
-
     // 400
     class NotValidContent(message: String = NOT_VALID_CONTENT) : FileExceptions(400, message)
 

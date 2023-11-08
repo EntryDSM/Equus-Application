@@ -3,7 +3,6 @@ package hs.kr.equus.application.global.feign
 import feign.FeignException
 import feign.Response
 import feign.codec.ErrorDecoder
-import hs.kr.equus.application.global.exception.GlobalExceptions
 import hs.kr.equus.application.global.feign.exception.FeignExceptions
 
 class FeignClientErrorDecoder : ErrorDecoder {

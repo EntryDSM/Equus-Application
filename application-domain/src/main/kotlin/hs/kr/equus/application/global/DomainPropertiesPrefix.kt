@@ -1,6 +1,6 @@
 package hs.kr.equus.application.global
 
 object DomainPropertiesPrefix {
-    //Application
+    // Application
     const val DEFAULT_TEL = "application.default-tel"
 }

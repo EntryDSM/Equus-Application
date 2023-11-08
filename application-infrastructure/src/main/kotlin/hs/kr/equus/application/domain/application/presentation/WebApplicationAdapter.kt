@@ -101,5 +101,4 @@ class WebApplicationAdapter(
             UpdateStudyPlanRequest(request.content)
         )
     }
-
 }

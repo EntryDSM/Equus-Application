@@ -7,7 +7,6 @@ import hs.kr.equus.application.global.annotation.EquusTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
-import java.lang.IllegalArgumentException
 import java.util.UUID
 
 @EquusTest

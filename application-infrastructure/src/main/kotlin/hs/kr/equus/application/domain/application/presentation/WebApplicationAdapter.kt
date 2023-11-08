@@ -44,9 +44,7 @@ class WebApplicationAdapter(
 
     @PatchMapping("/type")
     fun updateApplicationType(
-        @RequestBody
-        @Valid
-        request: UpdateApplicationTypeWebRequest,
+        @RequestBody @Valid request: UpdateApplicationTypeWebRequest,
     ) {
         updateApplicationTypeUseCase.execute(
             request.run {
@@ -62,9 +60,7 @@ class WebApplicationAdapter(
 
     @PatchMapping("/graduation/type")
     fun updateGraduationType(
-        @RequestBody
-        @Valid
-        request: UpdateGraduationTypeWebRequest,
+        @RequestBody @Valid request: UpdateGraduationTypeWebRequest,
     ) {
         updateGraduationTypeUseCase.execute(
             request.run {
@@ -78,9 +74,7 @@ class WebApplicationAdapter(
 
     @PatchMapping
     fun updateInformation(
-        @RequestBody
-        @Valid
-        request: UpdateInformationWebRequest,
+        @RequestBody @Valid request: UpdateInformationWebRequest,
     ) {
         updateInformationUseCase.execute(
             request.run {
@@ -101,9 +95,7 @@ class WebApplicationAdapter(
 
     @PatchMapping("/intro")
     fun updateIntroduce(
-        @RequestBody
-        @Valid
-        request: UpdateIntroduceWebRequest,
+        @RequestBody @Valid request: UpdateIntroduceWebRequest,
     ) {
         updateIntroduceUseCase.execute(
             UpdateIntroduceRequest(request.content),
@@ -112,8 +104,7 @@ class WebApplicationAdapter(
 
     @PatchMapping("/study-plan")
     fun updateStudyPlan(
-        @RequestBody
-        @Valid request: UpdateStudyPlanWebRequest,
+        @RequestBody @Valid request: UpdateStudyPlanWebRequest,
     ) {
         updateStudyPlanUseCase.execute(
             UpdateStudyPlanRequest(request.content),

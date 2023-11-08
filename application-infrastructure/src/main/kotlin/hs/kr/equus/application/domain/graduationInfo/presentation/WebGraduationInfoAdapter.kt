@@ -22,9 +22,7 @@ class WebGraduationInfoAdapter(
 
     @PatchMapping("/graduation")
     fun updateGraduationInformation(
-        @RequestBody
-        @Valid
-        request: UpdateGraduationInformationWebRequest,
+        @RequestBody @Valid request: UpdateGraduationInformationWebRequest,
     ) {
         updateGraduationInformationUseCase.execute(
             request.run {

@@ -3,21 +3,22 @@ package hs.kr.equus.application.domain.graduationInfo.usecase
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
+import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
 import hs.kr.equus.application.domain.graduationInfo.spi.*
-import hs.kr.equus.application.domain.graduationInfo.usecase.dto.request.UpdateSchoolInfoRequest
+import hs.kr.equus.application.domain.graduationInfo.usecase.dto.request.UpdateGraduationInformationRequest
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
 
 @UseCase
-class UpdateSchoolInfoUseCase(
+class UpdateGraduationInformationUseCase(
     private val securityPort: SecurityPort,
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val commandGraduationInfoPort: CommandGraduationInfoPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
 ) {
-    fun execute(request: UpdateSchoolInfoRequest) {
+    fun execute(request: UpdateGraduationInformationRequest) {
         val userId = securityPort.getCurrentUserId()
 
         val application =
@@ -35,7 +36,11 @@ class UpdateSchoolInfoUseCase(
         request.run {
             commandGraduationInfoPort.save(
                 graduation.copy(
-                    studentNumber = studentNumber,
+                    studentNumber = StudentNumber(
+                        gradeNumber = gradeNumber,
+                        classNumber = classNumber,
+                        studentNumber = studentNumber,
+                    ),
                     schoolCode = schoolCode,
                 ),
             )

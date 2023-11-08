@@ -9,5 +9,7 @@ import java.util.*
 @FeignClient(name = "UserClient", url = "\${url.user}")
 interface UserClient {
     @GetMapping("/users/{userId}")
-    fun getUserInfoByUserId(@PathVariable("userId") userId: UUID): UserInfoElement // TODO 현수한테 왜 쿼리파람했냐 묻기
+    fun getUserInfoByUserId(
+        @PathVariable("userId") userId: UUID
+    ): UserInfoElement // TODO 현수한테 왜 쿼리파람했냐 묻기
 }

@@ -6,7 +6,10 @@ import feign.codec.ErrorDecoder
 import hs.kr.equus.application.global.feign.exception.FeignExceptions
 
 class FeignClientErrorDecoder : ErrorDecoder {
-    override fun decode(methodKey: String?, response: Response): Exception? {
+    override fun decode(
+        methodKey: String?,
+        response: Response,
+    ): Exception? {
         if (response.status() >= 400) {
             throw FeignExceptions.FeignServerErrorException()
         }

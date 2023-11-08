@@ -8,5 +8,5 @@ data class UserInfoElement(
     val phoneNumber: String,
     val name: String,
     val isParent: Boolean,
-    val role: UserRole
+    val role: UserRole,
 )

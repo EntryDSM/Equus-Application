@@ -17,8 +17,8 @@ class WebFileAdapter(
     fun uploadSingleImage(file: MultipartFile): UploadImageWebResponse {
         return UploadImageWebResponse(
             uploadImageUseCase.execute(
-                file.let(ImageFileConverter::transferTo)
-            )
+                file.let(ImageFileConverter::transferTo),
+            ),
         )
     }
 }

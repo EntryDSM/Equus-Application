@@ -7,7 +7,6 @@ import java.io.FileOutputStream
 import java.util.*
 
 interface FileConverter {
-
     val MultipartFile.extension: String
         get() = originalFilename?.substringAfterLast(".", "")?.uppercase() ?: ""
 

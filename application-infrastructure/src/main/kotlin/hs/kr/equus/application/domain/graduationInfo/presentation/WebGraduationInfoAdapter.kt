@@ -24,7 +24,7 @@ class WebGraduationInfoAdapter(
     fun updateGraduationInformation(
         @RequestBody
         @Valid
-        request: UpdateGraduationInformationWebRequest
+        request: UpdateGraduationInformationWebRequest,
     ) {
         updateGraduationInformationUseCase.execute(
             request.run {

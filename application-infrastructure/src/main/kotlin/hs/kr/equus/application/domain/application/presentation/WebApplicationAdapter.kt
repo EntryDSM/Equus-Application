@@ -21,7 +21,6 @@ class WebApplicationAdapter(
     private val updateInformationUseCase: UpdateInformationUseCase,
     private val updateIntroduceUseCase: UpdateIntroduceUseCase,
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
-    private val uploadPhotoUseCase: ChangePhotoUseCase,
 ) {
     @PostMapping
     fun createApplication() {
@@ -47,7 +46,7 @@ class WebApplicationAdapter(
     fun updateApplicationType(
         @RequestBody
         @Valid
-        request: UpdateApplicationTypeWebRequest
+        request: UpdateApplicationTypeWebRequest,
     ) {
         updateApplicationTypeUseCase.execute(
             request.run {
@@ -65,7 +64,7 @@ class WebApplicationAdapter(
     fun updateGraduationType(
         @RequestBody
         @Valid
-        request: UpdateGraduationTypeWebRequest
+        request: UpdateGraduationTypeWebRequest,
     ) {
         updateGraduationTypeUseCase.execute(
             request.run {
@@ -81,7 +80,7 @@ class WebApplicationAdapter(
     fun updateInformation(
         @RequestBody
         @Valid
-        request: UpdateInformationWebRequest
+        request: UpdateInformationWebRequest,
     ) {
         updateInformationUseCase.execute(
             request.run {
@@ -104,20 +103,20 @@ class WebApplicationAdapter(
     fun updateIntroduce(
         @RequestBody
         @Valid
-        request: UpdateIntroduceWebRequest
+        request: UpdateIntroduceWebRequest,
     ) {
         updateIntroduceUseCase.execute(
-            UpdateIntroduceRequest(request.content)
+            UpdateIntroduceRequest(request.content),
         )
     }
 
     @PatchMapping("/study-plan")
     fun updateStudyPlan(
         @RequestBody
-        @Valid request: UpdateStudyPlanWebRequest
+        @Valid request: UpdateStudyPlanWebRequest,
     ) {
         updateStudyPlanUseCase.execute(
-            UpdateStudyPlanRequest(request.content)
+            UpdateStudyPlanRequest(request.content),
         )
     }
 }

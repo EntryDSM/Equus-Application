@@ -1,6 +1,7 @@
 package hs.kr.equus.application.global.kafka.dto
 
 import java.time.LocalDateTime
+
 data class CreateStatusEventRequest(
     val isPrintsArrived: Boolean,
     val submittedAt: LocalDateTime?,

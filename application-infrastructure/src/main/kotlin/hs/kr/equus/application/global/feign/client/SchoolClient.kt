@@ -14,6 +14,6 @@ interface SchoolClient {
         @RequestParam("Type") type: String = "json",
         @RequestParam("pIndex") pageIndex: Int = 1,
         @RequestParam("pSize") pageSize: Int = 100,
-        @RequestParam("SCHUL_KND_SC_NM") schoolKind: String = "중학교"
+        @RequestParam("SCHUL_KND_SC_NM") schoolKind: String = "중학교",
     ): SchoolInfoElement?
 }

@@ -14,7 +14,7 @@ class ApplicationPersistenceAdapter(
 ) : ApplicationPort {
     override fun save(application: Application): Application {
         return applicationJpaRepository.save(
-            applicationMapper.toEntity(application)
+            applicationMapper.toEntity(application),
         ).let(applicationMapper::toDomainNotNull)
     }
 

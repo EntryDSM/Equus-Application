@@ -21,7 +21,7 @@ class StatusPersistenceAdapter(
                     isSecondRoundPass = isSecondRoundPass,
                     receiptCode = receiptCode,
                 )
-            }
+            },
         )
     }
 }

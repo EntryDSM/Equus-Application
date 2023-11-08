@@ -18,7 +18,6 @@ class AwsS3Adapter(
     private val awsProperties: AwsS3Properties,
     private val amazonS3Client: AmazonS3Client,
 ) : UploadFilePort, CheckFilePort {
-
     override fun upload(file: File): String {
         runCatching { inputS3(file) }
             .also { file.delete() }
@@ -33,18 +32,19 @@ class AwsS3Adapter(
     private fun inputS3(file: File) {
         try {
             val inputStream = file.inputStream()
-            val objectMetadata = ObjectMetadata().apply {
-                contentLength = file.length()
-                contentType = Mimetypes.getInstance().getMimetype(file)
-            }
+            val objectMetadata =
+                ObjectMetadata().apply {
+                    contentLength = file.length()
+                    contentType = Mimetypes.getInstance().getMimetype(file)
+                }
 
             amazonS3Client.putObject(
                 PutObjectRequest(
                     awsProperties.bucket,
                     file.name,
                     inputStream,
-                    objectMetadata
-                ).withCannedAcl(CannedAccessControlList.PublicRead)
+                    objectMetadata,
+                ).withCannedAcl(CannedAccessControlList.PublicRead),
             )
         } catch (e: IOException) {
             e.printStackTrace()
@@ -57,9 +57,10 @@ class AwsS3Adapter(
     }
 
     override fun existsPath(path: String): Boolean {
-        val key = path.substringAfterLast('/', "").run {
-            URLDecoder.decode(this, Charsets.UTF_8)
-        }
+        val key =
+            path.substringAfterLast('/', "").run {
+                URLDecoder.decode(this, Charsets.UTF_8)
+            }
 
         return amazonS3Client.doesObjectExist(awsProperties.bucket, key)
     }

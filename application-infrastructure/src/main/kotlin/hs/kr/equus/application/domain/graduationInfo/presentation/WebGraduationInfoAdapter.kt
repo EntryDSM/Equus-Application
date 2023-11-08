@@ -1,4 +1,4 @@
-package hs.kr.equus.application.domain.graduationInfo.presentation.dto
+package hs.kr.equus.application.domain.graduationInfo.presentation
 
 import hs.kr.equus.application.domain.graduationInfo.presentation.dto.request.UpdateGraduationInformationWebRequest
 import hs.kr.equus.application.domain.graduationInfo.usecase.GetGraduationInformationUseCase
@@ -21,7 +21,11 @@ class WebGraduationInfoAdapter(
     fun getGraduationInformation() = getGraduationInformationUseCase.execute()
 
     @PatchMapping("/graduation")
-    fun updateGraduationInformation(@RequestBody @Valid request: UpdateGraduationInformationWebRequest) {
+    fun updateGraduationInformation(
+        @RequestBody
+        @Valid
+        request: UpdateGraduationInformationWebRequest
+    ) {
         updateGraduationInformationUseCase.execute(
             request.run {
                 UpdateGraduationInformationRequest(
@@ -30,7 +34,7 @@ class WebGraduationInfoAdapter(
                     studentNumber = studentNumber,
                     schoolCode = schoolCode,
                 )
-            }
+            },
         )
     }
 }

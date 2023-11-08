@@ -44,7 +44,11 @@ class WebApplicationAdapter(
     }
 
     @PatchMapping("/type")
-    fun updateApplicationType(@RequestBody @Valid request: UpdateApplicationTypeWebRequest) {
+    fun updateApplicationType(
+        @RequestBody
+        @Valid
+        request: UpdateApplicationTypeWebRequest
+    ) {
         updateApplicationTypeUseCase.execute(
             request.run {
                 UpdateApplicationTypeRequest(
@@ -53,24 +57,32 @@ class WebApplicationAdapter(
                     isDaejeon = isDaejeon,
                     isOutOfHeadcount = isOutOfHeadcount,
                 )
-            }
+            },
         )
     }
 
     @PatchMapping("/graduation/type")
-    fun updateGraduationType(@RequestBody @Valid request: UpdateGraduationTypeWebRequest) {
+    fun updateGraduationType(
+        @RequestBody
+        @Valid
+        request: UpdateGraduationTypeWebRequest
+    ) {
         updateGraduationTypeUseCase.execute(
             request.run {
                 UpdateGraduationTypeRequest(
                     graduateDate = graduateDate,
                     educationalStatus = educationalStatus,
                 )
-            }
+            },
         )
     }
 
     @PatchMapping
-    fun updateInformation(@RequestBody @Valid request: UpdateInformationWebRequest) {
+    fun updateInformation(
+        @RequestBody
+        @Valid
+        request: UpdateInformationWebRequest
+    ) {
         updateInformationUseCase.execute(
             request.run {
                 UpdateInformationRequest(
@@ -84,19 +96,26 @@ class WebApplicationAdapter(
                     postalCode = postalCode,
                     detailAddress = detailAddress,
                 )
-            }
+            },
         )
     }
 
     @PatchMapping("/intro")
-    fun updateIntroduce(@RequestBody @Valid request: UpdateIntroduceWebRequest) {
+    fun updateIntroduce(
+        @RequestBody
+        @Valid
+        request: UpdateIntroduceWebRequest
+    ) {
         updateIntroduceUseCase.execute(
             UpdateIntroduceRequest(request.content)
         )
     }
 
     @PatchMapping("/study-plan")
-    fun updateStudyPlan(@RequestBody @Valid request: UpdateStudyPlanWebRequest) {
+    fun updateStudyPlan(
+        @RequestBody
+        @Valid request: UpdateStudyPlanWebRequest
+    ) {
         updateStudyPlanUseCase.execute(
             UpdateStudyPlanRequest(request.content)
         )

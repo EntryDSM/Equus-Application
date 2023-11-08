@@ -36,7 +36,7 @@ class GetGraduationInformationUseCase(
         return GetGraduationInformationResponse(
             sex = application.sex,
             birthDate = application.birthDate,
-            photoUrl = application.photoUrl,
+            photoPath = application.photoPath,
             applicantName = application.applicantName,
             applicantTel = application.applicantTel,
             parentTel = application.parentTel,

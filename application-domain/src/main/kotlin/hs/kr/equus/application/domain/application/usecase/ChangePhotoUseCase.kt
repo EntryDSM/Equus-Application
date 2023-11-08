@@ -28,7 +28,7 @@ class ChangePhotoUseCase(
 
         commandApplicationPort.save(
             application.copy(
-                photoUrl = request.path
+                photoPath = request.path
             ),
         )
     }

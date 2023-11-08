@@ -20,7 +20,7 @@ class GetInformationUseCase(
             GetInformationResponse(
                 sex = sex,
                 birthDate = birthDate,
-                photoUrl = photoUrl,
+                photoPath = photoPath,
                 applicantName = applicantName,
                 applicantTel = applicantTel,
                 parentName = parentName,

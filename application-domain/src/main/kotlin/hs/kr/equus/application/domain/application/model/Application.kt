@@ -18,7 +18,7 @@ data class Application(
     val isDaejeon: Boolean? = null,
     var isOutOfHeadcount: Boolean? = null,
     val birthDate: LocalDate? = null,
-    val photoUrl: String? = null,
+    val photoPath: String? = null,
     val educationalStatus: EducationalStatus? = null,
     val applicantName: String? = null,
     val applicantTel: String? = null,

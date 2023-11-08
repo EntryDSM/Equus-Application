@@ -5,6 +5,8 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
+import hs.kr.equus.application.global.DomainProperties.getProperty
+import hs.kr.equus.application.global.DomainPropertiesPrefix
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
 import java.util.UUID
@@ -16,7 +18,7 @@ data class Application(
     val isDaejeon: Boolean? = null,
     var isOutOfHeadcount: Boolean? = null,
     val birthDate: LocalDate? = null,
-    val photoFileName: String? = null,
+    val photoUrl: String? = null,
     val educationalStatus: EducationalStatus? = null,
     val applicantName: String? = null,
     val applicantTel: String? = null,
@@ -32,7 +34,8 @@ data class Application(
     val userId: UUID,
 ) {
     companion object {
-        const val DEFAULT_TEL = "010-0000-0000"
+        @JvmField
+        val DEFAULT_TEL = getProperty(DomainPropertiesPrefix.DEFAULT_TEL)
         val SOCIAL_REMARKS =
             listOf(
                 ApplicationRemark.ONE_PARENT,

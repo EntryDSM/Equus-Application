@@ -6,7 +6,7 @@ import java.time.LocalDate
 data class GetInformationResponse(
     val sex: Sex?,
     val birthDate: LocalDate?,
-    val photoUrl: String?,
+    val photoPath: String?,
     val applicantName: String?,
     val applicantTel: String?,
     val parentTel: String?,

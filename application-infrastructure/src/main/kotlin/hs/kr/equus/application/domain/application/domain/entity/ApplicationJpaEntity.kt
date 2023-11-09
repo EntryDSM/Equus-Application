@@ -12,15 +12,16 @@ import javax.validation.constraints.NotNull
 @Entity
 @Table(name = "tbl_application")
 class ApplicationJpaEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val receiptCode: Long,
     @Enumerated(EnumType.STRING)
     val sex: Sex?,
+    @get:JvmName("getIsDaejeon")
     val isDaejeon: Boolean?,
+    @get:JvmName("getIsOutOfHeadcount")
     var isOutOfHeadcount: Boolean?,
     val birthDate: LocalDate?,
-    val photoFileName: String?,
+    val photoPath: String?,
     @Enumerated(EnumType.STRING)
     val educationalStatus: EducationalStatus?,
     val applicantName: String?,

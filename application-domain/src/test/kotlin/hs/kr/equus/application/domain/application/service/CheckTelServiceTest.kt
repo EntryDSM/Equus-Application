@@ -20,8 +20,6 @@ class CheckTelServiceTest {
 
     private val phoneNumber = "010-1234-5678"
 
-    private val password = "test1234!"
-
     private val name = "test"
 
     @BeforeEach
@@ -39,7 +37,6 @@ class CheckTelServiceTest {
                 id = userId,
                 isParent = true,
                 phoneNumber = phoneNumber,
-                password = password,
                 name = name,
             )
 
@@ -58,7 +55,6 @@ class CheckTelServiceTest {
                 id = userId,
                 isParent = false,
                 phoneNumber = phoneNumber,
-                password = password,
                 name = name,
             )
 

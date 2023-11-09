@@ -9,7 +9,6 @@ import hs.kr.equus.application.domain.graduationInfo.spi.QueryGraduationInfoPort
 import hs.kr.equus.application.domain.graduationInfo.usecase.dto.response.GetGraduationInformationResponse
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.global.annotation.UseCase
-import hs.kr.equus.application.global.photo.spi.PhotoPort
 import hs.kr.equus.application.global.security.spi.SecurityPort
 
 @UseCase
@@ -17,7 +16,6 @@ class GetGraduationInformationUseCase(
     private val securityPort: SecurityPort,
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
-    private val photoPort: PhotoPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
 ) {
     fun execute(): GetGraduationInformationResponse {
@@ -38,7 +36,7 @@ class GetGraduationInformationUseCase(
         return GetGraduationInformationResponse(
             sex = application.sex,
             birthDate = application.birthDate,
-            photoUrl = application.photoFileName?.let { photoPort.getPhotoUrl(it) },
+            photoPath = application.photoPath,
             applicantName = application.applicantName,
             applicantTel = application.applicantTel,
             parentTel = application.parentTel,

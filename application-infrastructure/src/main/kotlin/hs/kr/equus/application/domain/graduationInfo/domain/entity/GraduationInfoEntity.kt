@@ -14,6 +14,7 @@ abstract class GraduationInfoEntity(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long?,
     val graduateDate: LocalDate,
+    @get:JvmName("getIsProspectiveGraduate")
     val isProspectiveGraduate: Boolean,
     @NotNull
     val receiptCode: Long,

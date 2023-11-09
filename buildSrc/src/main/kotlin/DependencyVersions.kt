@@ -1,5 +1,5 @@
 object DependencyVersions {
-    const val SPRING_CLOUD_VERSION = "2021.0.1"
+    const val SPRING_CLOUD_VERSION = "2021.0.5"
     const val OPEN_FEIGN_VERSION = "3.1.4"
     const val KTLINT_VERSION = "0.44.0"
     const val JWT_VERSION = "0.9.1"

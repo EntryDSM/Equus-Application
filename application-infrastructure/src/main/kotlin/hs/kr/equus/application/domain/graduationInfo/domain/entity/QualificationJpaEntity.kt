@@ -17,4 +17,3 @@ class QualificationJpaEntity(
         isProspectiveGraduate = isProspectiveGraduate,
         receiptCode = receiptCode,
     )
-

@@ -276,3 +276,19 @@ buildSrc/build/libs/buildSrc.jar
 .idea/compiler.xml
 
 buildSrc/.gradle/file-system.probe
+
+application-domain/build/
+
+application-infrastructure/build/
+
+.gradle/8.2.1/checksums/checksums.lock
+
+.gradle/8.2.1/checksums/md5-checksums.bin
+
+.gradle/8.2.1/checksums/sha1-checksums.bin
+
+.idea/gradle.xml
+
+build/kotlin/EquusApplication001SNAPSHOTjar-classes.txt
+
+build/tmp/jar/MANIFEST.MF

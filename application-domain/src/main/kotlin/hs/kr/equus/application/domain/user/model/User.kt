@@ -7,7 +7,6 @@ import java.util.*
 data class User(
     val id: UUID,
     val phoneNumber: String,
-    val password: String,
     val name: String,
     val isParent: Boolean,
 )

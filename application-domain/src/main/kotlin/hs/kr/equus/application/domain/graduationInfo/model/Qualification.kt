@@ -3,13 +3,13 @@ package hs.kr.equus.application.domain.graduationInfo.model
 import java.time.LocalDate
 
 data class Qualification(
-    val receiptCode: Long,
     val qualifiedDate: LocalDate,
-    val isProspectiveGraduate: Boolean,
+    override val isProspectiveGraduate: Boolean,
+    override val receiptCode: Long,
 ) : GraduationInfo(
-        qualifiedDate,
-        isProspectiveGraduate,
-        receiptCode,
+        graduateDate = qualifiedDate,
+        isProspectiveGraduate = isProspectiveGraduate,
+        receiptCode = receiptCode,
     ) {
     override fun hasEmptyInfo(): Boolean = false
 }

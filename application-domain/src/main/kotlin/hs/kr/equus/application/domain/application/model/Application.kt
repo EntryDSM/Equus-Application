@@ -15,7 +15,9 @@ import java.util.UUID
 data class Application(
     val receiptCode: Long = 0,
     val sex: Sex? = null,
+    @get:JvmName("getIsDaejeon")
     val isDaejeon: Boolean? = null,
+    @get:JvmName("getIsOutOfHeadcount")
     var isOutOfHeadcount: Boolean? = null,
     val birthDate: LocalDate? = null,
     val photoPath: String? = null,

@@ -43,9 +43,10 @@ class GraduationCaseTest {
     @Test
     fun `봉사점수 계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            volunteerTime = 13,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                volunteerTime = 13,
+            )
         // when & then
         assertEquals(BigDecimal(13), graduationCase.calculateVolunteerScore())
     }

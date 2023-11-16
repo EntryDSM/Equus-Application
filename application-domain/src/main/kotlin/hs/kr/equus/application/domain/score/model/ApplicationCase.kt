@@ -7,6 +7,7 @@ abstract class ApplicationCase(
     receiptCode: Long,
 ) {
     val id: Long = 0
+
     companion object {
         const val MAX_ATTENDANCE_SCORE = 15
         val COMMON_GRADE_RATE: BigDecimal = BigDecimal.valueOf(1.75)

@@ -16,36 +16,37 @@ class QualificationCaseTest {
 
     @Test
     fun `출석점수 계산`() {
-        //given
+        // given
         val expectedScore = 15
 
-        //when & then
+        // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateAttendanceScore())
     }
 
     @Test
     fun `봉사점수 계산`() {
-        //given
+        // given
         val expectedScore = BigDecimal("15.000")
 
-        //when & then
+        // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateVolunteerScore())
     }
 
     @Test
     fun `교과점수 계산`() {
-        //given
-        val expectedScores = arrayOf(
-            BigDecimal.ZERO,
-            BigDecimal.ZERO,
-            BigDecimal.ZERO,
-            BigDecimal.ZERO,
-        )
+        // given
+        val expectedScores =
+            arrayOf(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+            )
 
-        //when
+        // when
         val gradeScore = qualificationCaseStub.calculateGradeScores()
 
-        //then
+        // then
         for (i in 0..3) {
             assertEquals(expectedScores[i], gradeScore[i])
         }
@@ -53,19 +54,19 @@ class QualificationCaseTest {
 
     @Test
     fun `일반전형 교과총점수 계산`() {
-        //given
+        // given
         val expectedScore = BigDecimal("140.000")
 
-        //when & then
+        // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateTotalGradeScore(true))
     }
 
     @Test
     fun `특별전형 교과총점수 계산`() {
-        //given
+        // given
         val expectedScore = BigDecimal("80.000")
 
-        //when & then
+        // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateTotalGradeScore(false))
     }
 }

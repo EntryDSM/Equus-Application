@@ -140,7 +140,9 @@ data class GraduationCase(
         }
         return if (semesterScore == 0) {
             BigDecimal.ZERO
-        } else BigDecimal(semesterScore) / BigDecimal(subjectCount) * BigDecimal(4)
+        } else {
+            BigDecimal(semesterScore) / BigDecimal(subjectCount) * BigDecimal(4)
+        }
     }
 
     private fun checkShortOfSemesterCount(calculatedScores: Array<BigDecimal>): Array<BigDecimal> {

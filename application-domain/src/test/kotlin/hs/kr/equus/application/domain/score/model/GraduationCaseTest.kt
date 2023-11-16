@@ -29,12 +29,13 @@ class GraduationCaseTest {
     @Test
     fun `출석점수 계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            absenceDayCount = 4,
-            lectureAbsenceCount = 4,
-            latenessCount = 4,
-            earlyLeaveCount = 4,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                absenceDayCount = 4,
+                lectureAbsenceCount = 4,
+                latenessCount = 4,
+                earlyLeaveCount = 4,
+            )
         // when & then
         assertEquals(7, graduationCase.calculateAttendanceScore())
     }
@@ -43,7 +44,7 @@ class GraduationCaseTest {
     fun `봉사점수 계산`() {
         // given
         val graduationCase = graduationCaseStub.copy(
-            volunteerTime = 13
+            volunteerTime = 13,
         )
         // when & then
         assertEquals(BigDecimal(13), graduationCase.calculateVolunteerScore())
@@ -52,15 +53,17 @@ class GraduationCaseTest {
     @Test
     fun `졸업 교과점수계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            isProspectiveGraduate = false,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                isProspectiveGraduate = false,
+            )
 
-        val expectedGradeScores = arrayOf(
-            BigDecimal("20.000"),
-            BigDecimal("16.000"),
-            BigDecimal("20.000"),
-        )
+        val expectedGradeScores =
+            arrayOf(
+                BigDecimal("20.000"),
+                BigDecimal("16.000"),
+                BigDecimal("20.000"),
+            )
         // when
         val gradeScores = graduationCase.calculateGradeScores()
 
@@ -72,20 +75,22 @@ class GraduationCaseTest {
 
     @Test
     fun `졸업예정 교과점수계산`() {
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "ABCX",
-            socialGrade = "ABCX",
-            historyGrade = "ABCX",
-            mathGrade = "ABCX",
-            scienceGrade = "ABCX",
-            englishGrade = "ABCX",
-            techAndHomeGrade = "ABCX",
-        )
-        val expectedGradeScores = arrayOf(
-            BigDecimal("20.000"),
-            BigDecimal("16.000"),
-            BigDecimal("24.000"),
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "ABCX",
+                socialGrade = "ABCX",
+                historyGrade = "ABCX",
+                mathGrade = "ABCX",
+                scienceGrade = "ABCX",
+                englishGrade = "ABCX",
+                techAndHomeGrade = "ABCX",
+            )
+        val expectedGradeScores =
+            arrayOf(
+                BigDecimal("20.000"),
+                BigDecimal("16.000"),
+                BigDecimal("24.000"),
+            )
 
         // when
         val gradeScores = graduationCase.calculateGradeScores()
@@ -99,15 +104,16 @@ class GraduationCaseTest {
     @Test
     fun `일반전형 총교과점수 계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "AAAA",
-            socialGrade = "AAAA",
-            historyGrade = "AAAA",
-            mathGrade = "AAAA",
-            scienceGrade = "AAAA",
-            englishGrade = "AAAA",
-            techAndHomeGrade = "AAAA",
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "AAAA",
+                socialGrade = "AAAA",
+                historyGrade = "AAAA",
+                mathGrade = "AAAA",
+                scienceGrade = "AAAA",
+                englishGrade = "AAAA",
+                techAndHomeGrade = "AAAA",
+            )
         val expectedTotalGradeScore = BigDecimal("140.000")
 
         // when & then
@@ -117,15 +123,16 @@ class GraduationCaseTest {
     @Test
     fun `특별전형 총교과점수 계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "AAAA",
-            socialGrade = "AAAA",
-            historyGrade = "AAAA",
-            mathGrade = "AAAA",
-            scienceGrade = "AAAA",
-            englishGrade = "AAAA",
-            techAndHomeGrade = "AAAA",
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "AAAA",
+                socialGrade = "AAAA",
+                historyGrade = "AAAA",
+                mathGrade = "AAAA",
+                scienceGrade = "AAAA",
+                englishGrade = "AAAA",
+                techAndHomeGrade = "AAAA",
+            )
         val expectedTotalGradeScore = BigDecimal("80.000")
 
         // when & then
@@ -135,16 +142,17 @@ class GraduationCaseTest {
     @Test
     fun `3학년 학기만 있을때 교과점수계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "XXAA",
-            socialGrade = "XXAA",
-            historyGrade = "XXAA",
-            mathGrade = "XXAA",
-            scienceGrade = "XXAA",
-            englishGrade = "XXAA",
-            techAndHomeGrade = "XXAA",
-            isProspectiveGraduate = false,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "XXAA",
+                socialGrade = "XXAA",
+                historyGrade = "XXAA",
+                mathGrade = "XXAA",
+                scienceGrade = "XXAA",
+                englishGrade = "XXAA",
+                techAndHomeGrade = "XXAA",
+                isProspectiveGraduate = false,
+            )
         val expectedTotalGradeScore = BigDecimal("20.000")
 
         // when
@@ -158,16 +166,17 @@ class GraduationCaseTest {
     @Test
     fun `직전전 학기 없을때 교과점수계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "XACB",
-            socialGrade = "XACB",
-            historyGrade = "XACB",
-            mathGrade = "XACB",
-            scienceGrade = "XACB",
-            englishGrade = "XACB",
-            techAndHomeGrade = "XACB",
-            isProspectiveGraduate = false,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "XACB",
+                socialGrade = "XACB",
+                historyGrade = "XACB",
+                mathGrade = "XACB",
+                scienceGrade = "XACB",
+                englishGrade = "XACB",
+                techAndHomeGrade = "XACB",
+                isProspectiveGraduate = false,
+            )
         val expectedGradeScore = BigDecimal("16.000")
 
         // when & then
@@ -177,16 +186,17 @@ class GraduationCaseTest {
     @Test
     fun `직전학기 없을때 교과점수계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "AXBC",
-            socialGrade = "AXBC",
-            historyGrade = "AXBC",
-            mathGrade = "AXBC",
-            scienceGrade = "AXBC",
-            englishGrade = "AXBC",
-            techAndHomeGrade = "AXBC",
-            isProspectiveGraduate = false,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "AXBC",
+                socialGrade = "AXBC",
+                historyGrade = "AXBC",
+                mathGrade = "AXBC",
+                scienceGrade = "AXBC",
+                englishGrade = "AXBC",
+                techAndHomeGrade = "AXBC",
+                isProspectiveGraduate = false,
+            )
         val expectedGradeScore = BigDecimal("16.000")
 
         // when & then
@@ -196,22 +206,24 @@ class GraduationCaseTest {
     @Test
     fun `안배운 과목이 있을때 과목점수계산`() {
         // given
-        val graduationCase = graduationCaseStub.copy(
-            koreanGrade = "AABC",
-            socialGrade = "AXBC",
-            historyGrade = "AAXC",
-            mathGrade = "AABC",
-            scienceGrade = "AABC",
-            englishGrade = "AABC",
-            techAndHomeGrade = "AABC",
-            isProspectiveGraduate = false,
-        )
+        val graduationCase =
+            graduationCaseStub.copy(
+                koreanGrade = "AABC",
+                socialGrade = "AXBC",
+                historyGrade = "AAXC",
+                mathGrade = "AABC",
+                scienceGrade = "AABC",
+                englishGrade = "AABC",
+                techAndHomeGrade = "AABC",
+                isProspectiveGraduate = false,
+            )
 
-        val expectedGradeScores = arrayOf(
-            BigDecimal("20.000"),
-            BigDecimal("20.000"),
-            BigDecimal("28.000"),
-        )
+        val expectedGradeScores =
+            arrayOf(
+                BigDecimal("20.000"),
+                BigDecimal("20.000"),
+                BigDecimal("28.000"),
+            )
 
         // when
         val gradeScores = graduationCase.calculateGradeScores()

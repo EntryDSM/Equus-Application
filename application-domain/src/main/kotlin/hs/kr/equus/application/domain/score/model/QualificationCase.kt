@@ -30,6 +30,8 @@ data class QualificationCase(
         return if (isCommon) {
             (totalGradeScore * (COMMON_GRADE_RATE))
                 .setScale(3, RoundingMode.HALF_UP)
-        } else totalGradeScore
+        } else {
+            totalGradeScore
+        }
     }
 }

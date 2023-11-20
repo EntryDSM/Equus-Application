@@ -5,8 +5,6 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
-import hs.kr.equus.application.global.DomainProperties.getProperty
-import hs.kr.equus.application.global.DomainPropertiesPrefix
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
 import java.util.UUID
@@ -36,8 +34,7 @@ data class Application(
     val userId: UUID,
 ) {
     companion object {
-        @JvmField
-        val DEFAULT_TEL = getProperty(DomainPropertiesPrefix.DEFAULT_TEL)
+        const val DEFAULT_TEL = "010-0000-0000"
         private val SOCIAL_REMARKS =
             listOf(
                 ApplicationRemark.ONE_PARENT,

@@ -1,7 +1,7 @@
 package hs.kr.equus.application.domain.user.model
 
 import hs.kr.equus.application.global.annotation.Aggregate
-import java.util.*
+import java.util.UUID
 
 @Aggregate
 data class User(

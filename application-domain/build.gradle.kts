@@ -1,9 +1,8 @@
 plugins {
-    kotlin("plugin.allopen") version PluginVersions.ALLOPEN_VERSION
+    kotlin("plugin.allopen")
 }
 
 dependencies {
-
     // spring transaction
     implementation(Dependencies.SPRING_TRANSACTION)
 

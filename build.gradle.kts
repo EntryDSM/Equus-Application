@@ -1,97 +1,72 @@
 plugins {
-	kotlin("jvm") version PluginVersions.JVM_VERSION
+    id("org.springframework.boot") version PluginVersions.SPRING_BOOT_VERSION
+    id("io.spring.dependency-management") version PluginVersions.DEPENDENCY_MANAGER_VERSION
+    id("org.jlleitschuh.gradle.ktlint") version PluginVersions.KLINT_VERSION
+    kotlin("jvm") version PluginVersions.JVM_VERSION
+    kotlin("plugin.spring") version PluginVersions.SPRING_PLUGIN_VERSION
+    kotlin("plugin.jpa") version PluginVersions.JPA_PLUGIN_VERSION
+}
+tasks.bootJar {
+    enabled = false
 }
 
+tasks.jar {
+    enabled = true
+}
 subprojects {
-	apply {
-		plugin("org.jetbrains.kotlin.jvm")
-		version = PluginVersions.JVM_VERSION
-	}
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+        version = PluginVersions.JVM_VERSION
+    }
 
-	apply {
-		plugin("org.jetbrains.kotlin.kapt")
-		version = PluginVersions.KAPT_VERSION
-	}
+    apply {
+        plugin("org.jetbrains.kotlin.kapt")
+        version = PluginVersions.KAPT_VERSION
+    }
 
-	dependencies {
+    dependencies {
 
-		// kotlin
-		implementation(Dependencies.KOTLIN_REFLECT)
-		implementation(Dependencies.KOTLIN_JDK)
+        // kotlin
+        implementation(Dependencies.KOTLIN_REFLECT)
+        implementation(Dependencies.KOTLIN_JDK)
 
-		// java servlet
-		implementation(Dependencies.JAVA_SERVLET)
+        // java servlet
+        implementation(Dependencies.JAVA_SERVLET)
 
-		// test
-		testImplementation(Dependencies.SPRING_TEST)
-		testImplementation(Dependencies.MOCKITO_KOTLIN)
-	}
+        // test
+        testImplementation(Dependencies.SPRING_TEST)
+        testImplementation(Dependencies.MOCKITO_KOTLIN)
+    }
 }
 
 allprojects {
-	group = "hs.kr.equus"
-	version = "0.0.1-SNAPSHOT"
+    group = "hs.kr.equus"
+    version = "0.0.1-SNAPSHOT"
 
-	tasks {
-		compileKotlin {
-			kotlinOptions {
-				freeCompilerArgs = listOf("-Xjsr305=strict")
-				jvmTarget = "17"
-			}
-		}
+    tasks {
+        compileKotlin {
+            kotlinOptions {
+                freeCompilerArgs = listOf("-Xjsr305=strict")
+                jvmTarget = "17"
+            }
+        }
 
-		compileJava {
-			sourceCompatibility = JavaVersion.VERSION_17.majorVersion
-		}
+        compileJava {
+            sourceCompatibility = JavaVersion.VERSION_17.majorVersion
+        }
 
-		test {
-			useJUnitPlatform()
-		}
-	}
+        test {
+            useJUnitPlatform()
+        }
+    }
 
-	repositories {
-		mavenCentral()
-	}
+    repositories {
+        mavenCentral()
+    }
 }
-
-val ktlint: Configuration by configurations.creating
-
-dependencies {
-	ktlint(Dependencies.KTLINT) {
-		attributes {
-			attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
-		}
-	}
-}
-
-val outputDir = "${project.buildDir}/reports/ktlint/"
-val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
-
-val ktlintCheck by tasks.creating(JavaExec::class) {
-	inputs.files(inputFiles)
-	outputs.dir(outputDir)
-
-	description = "Check Kotlin code style."
-	classpath = ktlint
-	mainClass.set("com.pinterest.ktlint.Main")
-	args = listOf("**/*.kt", "**/*.kts")
-}
-
-// Formatting all source files
-val ktlintFormat by tasks.creating(JavaExec::class) {
-	inputs.files(inputFiles)
-	outputs.dir(outputDir)
-
-	description = "Fix Kotlin code style deviations."
-	classpath = ktlint
-	mainClass.set("com.pinterest.ktlint.Main")
-	args = listOf("-F", "**/*.kt")
-	jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-}
-
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "17"
-	}
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
+    }
 }

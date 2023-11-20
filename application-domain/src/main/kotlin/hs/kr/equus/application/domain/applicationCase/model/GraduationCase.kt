@@ -1,4 +1,4 @@
-package hs.kr.equus.application.domain.score.model
+package hs.kr.equus.application.domain.applicationCase.model
 
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal
@@ -86,9 +86,9 @@ data class GraduationCase(
         }
 
         if (isProspectiveGraduate) {
-            calculatedScores[2] = scoresPerSemester[2] * BigDecimal(2)
+            calculatedScores[THIRD_GRADE] = scoresPerSemester[THIRD_GRADE] * BigDecimal(2)
         } else {
-            calculatedScores[2] = scoresPerSemester[2] + scoresPerSemester[3]
+            calculatedScores[THIRD_GRADE] = scoresPerSemester[THIRD_GRADE] + scoresPerSemester[3]
         }
 
         return checkShortOfSemesterCount(calculatedScores)

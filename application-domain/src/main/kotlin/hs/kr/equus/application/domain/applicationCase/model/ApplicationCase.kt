@@ -1,7 +1,6 @@
 package hs.kr.equus.application.domain.applicationCase.model
 
 import java.math.BigDecimal
-import java.util.*
 
 abstract class ApplicationCase(
     receiptCode: Long,

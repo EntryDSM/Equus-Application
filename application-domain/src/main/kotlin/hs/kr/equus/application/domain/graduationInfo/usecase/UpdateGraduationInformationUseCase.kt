@@ -37,11 +37,11 @@ class UpdateGraduationInformationUseCase(
             commandGraduationInfoPort.save(
                 graduation.copy(
                     studentNumber =
-                        StudentNumber(
-                            gradeNumber = gradeNumber,
-                            classNumber = classNumber,
-                            studentNumber = studentNumber,
-                        ),
+                    StudentNumber(
+                        gradeNumber = gradeNumber,
+                        classNumber = classNumber,
+                        studentNumber = studentNumber,
+                    ),
                     schoolCode = schoolCode,
                 ),
             )

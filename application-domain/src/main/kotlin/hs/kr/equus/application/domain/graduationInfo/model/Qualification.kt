@@ -7,9 +7,9 @@ data class Qualification(
     override val isProspectiveGraduate: Boolean,
     override val receiptCode: Long,
 ) : GraduationInfo(
-        graduateDate = qualifiedDate,
-        isProspectiveGraduate = isProspectiveGraduate,
-        receiptCode = receiptCode,
-    ) {
+    graduateDate = qualifiedDate,
+    isProspectiveGraduate = isProspectiveGraduate,
+    receiptCode = receiptCode,
+) {
     override fun hasEmptyInfo(): Boolean = false
 }

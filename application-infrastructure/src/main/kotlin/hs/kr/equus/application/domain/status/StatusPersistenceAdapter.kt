@@ -2,18 +2,18 @@ package hs.kr.equus.application.domain.status
 
 import hs.kr.equus.application.domain.status.model.Status
 import hs.kr.equus.application.domain.status.spi.StatusPort
-import hs.kr.equus.application.global.kafka.dto.CreateStatusEventRequest
-import hs.kr.equus.application.global.kafka.producer.CreateStatusProducer
+import hs.kr.equus.application.global.kafka.dto.UpdateStatusEventRequest
+import hs.kr.equus.application.global.kafka.producer.UpdateStatusProducer
 import org.springframework.stereotype.Component
 
 @Component
 class StatusPersistenceAdapter(
-    private val createStatusProducer: CreateStatusProducer,
+    private val updateStatusProducer: UpdateStatusProducer,
 ) : StatusPort {
     override fun save(status: Status) {
-        createStatusProducer.send(
+        updateStatusProducer.send(
             status.run {
-                CreateStatusEventRequest(
+                UpdateStatusEventRequest(
                     isPrintsArrived = isPrintsArrived,
                     submittedAt = submittedAt,
                     examCode = examCode,

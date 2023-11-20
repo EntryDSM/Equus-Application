@@ -1,4 +1,4 @@
-package hs.kr.equus.application.domain.score.model
+package hs.kr.equus.application.domain.applicationCase.model
 
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal

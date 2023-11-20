@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.kafka
+package hs.kr.equus.application.global.kafka.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

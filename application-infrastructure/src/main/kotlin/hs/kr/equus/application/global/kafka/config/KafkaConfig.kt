@@ -1,8 +1,8 @@
-package hs.kr.equus.application.global.kafka
+package hs.kr.equus.application.global.kafka.config
 
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.ser.std.StringSerializer
-import hs.kr.equus.application.global.kafka.dto.CreateStatusEventRequest
+import hs.kr.equus.application.global.kafka.dto.UpdateStatusEventRequest
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,12 +14,12 @@ class KafkaConfig(
     private val kafkaProperty: KafkaProperty,
 ) {
     @Bean
-    fun createStatusProducerFactory(): DefaultKafkaProducerFactory<String, CreateStatusEventRequest> {
+    fun createStatusProducerFactory(): DefaultKafkaProducerFactory<String, UpdateStatusEventRequest> {
         return DefaultKafkaProducerFactory(producerConfig())
     }
 
     @Bean
-    fun createStatusKafkaTemplate(): KafkaTemplate<String, CreateStatusEventRequest> {
+    fun createStatusKafkaTemplate(): KafkaTemplate<String, UpdateStatusEventRequest> {
         return KafkaTemplate(createStatusProducerFactory())
     }
 

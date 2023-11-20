@@ -1,5 +1,6 @@
-package hs.kr.equus.application.domain.score.model
+package hs.kr.equus.application.domain.applicationCase
 
+import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.global.annotation.EquusTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test

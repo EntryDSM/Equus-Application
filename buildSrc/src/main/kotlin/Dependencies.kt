@@ -77,4 +77,7 @@ object Dependencies {
 
     // Cloud
     const val SPRING_CLOUD = "org.springframework.cloud:spring-cloud-dependencies:${DependencyVersions.SPRING_CLOUD_VERSION}"
+
+    // Maven Plugin
+    const val MAVEN_PLUGIN = "org.springframework.boot:spring-boot-maven-plugin:3.2.0"
 }

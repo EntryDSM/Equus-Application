@@ -36,6 +36,9 @@ subprojects {
         // test
         testImplementation(Dependencies.SPRING_TEST)
         testImplementation(Dependencies.MOCKITO_KOTLIN)
+
+        // maven
+        implementation(Dependencies.MAVEN_PLUGIN)
     }
 }
 

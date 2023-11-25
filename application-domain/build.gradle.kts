@@ -1,5 +1,5 @@
 plugins {
-    kotlin("plugin.allopen")
+    kotlin("plugin.allopen") version PluginVersions.ALLOPEN_VERSION
 }
 
 dependencies {

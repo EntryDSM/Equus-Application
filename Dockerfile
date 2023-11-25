@@ -1,6 +1,6 @@
 FROM openjdk:17
 ENV TZ=Asia/Seoul
-COPY build/libs/Equus-Application-0.0.1-SNAPSHOT-plain.jar app.jar
+COPY /application-infrastructure/build/libs/application-infrastructure-0.0.1-SNAPSHOT.jar app.jar
 COPY /datadog/dd-java-agent.jar /usr/agent/dd-java-agent.jar
 
 ARG CLOUD_CONFIG_IMPORT_URL

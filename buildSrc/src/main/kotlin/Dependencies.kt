@@ -80,4 +80,7 @@ object Dependencies {
 
     // Maven Plugin
     const val MAVEN_PLUGIN = "org.springframework.boot:spring-boot-maven-plugin:3.2.0"
+
+    // Actuator
+    const val ACTUATOR = "org.springframework.boot:spring-boot-starter-actuator"
 }

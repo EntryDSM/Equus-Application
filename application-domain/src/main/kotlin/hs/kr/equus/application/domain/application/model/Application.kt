@@ -58,4 +58,6 @@ data class Application(
     private fun checkNotSocialSelectSocialRemark() = !isSocial() && applicationRemark in SOCIAL_REMARKS
 
     fun isSocial() = applicationType == ApplicationType.SOCIAL
+
+    fun isCommon() = applicationType == ApplicationType.COMMON
 }

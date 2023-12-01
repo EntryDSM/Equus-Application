@@ -4,7 +4,10 @@ import hs.kr.equus.application.domain.application.exception.ApplicationException
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
-import hs.kr.equus.application.domain.graduationInfo.spi.*
+import hs.kr.equus.application.domain.graduationInfo.spi.CommandGraduationInfoPort
+import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryApplicationPort
+import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQuerySchoolPort
+import hs.kr.equus.application.domain.graduationInfo.spi.QueryGraduationInfoPort
 import hs.kr.equus.application.domain.graduationInfo.usecase.dto.request.UpdateGraduationInformationRequest
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.global.annotation.UseCase

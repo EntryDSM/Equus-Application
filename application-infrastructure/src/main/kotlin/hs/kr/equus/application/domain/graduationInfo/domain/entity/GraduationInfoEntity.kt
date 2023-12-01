@@ -10,10 +10,9 @@ import javax.validation.constraints.NotNull
 
 @MappedSuperclass
 abstract class GraduationInfoEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long?,
-    val graduateDate: LocalDate,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long,
+    val graduateDate: LocalDate?,
     @get:JvmName("getIsProspectiveGraduate")
     val isProspectiveGraduate: Boolean,
     @NotNull

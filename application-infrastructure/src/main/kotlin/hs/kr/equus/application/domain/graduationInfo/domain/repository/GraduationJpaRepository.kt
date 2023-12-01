@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository
 
 interface GraduationJpaRepository : CrudRepository<GraduationJpaEntity, Long> {
     fun findByReceiptCode(receiptCode: Long): GraduationJpaEntity?
+    fun existsByReceiptCode(receiptCode: Long): Boolean
 }

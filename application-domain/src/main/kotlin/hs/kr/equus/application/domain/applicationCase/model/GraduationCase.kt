@@ -6,39 +6,40 @@ import java.math.RoundingMode
 
 @Aggregate
 data class GraduationCase(
-    val volunteerTime: Int,
-    val absenceDayCount: Int,
-    val lectureAbsenceCount: Int,
-    val latenessCount: Int,
-    val earlyLeaveCount: Int,
-    val koreanGrade: String,
-    val socialGrade: String,
-    val historyGrade: String,
-    val mathGrade: String,
-    val scienceGrade: String,
-    val englishGrade: String,
-    val techAndHomeGrade: String,
+    val volunteerTime: Int = 0,
+    val absenceDayCount: Int = 0,
+    val lectureAbsenceCount: Int = 0,
+    val latenessCount: Int = 0,
+    val earlyLeaveCount: Int = 0,
+    val koreanGrade: String = "XXXX",
+    val socialGrade: String = "XXXX",
+    val historyGrade: String = "XXXX",
+    val mathGrade: String = "XXXX",
+    val scienceGrade: String = "XXXX",
+    val englishGrade: String = "XXXX",
+    val techAndHomeGrade: String = "XXXX",
+    @get:JvmName("getIsProspectiveGraduate")
     val isProspectiveGraduate: Boolean,
     val receiptCode: Long,
 ) : ApplicationCase(receiptCode) {
     operator fun BigDecimal.div(other: BigDecimal): BigDecimal = this.divide(other, 5, RoundingMode.HALF_EVEN)
 
     companion object {
-        const val MAX_VOLUNTEER_TIME = 15
-        const val MIN_VOLUNTEER_TIME = 1
-        const val MAX_VOLUNTEER_SCORE = 15
-        const val MIN_VOLUNTEER_SCORE = 0
-        const val A_SCORE = 5
-        const val B_SCORE = 4
-        const val C_SCORE = 3
-        const val D_SCORE = 2
-        const val E_SCORE = 1
+        private const val MAX_VOLUNTEER_TIME = 15
+        private const val MIN_VOLUNTEER_TIME = 1
+        private const val MAX_VOLUNTEER_SCORE = 15
+        private const val MIN_VOLUNTEER_SCORE = 0
+        private const val A_SCORE = 5
+        private const val B_SCORE = 4
+        private const val C_SCORE = 3
+        private const val D_SCORE = 2
+        private const val E_SCORE = 1
 
         // 학기별 인덱스
-        const val THIRD_2BEFORE = 0
-        const val THIRD_BEFORE = 1
-        const val THIRD_GRADE_SECOND = 3
-        const val THIRD_GRADE = 2 // 3학년 1학기 + 3학년 2학기
+        private const val THIRD_2BEFORE = 0
+        private const val THIRD_BEFORE = 1
+        private const val THIRD_GRADE_SECOND = 3
+        private const val THIRD_GRADE = 2 // 3학년 1학기 + 3학년 2학기
     }
 
     override fun calculateVolunteerScore(): BigDecimal {
@@ -85,7 +86,7 @@ data class GraduationCase(
             calculatedScores[semester] += scoresPerSemester[semester]
         }
 
-        if (isProspectiveGraduate) {
+        if (isProspectiveGraduate) { // todo 오버라이딩에 맡추기 위해 isProspectiveGraduate를 파라미터가 아닌 필드로 저장함. 후에 변경 요함
             calculatedScores[THIRD_GRADE] = scoresPerSemester[THIRD_GRADE] * BigDecimal(2)
         } else {
             calculatedScores[THIRD_GRADE] = scoresPerSemester[THIRD_GRADE] + scoresPerSemester[3]

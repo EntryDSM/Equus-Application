@@ -1,1 +1,0 @@
-/Users/kimseongwon/Desktop/gitHub/Equus-Application/buildSrc/build/classes/kotlin/main/Dependencies.class:/Users/kimseongwon/Desktop/gitHub/Equus-Application/buildSrc/build/classes/kotlin/main/DependencyVersions.class:/Users/kimseongwon/Desktop/gitHub/Equus-Application/buildSrc/build/classes/kotlin/main/PluginVersions.class

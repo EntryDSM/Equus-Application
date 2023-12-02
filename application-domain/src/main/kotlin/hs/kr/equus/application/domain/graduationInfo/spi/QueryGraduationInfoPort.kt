@@ -5,4 +5,5 @@ import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 
 interface QueryGraduationInfoPort {
     fun queryGraduationInfoByApplication(application: Application): GraduationInfo?
+    fun isExistsGraduationInfoByApplication(application: Application): Boolean
 }

@@ -4,7 +4,7 @@ import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import java.time.LocalDate
 import javax.validation.constraints.NotNull
 
-data class UpdateGraduationTypeWebRequest(
+data class UpdateEducationalStatusWebRequest(
     @NotNull
     val graduateDate: LocalDate,
     @NotNull

@@ -4,7 +4,7 @@ sealed class GlobalExceptions(
     override val status: Int,
     override val message: String,
 ) : BusinessException(status, message) {
-    class InternalServerErrorException(message: String = INTERNAL_SERVER_ERROR) : GlobalExceptions(404, message)
+    class InternalServerErrorException(message: String = INTERNAL_SERVER_ERROR) : GlobalExceptions(500, message)
 
     class ExpiredTokenException(message: String = EXPIRED_TOKEN) : GlobalExceptions(401, message)
 

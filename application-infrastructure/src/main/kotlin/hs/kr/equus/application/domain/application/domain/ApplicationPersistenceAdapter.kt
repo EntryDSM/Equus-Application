@@ -5,7 +5,7 @@ import hs.kr.equus.application.domain.application.domain.repository.ApplicationJ
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.UUID
 
 @Component
 class ApplicationPersistenceAdapter(
@@ -16,6 +16,12 @@ class ApplicationPersistenceAdapter(
         return applicationJpaRepository.save(
             applicationMapper.toEntity(application),
         ).let(applicationMapper::toDomainNotNull)
+    }
+
+    override fun delete(application: Application) {
+        applicationJpaRepository.delete(
+            applicationMapper.toEntity(application)
+        )
     }
 
     override fun queryApplicationByUserId(userId: UUID): Application? {
@@ -29,5 +35,11 @@ class ApplicationPersistenceAdapter(
 
     override fun queryReceiptCodeByUserId(userId: UUID): Long? {
         return applicationJpaRepository.findReceiptCodeByUserId(userId)
+    }
+
+    override fun queryApplicationByReceiptCode(receiptCode: Long): Application? {
+        return applicationJpaRepository.findByReceiptCode(receiptCode)
+            .let(applicationMapper::toDomain)
+
     }
 }

@@ -4,7 +4,7 @@ import hs.kr.equus.application.domain.user.model.User
 import hs.kr.equus.application.domain.user.spi.UserPort
 import hs.kr.equus.application.global.feign.client.UserClient
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.UUID
 
 @Component
 class UserPersistenceAdapter(

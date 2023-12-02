@@ -10,8 +10,8 @@ import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 import hs.kr.equus.application.domain.graduationInfo.model.Qualification
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoPort
+import hs.kr.equus.application.global.exception.GlobalExceptions
 import org.springframework.stereotype.Component
-import java.lang.IllegalArgumentException
 
 @Component
 class GraduationInfoPersistenceAdapter(
@@ -32,7 +32,7 @@ class GraduationInfoPersistenceAdapter(
                     .let(graduationMapper::toDomainNotNull)
             }
 
-            else -> throw IllegalArgumentException()
+            else -> throw GlobalExceptions.InternalServerErrorException()
         }
     }
 
@@ -44,6 +44,16 @@ class GraduationInfoPersistenceAdapter(
             } else {
                 graduationJpaRepository.findByReceiptCode(receiptCode)
                     .let(graduationMapper::toDomain)
+            }
+        }
+    }
+
+    override fun isExistsGraduationInfoByApplication(application: Application): Boolean {
+        application.run {
+            return if (educationalStatus == EducationalStatus.QUALIFICATION_EXAM) {
+                qualificationJpaRepository.existsByReceiptCode(receiptCode)
+            } else {
+                graduationJpaRepository.existsByReceiptCode(receiptCode)
             }
         }
     }

@@ -4,7 +4,7 @@ import hs.kr.equus.application.domain.file.presentation.exception.WebFileExcepti
 import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
+import java.util.UUID
 
 interface FileConverter {
     val MultipartFile.extension: String

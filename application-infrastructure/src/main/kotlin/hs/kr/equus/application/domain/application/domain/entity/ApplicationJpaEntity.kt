@@ -5,15 +5,22 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
 import java.time.LocalDate
-import java.util.*
-import javax.persistence.*
+import java.util.UUID
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.Table
 import javax.validation.constraints.NotNull
 
 @Entity
 @Table(name = "tbl_application")
 class ApplicationJpaEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val receiptCode: Long,
+    val receiptCode: Long = 0,
     @Enumerated(EnumType.STRING)
     val sex: Sex?,
     @get:JvmName("getIsDaejeon")
@@ -40,6 +47,6 @@ class ApplicationJpaEntity(
     val studyPlan: String?,
     val selfIntroduce: String?,
     @field:NotNull
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "BINARY(16)")
     val userId: UUID,
 )

@@ -10,4 +10,6 @@ interface ApplicationJpaRepository : CrudRepository<ApplicationJpaEntity, Long> 
     fun existsByUserId(userId: UUID): Boolean
 
     fun findReceiptCodeByUserId(userId: UUID): Long?
+
+    fun findByReceiptCode(receiptCode: Long): ApplicationJpaEntity?
 }

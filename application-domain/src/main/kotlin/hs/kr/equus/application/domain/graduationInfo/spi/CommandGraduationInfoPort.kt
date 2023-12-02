@@ -4,4 +4,6 @@ import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 
 interface CommandGraduationInfoPort {
     fun save(graduationInfo: GraduationInfo): GraduationInfo
+
+    fun delete(graduationInfo: GraduationInfo)
 }

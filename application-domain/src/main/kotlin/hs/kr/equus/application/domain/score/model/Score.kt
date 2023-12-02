@@ -6,6 +6,7 @@ import java.math.BigDecimal
 
 @Aggregate
 data class Score(
+    val id: Long = 0,
     val attendanceScore: Int? = null,
     val volunteerScore: BigDecimal? = null,
     val thirdBeforeBeforeScore: BigDecimal? = null,
@@ -15,8 +16,6 @@ data class Score(
     val totalScore: BigDecimal? = null,
     val receiptCode: Long,
 ) {
-    val id: Long = 0
-
     fun updateScore(
         applicationCase: ApplicationCase,
         isCommon: Boolean,

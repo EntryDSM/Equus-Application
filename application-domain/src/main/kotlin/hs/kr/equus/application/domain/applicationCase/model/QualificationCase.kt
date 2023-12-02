@@ -6,7 +6,7 @@ import java.math.RoundingMode
 
 @Aggregate
 data class QualificationCase(
-    val averageScore: BigDecimal,
+    val averageScore: BigDecimal = BigDecimal(0),
     val receiptCode: Long,
 ) : ApplicationCase(receiptCode) {
     override fun calculateVolunteerScore(): BigDecimal {

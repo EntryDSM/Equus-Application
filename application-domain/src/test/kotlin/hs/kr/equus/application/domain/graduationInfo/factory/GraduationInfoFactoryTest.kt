@@ -29,7 +29,6 @@ class GraduationInfoFactoryTest {
         val graduationInfo = graduationInfoFactory.createGraduationInfo(
             receiptCode = receiptCode,
             educationalStatus = EducationalStatus.GRADUATE,
-            graduationDate = graduationDate,
         )
 
         // then
@@ -49,7 +48,6 @@ class GraduationInfoFactoryTest {
         val graduationInfo = graduationInfoFactory.createGraduationInfo(
             receiptCode = receiptCode,
             educationalStatus = EducationalStatus.PROSPECTIVE_GRADUATE,
-            graduationDate = graduationDate,
         )
 
         // then
@@ -61,7 +59,6 @@ class GraduationInfoFactoryTest {
         // given
         val qualification = Qualification(
             receiptCode = receiptCode,
-            qualifiedDate = graduationDate,
             isProspectiveGraduate = false,
         )
 
@@ -69,7 +66,6 @@ class GraduationInfoFactoryTest {
         val graduationInfo = graduationInfoFactory.createGraduationInfo(
             receiptCode = receiptCode,
             educationalStatus = EducationalStatus.QUALIFICATION_EXAM,
-            graduationDate = graduationDate,
         )
 
         // then

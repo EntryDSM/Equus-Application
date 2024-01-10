@@ -1,6 +1,7 @@
 package hs.kr.equus.application.domain.applicationCase.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.applicationCase.event.spi.ApplicationCaseEventPort
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
@@ -16,6 +17,7 @@ class UpdateQualificationCaseUseCase(
     private val applicationCaseQueryApplicationPort: ApplicationCaseQueryApplicationPort,
     private val commandApplicationCasePort: CommandApplicationCasePort,
     private val queryApplicationCasePort: QueryApplicationCasePort,
+    private val qualificationEventPort: ApplicationCaseEventPort,
 ) {
     fun execute(request: UpdateQualificationCaseRequest) {
         val userId = securityPort.getCurrentUserId()
@@ -31,5 +33,7 @@ class UpdateQualificationCaseUseCase(
                 averageScore = request.averageScore,
             ),
         )
+
+        qualificationEventPort.updateApplicationCase(qualificationCase.receiptCode)
     }
 }

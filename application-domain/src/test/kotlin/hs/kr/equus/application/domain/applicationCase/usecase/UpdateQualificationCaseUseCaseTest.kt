@@ -4,11 +4,11 @@ import hs.kr.equus.application.domain.application.exception.ApplicationException
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.applicationCase.event.spi.ApplicationCaseEventPort
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
-import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.CommandApplicationCasePort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
-import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.UpdateGraduationCaseRequest
+import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.UpdateQualificationCaseRequest
 import hs.kr.equus.application.global.annotation.EquusTest
 import hs.kr.equus.application.global.security.spi.SecurityPort
 import org.junit.jupiter.api.BeforeEach
@@ -17,10 +17,11 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.given
 import org.springframework.boot.test.mock.mockito.MockBean
+import java.math.BigDecimal
 import java.util.UUID
 
 @EquusTest
-class UpdateGraduationCaseUseCaseTest {
+class UpdateQualificationCaseUseCaseTest {
     @MockBean
     private lateinit var securityPort: SecurityPort
 
@@ -34,28 +35,17 @@ class UpdateGraduationCaseUseCaseTest {
     private lateinit var queryApplicationCasePort: QueryApplicationCasePort
 
     @MockBean
-    private lateinit var graduationCaseEventPort: ApplicationCaseEventPort
+    private lateinit var qualificationCaseEventPort: ApplicationCaseEventPort
 
-    private lateinit var updateGraduationCaseUseCase: UpdateGraduationCaseUseCase
+    private lateinit var updateQualificationCaseUseCase: UpdateQualificationCaseUseCase
 
     private val userId = UUID.randomUUID()
 
     private val receiptCode = 1L
 
-    private val requestStub: UpdateGraduationCaseRequest by lazy {
-        UpdateGraduationCaseRequest(
-            volunteerTime = 1,
-            absenceDayCount = 1,
-            lectureAbsenceCount = 1,
-            latenessCount = 1,
-            earlyLeaveCount = 1,
-            koreanGrade = "AAAA",
-            socialGrade = "AAAA",
-            historyGrade = "AAAA",
-            mathGrade = "AAAA",
-            scienceGrade = "AAAA",
-            englishGrade = "AAAA",
-            techAndHomeGrade = "AAAA"
+    private val requestStub: UpdateQualificationCaseRequest by lazy {
+        UpdateQualificationCaseRequest(
+            averageScore = BigDecimal(70)
         )
     }
 
@@ -64,19 +54,18 @@ class UpdateGraduationCaseUseCaseTest {
         userId = userId,
     )
 
-    private val graduationCaseStub = GraduationCase(
+    private val qualificationCaseStub = QualificationCase(
         receiptCode = receiptCode,
-        isProspectiveGraduate = true,
     )
 
     @BeforeEach
     fun setUp() {
-        updateGraduationCaseUseCase = UpdateGraduationCaseUseCase(
+        updateQualificationCaseUseCase = UpdateQualificationCaseUseCase(
             securityPort,
             applicationCaseQueryApplicationPort,
             commandApplicationCasePort,
             queryApplicationCasePort,
-            graduationCaseEventPort,
+            qualificationCaseEventPort,
         )
     }
 
@@ -90,11 +79,11 @@ class UpdateGraduationCaseUseCaseTest {
             .willReturn(applicationStub)
 
         given(queryApplicationCasePort.queryApplicationCaseByApplication(applicationStub))
-            .willReturn(graduationCaseStub)
+            .willReturn(qualificationCaseStub)
 
         // when & then
         assertDoesNotThrow() {
-            updateGraduationCaseUseCase.execute(requestStub)
+            updateQualificationCaseUseCase.execute(requestStub)
         }
     }
 
@@ -108,11 +97,11 @@ class UpdateGraduationCaseUseCaseTest {
             .willReturn(null)
 
         given(queryApplicationCasePort.queryApplicationCaseByApplication(applicationStub))
-            .willReturn(graduationCaseStub)
+            .willReturn(qualificationCaseStub)
 
         // when & then
         assertThrows<ApplicationExceptions.ApplicationNotFoundException> {
-            updateGraduationCaseUseCase.execute(requestStub)
+            updateQualificationCaseUseCase.execute(requestStub)
         }
     }
 
@@ -130,7 +119,7 @@ class UpdateGraduationCaseUseCaseTest {
 
         // when & then
         assertThrows<ApplicationCaseExceptions.EducationalStatusUnmatchedException> {
-            updateGraduationCaseUseCase.execute(requestStub)
+            updateQualificationCaseUseCase.execute(requestStub)
         }
     }
 }

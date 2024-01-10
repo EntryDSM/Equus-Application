@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component
 
 @Component
 class ApplicationProducer(
-    private val createApplicationTemplate: KafkaTemplate<String, Any>,
-    private val updateEducationalStatusTemplate: KafkaTemplate<String, Any>,
+    private val createApplicationTemplate: KafkaTemplate<String, Long>,
+    private val updateEducationalStatusTemplate: KafkaTemplate<String, Long>,
 ) : ApplicationEventPort {
     override fun create(receiptCode: Long) {
         createApplicationTemplate.send(

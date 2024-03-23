@@ -4,7 +4,7 @@ spring:
   cloud:
     config:
       name: application
-      profile: dev
+      profile: ${APPLICATION_PROFILE}
 
 management:
   endpoints:

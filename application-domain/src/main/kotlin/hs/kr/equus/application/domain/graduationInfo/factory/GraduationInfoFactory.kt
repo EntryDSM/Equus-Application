@@ -32,7 +32,7 @@ class GraduationInfoFactory {
                     isProspectiveGraduate = true,
                 )
 
-            else ->
+            null ->
                 throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
         }
     }

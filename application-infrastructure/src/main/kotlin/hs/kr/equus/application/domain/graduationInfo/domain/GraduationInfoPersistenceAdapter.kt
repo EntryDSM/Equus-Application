@@ -31,8 +31,6 @@ class GraduationInfoPersistenceAdapter(
                 graduationJpaRepository.save(graduationMapper.toEntity(graduationInfo))
                     .let(graduationMapper::toDomainNotNull)
             }
-
-            else -> throw GlobalExceptions.InternalServerErrorException()
         }
     }
 

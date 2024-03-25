@@ -2,7 +2,7 @@ package hs.kr.equus.application.domain.applicationCase.model
 
 import java.math.BigDecimal
 
-abstract class ApplicationCase(
+sealed class ApplicationCase(
     receiptCode: Long,
 ) {
     val id: Long = 0

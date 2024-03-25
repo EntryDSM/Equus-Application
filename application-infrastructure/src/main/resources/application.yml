@@ -1,3 +1,12 @@
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 2000
+        read-timeout: 2000
+  circuitbreaker:
+    enabled: true
+
 spring:
   config:
     import: "optional:configserver:${CLOUD_CONFIG_IMPORT_URL}"

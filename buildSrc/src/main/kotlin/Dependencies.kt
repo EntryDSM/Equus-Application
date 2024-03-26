@@ -14,6 +14,9 @@ object Dependencies {
     // web
     const val SPRING_WEB = "org.springframework.boot:spring-boot-starter-web"
 
+    //resilience4j
+    const val RESILIENCE4J = "org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j"
+
     // validation
     const val SPRING_VALIDATION = "org.springframework.boot:spring-boot-starter-validation"
 

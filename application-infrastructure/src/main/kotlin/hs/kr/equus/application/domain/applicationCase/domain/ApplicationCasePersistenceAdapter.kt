@@ -10,7 +10,6 @@ import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCasePort
-import hs.kr.equus.application.global.exception.GlobalExceptions
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,8 +30,6 @@ class ApplicationCasePersistenceAdapter(
                 qualificationCaseJpaRepository.save(qualificationCaseMapper.toEntity(applicationCase))
                     .let(qualificationCaseMapper::toDomainNotNull)
             }
-
-            else -> throw GlobalExceptions.InternalServerErrorException()
         }
     }
 

@@ -2,7 +2,7 @@ package hs.kr.equus.application.domain.graduationInfo.model
 
 import java.time.LocalDate
 
-abstract class GraduationInfo(
+sealed class GraduationInfo(
     open val graduateDate: LocalDate?,
     @get:JvmName("getIsProspectiveGraduate")
     open val isProspectiveGraduate: Boolean,

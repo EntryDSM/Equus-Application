@@ -26,8 +26,9 @@ class GetGraduationInformationUseCase(
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduation =
-            queryGraduationInfoPort.queryGraduationInfoByApplication(application) as Graduation?
-                ?: throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
+            queryGraduationInfoPort.queryGraduationInfoByApplication(application)
+
+        if(graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
         val school =
             graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }

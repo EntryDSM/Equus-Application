@@ -21,8 +21,9 @@ class GetGraduationCaseUseCase(
         val application = queryApplicationPort.queryApplicationByUserId(userId)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val graduationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application) as GraduationCase?
-            ?: throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
+        val graduationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
+
+        if(graduationCase !is GraduationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
 
         return graduationCase.run {
             GetGraduationCaseResponse(

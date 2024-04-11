@@ -25,8 +25,9 @@ class UpdateGraduationCaseUseCase(
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val graduationCase =
-            queryApplicationCasePort.queryApplicationCaseByApplication(application) as GraduationCase?
-                ?: throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
+            queryApplicationCasePort.queryApplicationCaseByApplication(application)
+
+        if(graduationCase !is GraduationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
 
         request.run {
             commandApplicationCasePort.save(

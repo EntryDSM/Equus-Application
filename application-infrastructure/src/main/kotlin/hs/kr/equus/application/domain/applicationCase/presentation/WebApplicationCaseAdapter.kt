@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.applicationCase.presentation
 import hs.kr.equus.application.domain.applicationCase.presentation.dto.request.UpdateGraduationCaseWebRequest
 import hs.kr.equus.application.domain.applicationCase.presentation.dto.request.UpdateQualificationCaseWebRequest
 import hs.kr.equus.application.domain.applicationCase.usecase.GetGraduationCaseUseCase
+import hs.kr.equus.application.domain.applicationCase.usecase.GetQualificationCaseUseCase
 import hs.kr.equus.application.domain.applicationCase.usecase.UpdateGraduationCaseUseCase
 import hs.kr.equus.application.domain.applicationCase.usecase.UpdateQualificationCaseUseCase
 import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.UpdateGraduationCaseRequest
@@ -21,6 +22,7 @@ class WebApplicationCaseAdapter(
     private val updateGraduationCaseUseCase: UpdateGraduationCaseUseCase,
     private val updateQualificationCaseUseCase: UpdateQualificationCaseUseCase,
     private val getGraduationCaseUseCase: GetGraduationCaseUseCase,
+    private val getQualificationCaseUseCase: GetQualificationCaseUseCase,
 ) {
     @PatchMapping("/graduation")
     fun updateGraduationCase(
@@ -55,4 +57,7 @@ class WebApplicationCaseAdapter(
 
     @GetMapping("/graduation")
     fun getGraduationCase() = getGraduationCaseUseCase.execute()
+
+    @GetMapping("/qualification")
+    fun getQualificationCase() = getQualificationCaseUseCase.execute()
 }

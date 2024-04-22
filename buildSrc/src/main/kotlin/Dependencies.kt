@@ -86,4 +86,8 @@ object Dependencies {
 
     // Actuator
     const val ACTUATOR = "org.springframework.boot:spring-boot-starter-actuator"
+
+    //Pdf
+    const val PDF_ITEXT = "com.itextpdf:itext7-fonts::${DependencyVersions.PDF_ITEXT}"
+    const val PDF_HTML = "com.itextpdf:html2pdf:${DependencyVersions.PDF_HTML}"
 }

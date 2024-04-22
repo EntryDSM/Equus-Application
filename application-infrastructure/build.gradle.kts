@@ -79,6 +79,9 @@ dependencies {
     implementation(Dependencies.ACTUATOR)
     //resilience4j
     implementation(Dependencies.RESILIENCE4J)
+
+    implementation(Dependencies.PDF_ITEXT)
+    implementation(Dependencies.PDF_HTML)
 }
 
 kapt {

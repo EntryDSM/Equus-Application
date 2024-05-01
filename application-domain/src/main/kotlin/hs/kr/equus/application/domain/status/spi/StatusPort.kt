@@ -1,3 +1,5 @@
 package hs.kr.equus.application.domain.status.spi
 
-interface StatusPort
+import hs.kr.equus.application.domain.application.spi.ApplicationQueryStatusPort
+
+interface StatusPort : ApplicationQueryStatusPort

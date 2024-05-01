@@ -1,6 +1,7 @@
 package hs.kr.equus.application.global.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import hs.kr.equus.application.global.security.jwt.UserRole
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -26,6 +27,8 @@ class SecurityConfig(
         http.authorizeRequests()
             .requestMatchers(CorsUtils::isCorsRequest)
             .permitAll()
+            .antMatchers("/admin/**")
+            .hasRole(UserRole.ADMIN.name)
             .anyRequest()
             .permitAll()
 

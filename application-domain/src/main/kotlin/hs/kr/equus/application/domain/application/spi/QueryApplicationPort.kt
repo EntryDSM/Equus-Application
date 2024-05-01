@@ -14,4 +14,6 @@ interface QueryApplicationPort {
         applicationType: ApplicationType,
         isDaejeon: Boolean,
     ): GetApplicationCountResponse
+
+    fun queryApplicationByReceiptCode(receiptCode: Long): Application?
 }

@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.internal.Mimetypes
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
+import com.amazonaws.util.IOUtils
 import hs.kr.equus.application.domain.file.exception.FileExceptions
 import hs.kr.equus.application.domain.file.spi.CheckFilePort
 import hs.kr.equus.application.domain.file.spi.UploadFilePort
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
 import java.net.URLDecoder
+
 
 @Component
 class AwsS3Adapter(
@@ -27,6 +29,17 @@ class AwsS3Adapter(
             }
 
         return getResource(file.name)
+    }
+
+    fun getObject(fileName: String, path: String): ByteArray {
+        try {
+            val file = amazonS3Client.getObject(awsProperties.bucket, path + fileName)
+            return IOUtils.toByteArray(file.objectContent)
+        } catch (e: RuntimeException) {
+            throw Exception("")
+        } catch (e: IOException) {
+            throw Exception("")
+        }
     }
 
     private fun inputS3(file: File) {

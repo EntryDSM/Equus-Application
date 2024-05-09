@@ -7,8 +7,7 @@ import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
-import java.util.UUID
-import kotlin.math.E
+import java.util.*
 
 @Aggregate
 data class Application(
@@ -87,4 +86,7 @@ data class Application(
     fun isNationalMerit(): Boolean = ApplicationRemark.NATIONAL_MERIT == applicationRemark
 
     fun isProtectedChildren(): Boolean = ApplicationRemark.PROTECTED_CHILDREN == applicationRemark
+
+    fun isEducationalStatusEmpty(): Boolean = this.educationalStatus == null
+
 }

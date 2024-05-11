@@ -21,7 +21,6 @@ class ChangeGraduationInfoUseCase(
 
 
         queryGraduationInfoPort.queryGraduationInfoByApplication(application)?.let {
-            // todo mapper.toDomain하면 id값이 0으로 변경되는걸 고쳐야함
             commandGraduationInfoPort.delete(it)
         }
 

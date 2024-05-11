@@ -6,9 +6,13 @@ import java.math.RoundingMode
 
 @Aggregate
 data class QualificationCase(
+    override val id: Long = 0,
+    override val receiptCode: Long,
     val averageScore: BigDecimal = BigDecimal(0),
-    val receiptCode: Long,
-) : ApplicationCase(receiptCode) {
+) : ApplicationCase(
+    id = id,
+    receiptCode = receiptCode
+) {
     override fun calculateVolunteerScore(): BigDecimal {
         return (averageScore - BigDecimal(40))
             .divide(BigDecimal(4), 3, RoundingMode.HALF_UP)

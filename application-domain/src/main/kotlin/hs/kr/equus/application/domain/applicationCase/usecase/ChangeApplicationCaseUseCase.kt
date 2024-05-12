@@ -28,6 +28,6 @@ class ChangeApplicationCaseUseCase(
             application.educationalStatus
         )
 
-            commandApplicationCasePort.save(applicationCase)
+        commandApplicationCasePort.save(applicationCase)
     }
 }

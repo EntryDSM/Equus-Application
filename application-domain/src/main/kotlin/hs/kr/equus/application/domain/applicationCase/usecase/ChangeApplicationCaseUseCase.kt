@@ -19,13 +19,15 @@ class ChangeApplicationCaseUseCase(
         val application = queryApplicationCaseQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        if (!queryApplicationCasePort.isExistsApplicationCaseByApplication(application)) {
-            commandApplicationCasePort.save(
-                applicationCaseFactory.createApplicationCase(
-                    receiptCode,
-                    application.educationalStatus,
-                ),
-            )
+        queryApplicationCasePort.queryApplicationCaseByApplication(application)?.let {
+            commandApplicationCasePort.delete(it)
         }
+
+        val applicationCase = applicationCaseFactory.createApplicationCase(
+            receiptCode,
+            application.educationalStatus
+        )
+
+            commandApplicationCasePort.save(applicationCase)
     }
 }

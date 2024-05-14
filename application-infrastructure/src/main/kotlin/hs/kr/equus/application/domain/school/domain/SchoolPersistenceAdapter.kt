@@ -13,15 +13,16 @@ class SchoolPersistenceAdapter(
         return querySchoolBySchoolCode(schoolCode) != null
     }
 
-    override fun querySchoolBySchoolCode(schoolCode: String): School? {
+    override fun querySchoolBySchoolCode(school: String): School? {
         return schoolClient.getSchoolBySchoolCode(
-            code = schoolCode,
+            school = school,
         )?.let {
             School(
                 code = it.SD_SCHUL_CODE,
                 name = it.SCHUL_NM,
                 tel = it.ORG_TELNO,
                 type = it.SCHUL_KND_SC_NM,
+                address = it.ORG_RDNMA
             )
         }
     }

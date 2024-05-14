@@ -5,4 +5,5 @@ data class SchoolInfoElement(
     val SCHUL_NM: String,
     val ORG_TELNO: String,
     val SCHUL_KND_SC_NM: String,
+    val ORG_RDNMA: String
 )

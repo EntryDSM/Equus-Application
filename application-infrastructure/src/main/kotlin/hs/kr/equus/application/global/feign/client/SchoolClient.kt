@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam
 interface SchoolClient {
     @GetMapping
     fun getSchoolBySchoolCode(
-        @RequestParam("SCHUL_NM") code: String,
+        @RequestParam("SCHUL_NM") school: String,
         @RequestParam("KEY") key: String = "\${neis.key}",
         @RequestParam("Type") type: String = "json",
         @RequestParam("pIndex") pageIndex: Int = 1,

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam
 
 @FeignClient(name = "SchoolClient", url = "\${url.school}")
 interface SchoolClient {
-    @GetMapping
+    @GetMapping(produces = ["application/json"])
     fun getSchoolBySchoolCode(
         @RequestParam("SCHUL_NM") school: String,
         @RequestParam("KEY") key: String = "\${neis.key}",

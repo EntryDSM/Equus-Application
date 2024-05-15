@@ -1,16 +1,17 @@
-package hs.kr.equus.application.domain.school.usecase
+package hs.kr.equus.application.domain.school
 
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQuerySchoolPort
 import hs.kr.equus.application.domain.school.usecase.dto.response.QuerySchoolResponse
 import hs.kr.equus.application.domain.school.usecase.dto.response.SchoolResponse
-import hs.kr.equus.application.global.annotation.UseCase
+import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 
-@UseCase
+@ReadOnlyUseCase
 class QuerySchoolUseCase(
     private val graduationSchoolPort: GraduationInfoQuerySchoolPort
 ) {
     fun querySchool(name: String): QuerySchoolResponse {
-        val school = graduationSchoolPort.querySchoolBySchoolCode(name) ?: throw Exception()
+        val school = graduationSchoolPort.querySchoolBySchoolCode(name)
+            ?: throw Exception()
         return QuerySchoolResponse(
             content = listOf(
                 SchoolResponse(

@@ -1,8 +1,8 @@
 package hs.kr.equus.application.domain.school
 
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQuerySchoolPort
-import hs.kr.equus.application.domain.school.usecase.dto.response.QuerySchoolResponse
-import hs.kr.equus.application.domain.school.usecase.dto.response.SchoolResponse
+import hs.kr.equus.application.domain.school.presentation.dto.response.QuerySchoolResponse
+import hs.kr.equus.application.domain.school.presentation.dto.response.SchoolResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 
 @ReadOnlyUseCase

@@ -6,6 +6,8 @@ import java.math.RoundingMode
 
 @Aggregate
 data class GraduationCase(
+    override val id: Long = 0,
+    override val receiptCode: Long,
     val volunteerTime: Int = 0,
     val absenceDayCount: Int = 0,
     val lectureAbsenceCount: Int = 0,
@@ -20,8 +22,10 @@ data class GraduationCase(
     val techAndHomeGrade: String = "XXXX",
     @get:JvmName("getIsProspectiveGraduate")
     val isProspectiveGraduate: Boolean,
-    val receiptCode: Long,
-) : ApplicationCase(receiptCode) {
+) : ApplicationCase(
+    id = id,
+    receiptCode = receiptCode
+) {
     operator fun BigDecimal.div(other: BigDecimal): BigDecimal = this.divide(other, 5, RoundingMode.HALF_EVEN)
 
     companion object {

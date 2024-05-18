@@ -3,10 +3,9 @@ package hs.kr.equus.application.domain.applicationCase.model
 import java.math.BigDecimal
 
 sealed class ApplicationCase(
-    receiptCode: Long,
+    open val receiptCode: Long,
+    open val id: Long,
 ) {
-    val id: Long = 0
-
     companion object {
         const val MAX_ATTENDANCE_SCORE = 15
         val COMMON_GRADE_RATE: BigDecimal = BigDecimal.valueOf(1.75)

@@ -5,20 +5,13 @@ import hs.kr.equus.application.domain.application.presentation.dto.request.Updat
 import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateInformationWebRequest
 import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateIntroduceWebRequest
 import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateStudyPlanWebRequest
-import hs.kr.equus.application.domain.application.usecase.CreateApplicationUseCase
-import hs.kr.equus.application.domain.application.usecase.GetInformationUseCase
-import hs.kr.equus.application.domain.application.usecase.GetIntroduceUseCase
-import hs.kr.equus.application.domain.application.usecase.GetStudyPlanUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateApplicationTypeUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateEducationalStatusUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateInformationUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateIntroduceUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateStudyPlanUseCase
+import hs.kr.equus.application.domain.application.usecase.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateApplicationTypeRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateEducationalStatusRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInformationRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateIntroduceRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateStudyPlanRequest
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationTypeResponse
 
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetIntroduceResponse
@@ -44,6 +37,7 @@ class WebApplicationAdapter(
     private val updateInformationUseCase: UpdateInformationUseCase,
     private val updateIntroduceUseCase: UpdateIntroduceUseCase,
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
+    private val getApplicationTypeUseCase: GetApplicationTypeUseCase
 ) {
     @PostMapping
     fun createApplication() {
@@ -80,6 +74,9 @@ class WebApplicationAdapter(
             },
         )
     }
+
+    @GetMapping("/type")
+    fun getApplicationType(): GetApplicationTypeResponse = getApplicationTypeUseCase.execute()
 
     @PatchMapping("/graduation/type")
     fun updateEducationalStatus(

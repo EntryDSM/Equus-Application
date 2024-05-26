@@ -18,33 +18,33 @@ class AwsS3Adapter(
     private val awsProperties: AwsS3Properties,
     private val amazonS3Client: AmazonS3Client,
 ) : UploadFilePort, CheckFilePort {
-    override fun upload(file: File): String {
-        runCatching { inputS3(file) }
+    override fun upload(file: File, pathList: String): String {
+        val fullPath = fullPath(pathList, file.name)
+        runCatching { inputS3(file, fullPath) }
             .also { file.delete() }
             .onFailure { e ->
                 e.printStackTrace()
                 throw e
             }
 
-        return getResource(file.name)
+        return getResource(fullPath)
     }
 
-    private fun inputS3(file: File) {
+    private fun inputS3(file: File, fullPath: String) {
         try {
             val inputStream = file.inputStream()
-            val objectMetadata =
-                ObjectMetadata().apply {
-                    contentLength = file.length()
-                    contentType = Mimetypes.getInstance().getMimetype(file)
-                }
+            val objectMetadata = ObjectMetadata().apply {
+                contentLength = file.length()
+                contentType = Mimetypes.getInstance().getMimetype(file)
+            }
 
             amazonS3Client.putObject(
                 PutObjectRequest(
                     awsProperties.bucket,
-                    file.name,
+                    fullPath,
                     inputStream,
-                    objectMetadata,
-                ).withCannedAcl(CannedAccessControlList.PublicRead),
+                    objectMetadata
+                ).withCannedAcl(CannedAccessControlList.PublicRead)
             )
         } catch (e: IOException) {
             e.printStackTrace()
@@ -52,16 +52,16 @@ class AwsS3Adapter(
         }
     }
 
-    private fun getResource(fileName: String): String {
-        return amazonS3Client.getResourceUrl(awsProperties.bucket, fileName)
+    private fun getResource(fullPath: String): String {
+        return amazonS3Client.getResourceUrl(awsProperties.bucket, fullPath)
     }
 
     override fun existsPath(path: String): Boolean {
-        val key =
-            path.substringAfterLast('/', "").run {
-                URLDecoder.decode(this, Charsets.UTF_8)
-            }
-
+        val key = URLDecoder.decode(path.substringAfterLast('/', ""), Charsets.UTF_8)
         return amazonS3Client.doesObjectExist(awsProperties.bucket, key)
+    }
+
+    private fun fullPath(pathList: String, fileName: String): String {
+        return if (pathList.isEmpty()) fileName else "$pathList/$fileName"
     }
 }

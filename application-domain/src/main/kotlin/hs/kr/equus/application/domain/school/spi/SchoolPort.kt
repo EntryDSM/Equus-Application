@@ -5,4 +5,5 @@ import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryScho
 
 interface SchoolPort :
     GraduationInfoQuerySchoolPort,
+    QuerySchoolPort,
     ApplicationQuerySchoolPort

@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.feign
+package hs.kr.equus.application.global.feign.config
 
 import feign.RequestInterceptor
 import org.springframework.context.annotation.Bean

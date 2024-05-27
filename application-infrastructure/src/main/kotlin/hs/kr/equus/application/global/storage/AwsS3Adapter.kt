@@ -18,8 +18,8 @@ class AwsS3Adapter(
     private val awsProperties: AwsS3Properties,
     private val amazonS3Client: AmazonS3Client,
 ) : UploadFilePort, CheckFilePort {
-    override fun upload(file: File, pathList: String): String {
-        val fullPath = fullPath(pathList, file.name)
+    override fun upload(file: File, path: String): String {
+        val fullPath = fullPath(path, file.name)
         runCatching { inputS3(file, fullPath) }
             .also { file.delete() }
             .onFailure { e ->
@@ -61,7 +61,7 @@ class AwsS3Adapter(
         return amazonS3Client.doesObjectExist(awsProperties.bucket, key)
     }
 
-    private fun fullPath(pathList: String, fileName: String): String {
-        return if (pathList.isEmpty()) fileName else "$pathList/$fileName"
+    private fun fullPath(path: String, fileName: String): String {
+        return if (path.isEmpty()) fileName else "$path/$fileName"
     }
 }

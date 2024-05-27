@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import hs.kr.equus.application.domain.file.exception.FileExceptions
 import hs.kr.equus.application.domain.file.spi.CheckFilePort
+import hs.kr.equus.application.domain.file.spi.DeleteFilePort
 import hs.kr.equus.application.domain.file.spi.UploadFilePort
 import org.springframework.stereotype.Component
 import java.io.File
@@ -17,7 +18,7 @@ import java.net.URLDecoder
 class AwsS3Adapter(
     private val awsProperties: AwsS3Properties,
     private val amazonS3Client: AmazonS3Client,
-) : UploadFilePort, CheckFilePort {
+) : UploadFilePort, CheckFilePort, DeleteFilePort {
     override fun upload(file: File, path: String): String {
         val fullPath = fullPath(path, file.name)
         runCatching { inputS3(file, fullPath) }
@@ -50,6 +51,10 @@ class AwsS3Adapter(
             e.printStackTrace()
             throw FileExceptions.IOInterrupted()
         }
+    }
+
+    override fun delete(path: String) {
+        amazonS3Client.deleteObject(awsProperties.bucket, path)
     }
 
     private fun getResource(fullPath: String): String {

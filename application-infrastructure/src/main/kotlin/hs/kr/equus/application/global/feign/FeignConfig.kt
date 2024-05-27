@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.feign.config
+package hs.kr.equus.application.global.feign
 
 import feign.Logger
 import feign.codec.ErrorDecoder

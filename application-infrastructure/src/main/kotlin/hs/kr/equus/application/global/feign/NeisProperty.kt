@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.feign.config
+package hs.kr.equus.application.global.feign
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

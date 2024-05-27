@@ -1,7 +1,6 @@
 package hs.kr.equus.application.global.feign.client
 
-import hs.kr.equus.application.global.feign.config.FeignConfig
-import org.springframework.beans.factory.annotation.Value
+import hs.kr.equus.application.global.feign.FeignConfig
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam

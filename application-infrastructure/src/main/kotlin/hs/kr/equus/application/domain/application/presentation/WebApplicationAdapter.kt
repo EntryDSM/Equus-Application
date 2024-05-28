@@ -41,7 +41,7 @@ class WebApplicationAdapter(
     private val updateIntroduceUseCase: UpdateIntroduceUseCase,
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
-    private val getApplicationTypeUseCase: GetApplicationTypeUseCase
+    private val getApplicationTypeUseCase: GetApplicationTypeUseCase,
     private val submitApplicationFinalUseCase: SubmitApplicationFinalUseCase
 ) {
     @PostMapping

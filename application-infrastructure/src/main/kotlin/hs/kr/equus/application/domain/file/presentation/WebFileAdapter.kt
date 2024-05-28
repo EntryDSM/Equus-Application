@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.file.presentation.dto.response.UploadImage
 import hs.kr.equus.application.domain.file.usecase.UploadImageUseCase
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
@@ -14,7 +15,7 @@ class WebFileAdapter(
     private val uploadImageUseCase: UploadImageUseCase,
 ) {
     @PostMapping
-    fun uploadSingleImage(file: MultipartFile): UploadImageWebResponse {
+    fun uploadSingleImage(@RequestPart(name = "file") file: MultipartFile): UploadImageWebResponse {
         return UploadImageWebResponse(
             uploadImageUseCase.execute(
                 file.let(ImageFileConverter::transferTo),

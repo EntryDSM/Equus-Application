@@ -37,7 +37,8 @@ class WebApplicationAdapter(
     private val updateInformationUseCase: UpdateInformationUseCase,
     private val updateIntroduceUseCase: UpdateIntroduceUseCase,
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
-    private val getApplicationTypeUseCase: GetApplicationTypeUseCase
+    private val getApplicationTypeUseCase: GetApplicationTypeUseCase,
+    private val submitApplicationFinalUseCase: SubmitApplicationFinalUseCase
 ) {
     @PostMapping
     fun createApplication() {
@@ -129,4 +130,7 @@ class WebApplicationAdapter(
             UpdateStudyPlanRequest(request.content),
         )
     }
+
+    @PostMapping("/final-submit")
+    fun submitApplicationFinal() = submitApplicationFinalUseCase.execute()
 }

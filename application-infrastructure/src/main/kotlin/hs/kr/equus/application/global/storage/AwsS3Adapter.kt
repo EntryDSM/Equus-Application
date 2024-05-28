@@ -1,23 +1,32 @@
 package hs.kr.equus.application.global.storage
 
+import com.amazonaws.HttpMethod
 import com.amazonaws.services.s3.AmazonS3Client
 import com.amazonaws.services.s3.internal.Mimetypes
 import com.amazonaws.services.s3.model.CannedAccessControlList
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import hs.kr.equus.application.domain.file.exception.FileExceptions
 import hs.kr.equus.application.domain.file.spi.CheckFilePort
+import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
 import hs.kr.equus.application.domain.file.spi.UploadFilePort
 import org.springframework.stereotype.Component
 import java.io.File
 import java.io.IOException
 import java.net.URLDecoder
+import java.util.*
 
 @Component
 class AwsS3Adapter(
     private val awsProperties: AwsS3Properties,
     private val amazonS3Client: AmazonS3Client,
-) : UploadFilePort, CheckFilePort {
+) : UploadFilePort, CheckFilePort, GenerateFileUrlPort {
+    companion object {
+        const val EXP_TIME = 1000 * 60 * 2
+        const val BUCKET_NAME = "dsm-s3-bucket-entry"
+    }
+
     override fun upload(file: File): String {
         runCatching { inputS3(file) }
             .also { file.delete() }
@@ -63,5 +72,18 @@ class AwsS3Adapter(
             }
 
         return amazonS3Client.doesObjectExist(awsProperties.bucket, key)
+    }
+
+    override fun generateFileUrl(filePath: String): String {
+        val expiration = Date().apply {
+            time += EXP_TIME
+        }
+
+        return amazonS3Client.generatePresignedUrl(
+            GeneratePresignedUrlRequest(
+                BUCKET_NAME,
+                filePath
+            ).withMethod(HttpMethod.GET).withExpiration(expiration)
+        ).toString()
     }
 }

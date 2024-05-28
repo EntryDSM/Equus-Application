@@ -4,4 +4,6 @@ interface ApplicationEventPort {
     fun create(receiptCode: Long)
 
     fun updateEducationalStatus(receiptCode: Long)
+
+    fun submitApplicationFinal(receiptCode: Long)
 }

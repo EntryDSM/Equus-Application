@@ -13,6 +13,7 @@ class StatusPersistenceAdapter(
         return statusClient.getStatusByReceiptCode(receiptCode)?.let {
             Status(
                 id = it.id,
+                isSubmitted = it.isSubmitted,
                 isPrintsArrived = it.isPrintsArrived,
                 examCode = it.examCode,
                 isFirstRoundPass = it.isFirstRoundPass,

@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 data class Status(
     val id: Long? = 0,
     val isPrintsArrived: Boolean = false,
-    val submittedAt: LocalDateTime? = null,
+    val isSubmitted: Boolean = false,
     val examCode: String? = null,
     val isFirstRoundPass: Boolean = false,
     val isSecondRoundPass: Boolean = false,

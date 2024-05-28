@@ -47,7 +47,7 @@ class GetApplicationUseCase(
         val statusResponse = status.run {
             ApplicationStatusResponse(
                 isPrintedArrived = isPrintsArrived,
-                isSubmit = submittedAt != null
+                isSubmit = isSubmitted
             )
         }
         return statusResponse
@@ -77,14 +77,14 @@ class GetApplicationUseCase(
         application: Application,
         status: Status
     ): ApplicationMoreInformationResponse? {
-        if(status.submittedAt == null) {
+        if(!status.isSubmitted) {
             return null
         }
         return ApplicationMoreInformationResponse(
             photoUrl = generateFileUrlPort.generateFileUrl(application.photoPath!!),
             birthDay = application.birthDate!!,
             educationalStatus = application.educationalStatus!!,
-            applicationRemark = application.applicationRemark!!,
+            applicationRemark = application.applicationRemark,
             applicationType = application.applicationType!!,
             address = application.streetAddress!!,
             detailAddress = application.detailAddress!!,
@@ -93,7 +93,7 @@ class GetApplicationUseCase(
     }
 
     private fun getEvaluationResponse(application: Application, status: Status): ApplicationEvaluationResponse? {
-        if(status.submittedAt == null) {
+        if(!status.isSubmitted) {
             return null
         }
 

@@ -29,14 +29,14 @@ class SubmitApplicationFinalUseCase(
 
        val score = applicationQueryScorePort.queryScoreByReceiptCode(application.receiptCode)
 
-       if(graduationInfo.hasEmptyInfo() || score == null) {
+       if(graduationInfo.hasEmptyInfo() || score == null || application.hasEmptyInfo()) {
             throw ApplicationExceptions.ApplicationProcessNotComplete()
        }
 
        val status = applicationQueryStatusPort.queryStatusByReceiptCode(application.receiptCode)
            ?: throw StatusExceptions.StatusNotFoundException()
 
-       if(status.submittedAt != null) {
+       if(status.isSubmitted) {
             throw StatusExceptions.AlreadySubmittedException()
        }
 

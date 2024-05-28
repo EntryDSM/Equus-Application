@@ -60,4 +60,7 @@ data class Application(
     fun isSocial() = applicationType == ApplicationType.SOCIAL
 
     fun isCommon() = applicationType == ApplicationType.COMMON
+
+    fun hasEmptyInfo(): Boolean =
+        studyPlan == null || selfIntroduce == null || photoPath == null
 }

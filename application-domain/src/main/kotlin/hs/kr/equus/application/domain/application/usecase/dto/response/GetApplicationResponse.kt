@@ -31,7 +31,7 @@ data class ApplicationMoreInformationResponse(
     val birthDay: LocalDate,
     val educationalStatus: EducationalStatus,
     val applicationType: ApplicationType,
-    val applicationRemark: ApplicationRemark,
+    val applicationRemark: ApplicationRemark?,
     val address: String,
     val detailAddress: String,
     val headCount: Any?

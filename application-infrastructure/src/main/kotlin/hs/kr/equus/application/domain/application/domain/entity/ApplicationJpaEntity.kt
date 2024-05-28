@@ -46,7 +46,7 @@ class ApplicationJpaEntity(
     val applicationRemark: ApplicationRemark?,
     val studyPlan: String?,
     val selfIntroduce: String?,
-    @field:NotNull
+//    @field:NotNull
     @Column(unique = true, columnDefinition = "BINARY(16)")
     val userId: UUID,
 )

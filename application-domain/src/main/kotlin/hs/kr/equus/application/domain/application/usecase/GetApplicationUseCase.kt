@@ -7,7 +7,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.*
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
-import hs.kr.equus.application.domain.graduationInfo.exception.GraduationExceptions
+import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
@@ -16,7 +16,7 @@ import hs.kr.equus.application.global.annotation.UseCase
 
 @UseCase
 class GetApplicationUseCase(
-    private val applicationQueryApplicationPort: ApplicationQueryApplicationPort,
+    private val queryApplicationPort: QueryApplicationPort,
     private val applicationQueryUserPort: ApplicationQueryUserPort,
     private val applicationQuerySchoolPort: ApplicationQuerySchoolPort,
     private val applicationQueryGraduationInfoPort: ApplicationQueryGraduationInfoPort,
@@ -25,7 +25,7 @@ class GetApplicationUseCase(
     private val generateFileUrlPort: GenerateFileUrlPort
 ) {
     fun execute(receiptCode: Long): GetApplicationResponse {
-        val application = applicationQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
+        val application = queryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
         val status = applicationQueryStatusPort.queryStatusByReceiptCode(receiptCode)
             ?: throw StatusExceptions.StatusNotFoundException()
@@ -55,7 +55,7 @@ class GetApplicationUseCase(
 
     private fun getCommonInformationResponse(application: Application): ApplicationCommonInformationResponse {
         val graduationInfo = applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)
-            ?: throw GraduationExceptions.GraduationNotFoundException()
+            ?: throw GraduationInfoExceptions.GraduationNotFoundException()
 
         val graduation = graduationInfo as Graduation
 

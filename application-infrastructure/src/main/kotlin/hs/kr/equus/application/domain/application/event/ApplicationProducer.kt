@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component
 class ApplicationProducer(
     private val createApplicationTemplate: KafkaTemplate<String, Any>,
     private val updateEducationalStatusTemplate: KafkaTemplate<String, Any>,
+    private val submitApplicationFinalTemplate: KafkaTemplate<String, Any>
 ) : ApplicationEventPort {
     override fun create(receiptCode: Long) {
         createApplicationTemplate.send(
@@ -21,6 +22,13 @@ class ApplicationProducer(
         updateEducationalStatusTemplate.send(
             KafkaTopics.UPDATE_EDUCATIONAL_STATUS,
             receiptCode,
+        )
+    }
+
+    override fun submitApplicationFinal(receiptCode: Long) {
+        submitApplicationFinalTemplate.send(
+            KafkaTopics.SUBMIT_APPLICATION_FINAL,
+            receiptCode
         )
     }
 }

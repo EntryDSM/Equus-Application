@@ -9,5 +9,4 @@ interface ApplicationPort :
     QueryApplicationPort,
     GraduationInfoQueryApplicationPort,
     ScoreQueryApplicationPort,
-    ApplicationCaseQueryApplicationPort,
-    ApplicationQueryApplicationPort
+    ApplicationCaseQueryApplicationPort

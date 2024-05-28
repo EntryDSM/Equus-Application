@@ -1,5 +1,6 @@
 package hs.kr.equus.application.global.feign
 
+import feign.Logger
 import feign.codec.ErrorDecoder
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.cloud.openfeign.EnableFeignClients
@@ -13,5 +14,10 @@ class FeignConfig {
     @ConditionalOnMissingBean(value = [ErrorDecoder::class])
     fun commonFeignErrorDecoder(): FeignClientErrorDecoder? {
         return FeignClientErrorDecoder()
+    }
+
+    @Bean
+    fun feignLoggerLevel(): Logger.Level? {
+        return Logger.Level.FULL
     }
 }

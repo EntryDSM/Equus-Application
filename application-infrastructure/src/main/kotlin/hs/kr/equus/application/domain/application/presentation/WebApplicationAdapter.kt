@@ -12,7 +12,6 @@ import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInfo
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateIntroduceRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateStudyPlanRequest
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationTypeResponse
-
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetIntroduceResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStudyPlanResponse
@@ -43,6 +42,7 @@ class WebApplicationAdapter(
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val getApplicationTypeUseCase: GetApplicationTypeUseCase
+    private val submitApplicationFinalUseCase: SubmitApplicationFinalUseCase
 ) {
     @PostMapping
     fun createApplication() {
@@ -143,4 +143,7 @@ class WebApplicationAdapter(
             UpdateStudyPlanRequest(request.content),
         )
     }
+
+    @PostMapping("/final-submit")
+    fun submitApplicationFinal() = submitApplicationFinalUseCase.execute()
 }

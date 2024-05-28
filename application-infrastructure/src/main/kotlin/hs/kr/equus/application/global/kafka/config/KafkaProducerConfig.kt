@@ -21,12 +21,18 @@ class KafkaProducerConfig(
     }
 
     private fun producerFactory(): ProducerFactory<String, Any> {
-        val configs: MutableMap<String, Any> = HashMap()
-        configs[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = kafkaProperty.serverAddress
-        configs[ProducerConfig.TRANSACTIONAL_ID_CONFIG] = UUID.randomUUID().toString()
-        configs[ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG] = "true"
-        configs[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = StringSerializer::class.java
-        configs[ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG] = JsonSerializer::class.java
-        return DefaultKafkaProducerFactory(configs)
+        return DefaultKafkaProducerFactory(producerConfig())
+    }
+
+    private fun producerConfig(): Map<String, Any> {
+        return mapOf(
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaProperty.serverAddress,
+            ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
+            ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java,
+            "security.protocol" to "SASL_SSL",
+            "sasl.mechanism" to "PLAIN",
+            "sasl.jaas.config" to
+                    "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"${kafkaProperty.confluentApiKey}\" password=\"${kafkaProperty.confluentApiSecret}\";"
+        )
     }
 }

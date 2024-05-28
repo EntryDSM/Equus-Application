@@ -30,7 +30,7 @@ class ScoreConsumer(
         containerFactory = "kafkaListenerContainerFactory",
     )
     fun updateScore(message: String) {
-        val updateScoreRequest = mapper.readValue(message, UpdateScoreRequest::class.java)
-        updateScoreUseCase.execute(updateScoreRequest.receiptCode)
+        val receiptCode = mapper.readValue(message, Long::class.java)
+        updateScoreUseCase.execute(receiptCode)
     }
 }

@@ -35,12 +35,14 @@ data class UpdateInformationWebRequest(
         message = "TOO LONG ADDRESS",
     )
     val streetAddress: String,
+
+    @Length(min = 5, max = 5, message = "INVALID POST_CODE")
+    val postalCode: String,
+
     @NotEmpty(message = "detail_address는 Null 또는 공백을 허용하지 않습니다.") @Length(
         max = 100,
         message = "TOO LONG DETAIL_ADDRESS",
     )
-    val postalCode: String,
-    @Length(min = 5, max = 5, message = "INVALID POST_CODE")
     val detailAddress: String,
 ) {
     companion object {

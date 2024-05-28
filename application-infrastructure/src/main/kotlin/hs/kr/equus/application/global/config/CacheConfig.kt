@@ -13,16 +13,16 @@ import java.time.Duration
 @Configuration
 @EnableCaching
 class CacheConfig {
-    
+
     @Bean
     fun redisCacheConfiguration(): RedisCacheConfiguration {
         return RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofSeconds(60))
-            .disableCachingNullValues()
-            .serializeKeysWith(
+            .entryTtl(Duration.ofSeconds(60)) //TTL 60초 후 제거됨
+            .disableCachingNullValues() // NULL 은 저장 안 됨
+            .serializeKeysWith( // cache key 문자열로 직렬화
                 RedisSerializationContext.SerializationPair.fromSerializer<String>(StringRedisSerializer())
             )
-            .serializeValuesWith(
+            .serializeValuesWith( // cache value 를 json 으로 직렬화
                 RedisSerializationContext.SerializationPair.fromSerializer<Any>(GenericJackson2JsonRedisSerializer())
             )
     }

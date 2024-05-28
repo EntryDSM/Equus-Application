@@ -29,8 +29,10 @@ class SecurityConfig(
             .permitAll()
             .antMatchers("/admin/**")
             .hasRole(UserRole.ADMIN.name)
-            .anyRequest()
+            .antMatchers("/schools")
             .permitAll()
+            .anyRequest()
+            .authenticated()
 
         http
             .apply(FilterConfig(objectMapper))

@@ -13,5 +13,5 @@ data class Qualification(
     receiptCode = receiptCode,
     id = id,
 ) {
-    override fun hasEmptyInfo(): Boolean = false
+    override fun hasEmptyInfo(): Boolean = graduateDate == null
 }

@@ -16,6 +16,11 @@ data class Graduation(
     receiptCode = receiptCode,
     id = id,
 ) {
-    override fun hasEmptyInfo(): Boolean =
-        studentNumber == null || schoolCode == null
+    override fun hasEmptyInfo(): Boolean {
+        return listOf(
+            graduateDate,
+            schoolCode,
+            studentNumber
+        ).any { it == null }
+    }
 }

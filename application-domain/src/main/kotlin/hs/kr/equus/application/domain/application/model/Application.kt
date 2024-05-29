@@ -61,6 +61,20 @@ data class Application(
 
     fun isCommon() = applicationType == ApplicationType.COMMON
 
-    fun hasEmptyInfo(): Boolean =
-        studyPlan == null || selfIntroduce == null || photoPath == null
+    fun hasEmptyInfo(): Boolean {
+        return listOf(
+            sex,
+            birthDate,
+            applicantTel,
+            parentTel,
+            detailAddress,
+            streetAddress,
+            postalCode,
+            photoPath,
+            applicationRemark,
+            applicationType,
+            selfIntroduce,
+            studyPlan
+        ).any { it == null }
+    }
 }

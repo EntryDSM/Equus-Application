@@ -79,6 +79,8 @@ dependencies {
     implementation(Dependencies.ACTUATOR)
     //resilience4j
     implementation(Dependencies.RESILIENCE4J)
+
+    implementation(Dependencies.CACHE)
 }
 
 kapt {

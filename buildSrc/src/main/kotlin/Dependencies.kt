@@ -86,4 +86,7 @@ object Dependencies {
 
     // Actuator
     const val ACTUATOR = "org.springframework.boot:spring-boot-starter-actuator"
+
+    // Cache
+    const val CACHE = "org.springframework.boot:spring-boot-starter-cache"
 }

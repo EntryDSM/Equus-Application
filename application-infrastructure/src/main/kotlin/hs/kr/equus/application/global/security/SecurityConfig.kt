@@ -27,6 +27,8 @@ class SecurityConfig(
         http.authorizeRequests()
             .requestMatchers(CorsUtils::isCorsRequest)
             .permitAll()
+            .antMatchers("/")
+            .permitAll()
             .antMatchers("/admin/**")
             .hasRole(UserRole.ADMIN.name)
             .antMatchers("/schools")

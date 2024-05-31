@@ -10,7 +10,6 @@ import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 import hs.kr.equus.application.domain.graduationInfo.model.Qualification
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoPort
-import hs.kr.equus.application.global.exception.GlobalExceptions
 import org.springframework.stereotype.Component
 
 @Component

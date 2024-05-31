@@ -59,7 +59,7 @@ data class Application(
 
     fun isRecommendationsRequired(): Boolean = !isEducationalStatusEmpty() && !isCommonApplicationType() && !isProspectiveGraduate();
 
-    private fun isCommonApplicationType(): Boolean = applicationType == ApplicationType.COMMON
+    fun isCommonApplicationType(): Boolean = applicationType == ApplicationType.COMMON
 
     fun isFemale(): Boolean = sex == Sex.FEMALE
 

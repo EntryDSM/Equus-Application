@@ -1,14 +1,17 @@
 package hs.kr.equus.application.global.pdf
-import hs.kr.equus.application.domain.application.exception.ApplicationExceptions.ApplicationNotFoundException
+
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus.*
+import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
-import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
+import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQuerySchoolPort
 import hs.kr.equus.application.domain.graduationInfo.spi.QueryGraduationInfoPort
+import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.domain.score.model.Score
 import hs.kr.equus.application.global.storage.AwsS3Adapter
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 import java.util.*
@@ -17,19 +20,77 @@ import java.util.*
 @Component
 class PdfDataConverter(
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
-    private val awsS3Adapter: AwsS3Adapter
+    private val awsS3Adapter: AwsS3Adapter,
+    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort
 ) {
+    fun applicationToInfo(application: Application, score: Score?): PdfData {
+        val values: MutableMap<String, Any> = HashMap()
+        setReceiptCode(application, values)
+        setEntranceYear(values)
+        setPersonalInfo(application, values)
+        setGenderInfo(application, values)
+        setSchoolInfo(application, values)
+        setPhoneNumber(application, values)
+        setGraduationClassification(application, values)
+        setUserType(application, values)
+        setGradeScore(application, score!!, values)
+        setLocalDate(values)
+        setIntroduction(application, values)
+        setParentInfo(application, values)
+
+        if (application.isRecommendationsRequired()) {
+            setRecommendations(application, values)
+        }
+
+        if ( application.photoPath.isNullOrBlank()
+        ) {
+            setBase64Image(application, values)
+        }
+
+        return PdfData(values)
+    }
+
+    private fun setReceiptCode(application: Application, values: MutableMap<String, Any>) {
+        values["receiptCode"] = application.receiptCode
+    }
+
+    private fun setEntranceYear(values: MutableMap<String, Any>) {
+        val entranceYear: Int = LocalDate.now().plusYears(1).year
+        values["entranceYear"] = entranceYear.toString()
+    }
+
+    private fun setPersonalInfo(application: Application, values: MutableMap<String, Any>) {
+        val name = application.applicantName
+        values["userName"] = setBlankIfNull(name)
+        values["isMale"] = toBallotBox(application.isMale())
+        values["isFemale"] = toBallotBox(application.isFemale())
+        values["address"] = setBlankIfNull(application.streetAddress)
+        values["detailAddress"] = setBlankIfNull(application.detailAddress)
+    }
+
+    private fun setGenderInfo(application: Application, values: MutableMap<String, Any>) {
+        var gender: String? = null
+        if (application.isFemale()){ gender = "여" }
+        else if (application.isMale()){ gender = "남" }
+        values["gender"] = setBlankIfNull(gender)
+    }
 
     private fun setSchoolInfo(application: Application, values: MutableMap<String, Any>) {
         if (!application.isEducationalStatusEmpty() && !application.isQualificationExam()) {
             val graduation =
                 queryGraduationInfoPort.queryGraduationInfoByApplication(application)
                     ?: throw Exception("")
+            if (graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-            values["schoolCode"] = setBlankIfNull(graduation)
-            values["schoolClass"] = setBlankIfNull(application.getSchoolClass())
-            values["schoolTel"] = toFormattedPhoneNumber(application.getSchoolTel())
-            values["schoolName"] = setBlankIfNull(application.getSchoolName())
+
+
+            val school = graduationInfoQuerySchoolPort.querySchoolBySchoolCode(graduation.schoolCode!!)
+                ?: throw SchoolExceptions.SchoolNotFoundException()
+
+            values["schoolCode"] = setBlankIfNull(school.code)
+            values["schoolClass"] = setBlankIfNull(graduation.studentNumber!!.classNumber)
+            values["schoolTel"] = toFormattedPhoneNumber(school.tel)
+            values["schoolName"] = setBlankIfNull(school.name)
         } else {
             values.putAll(emptySchoolInfo())
         }

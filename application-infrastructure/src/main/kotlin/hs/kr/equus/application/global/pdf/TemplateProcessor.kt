@@ -8,7 +8,7 @@ import org.thymeleaf.context.Context
 class TemplateProcessor(
     private val templateEngine: TemplateEngine
 ) {
-    fun convertTemplateIntoHtmlString(template: String?, data: Map<String?, Any?>?): String {
+    fun convertTemplateIntoHtmlString(template: String?, data: MutableMap<String, Any>?): String {
         val context: Context = Context()
         context.setVariables(data)
         return templateEngine.process(template, context)

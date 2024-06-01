@@ -3,6 +3,7 @@ package hs.kr.equus.application.global.pdf
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus.*
 import hs.kr.equus.application.domain.file.spi.GetObjectPort
+import hs.kr.equus.application.domain.file.usecase.`object`.PathList
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQuerySchoolPort
@@ -204,7 +205,7 @@ class PdfDataConverter(
     }
 
     private fun setBase64Image(application: Application, values: MutableMap<String, Any>) {
-        val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, "entry_photo/")
+        val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
         val base64EncodedImage = String(Base64.getEncoder().encode(imageBytes), StandardCharsets.UTF_8)
         values["base64Image"] = base64EncodedImage
     }

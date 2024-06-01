@@ -69,6 +69,23 @@ data class Application(
 
     fun isCommon() = applicationType == ApplicationType.COMMON
 
+    fun hasEmptyInfo(): Boolean {
+        return listOf(
+            sex,
+            birthDate,
+            applicantTel,
+            parentTel,
+            detailAddress,
+            streetAddress,
+            postalCode,
+            photoPath,
+            applicationRemark,
+            applicationType,
+            selfIntroduce,
+            studyPlan
+        ).any { it == null }
+    }
+
     fun isMeister() = applicationType == ApplicationType.MEISTER
 
     fun isQualificationExam(): Boolean = EducationalStatus.QUALIFICATION_EXAM == educationalStatus

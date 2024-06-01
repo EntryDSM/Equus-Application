@@ -28,6 +28,7 @@ class ApplicationJpaEntity(
     @get:JvmName("getIsOutOfHeadcount")
     var isOutOfHeadcount: Boolean?,
     val birthDate: LocalDate?,
+    @Column(columnDefinition = "TEXT")
     val photoPath: String?,
     @Enumerated(EnumType.STRING)
     val educationalStatus: EducationalStatus?,
@@ -46,7 +47,7 @@ class ApplicationJpaEntity(
     val applicationRemark: ApplicationRemark?,
     val studyPlan: String?,
     val selfIntroduce: String?,
-    @field:NotNull
+//    @field:NotNull
     @Column(unique = true, columnDefinition = "BINARY(16)")
     val userId: UUID,
 )

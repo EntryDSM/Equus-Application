@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.score.domain.mapper.ScoreMapper
 import hs.kr.equus.application.domain.score.domain.repository.ScoreJpaRepository
 import hs.kr.equus.application.domain.score.model.Score
 import hs.kr.equus.application.domain.score.spi.ScorePort
+import hs.kr.equus.application.domain.status.model.Status
 import org.springframework.stereotype.Component
 
 @Component

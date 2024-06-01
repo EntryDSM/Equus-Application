@@ -5,4 +5,5 @@ object KafkaTopics {
     const val UPDATE_EDUCATIONAL_STATUS = "update-educational-status"
     const val UPDATE_APPLICATION_CASE = "update-application-case"
     const val DELETE_USER = "delete-user"
+    const val SUBMIT_APPLICATION_FINAL = "submit-application-final"
 }

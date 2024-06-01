@@ -5,30 +5,26 @@ import hs.kr.equus.application.domain.application.presentation.dto.request.Updat
 import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateInformationWebRequest
 import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateIntroduceWebRequest
 import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateStudyPlanWebRequest
-import hs.kr.equus.application.domain.application.usecase.CreateApplicationUseCase
-import hs.kr.equus.application.domain.application.usecase.GetInformationUseCase
-import hs.kr.equus.application.domain.application.usecase.GetIntroduceUseCase
-import hs.kr.equus.application.domain.application.usecase.GetStudyPlanUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateApplicationTypeUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateEducationalStatusUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateInformationUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateIntroduceUseCase
-import hs.kr.equus.application.domain.application.usecase.UpdateStudyPlanUseCase
+import hs.kr.equus.application.domain.application.usecase.*
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateApplicationTypeRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateEducationalStatusRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInformationRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateIntroduceRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateStudyPlanRequest
-
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationTypeResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetIntroduceResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStudyPlanResponse
+import hs.kr.equus.application.domain.file.presentation.converter.ImageFileConverter
+import hs.kr.equus.application.domain.file.presentation.dto.response.UploadImageWebResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.multipart.MultipartFile
 
 import javax.validation.Valid
 
@@ -44,10 +40,22 @@ class WebApplicationAdapter(
     private val updateInformationUseCase: UpdateInformationUseCase,
     private val updateIntroduceUseCase: UpdateIntroduceUseCase,
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
+    private val uploadPhotoUseCase: UploadPhotoUseCase,
+    private val getApplicationTypeUseCase: GetApplicationTypeUseCase,
+    private val submitApplicationFinalUseCase: SubmitApplicationFinalUseCase
 ) {
     @PostMapping
     fun createApplication() {
         createApplicationUseCase.execute()
+    }
+
+    @PostMapping("/files")
+    fun uploadFile(@RequestPart(name = "file") file: MultipartFile): UploadImageWebResponse? {
+        return UploadImageWebResponse(
+            uploadPhotoUseCase.execute(
+                file.let(ImageFileConverter::transferTo)
+            )!!
+        )
     }
 
     @GetMapping
@@ -80,6 +88,9 @@ class WebApplicationAdapter(
             },
         )
     }
+
+    @GetMapping("/type")
+    fun getApplicationType(): GetApplicationTypeResponse = getApplicationTypeUseCase.execute()
 
     @PatchMapping("/graduation/type")
     fun updateEducationalStatus(
@@ -132,4 +143,7 @@ class WebApplicationAdapter(
             UpdateStudyPlanRequest(request.content),
         )
     }
+
+    @PostMapping("/final-submit")
+    fun submitApplicationFinal() = submitApplicationFinalUseCase.execute()
 }

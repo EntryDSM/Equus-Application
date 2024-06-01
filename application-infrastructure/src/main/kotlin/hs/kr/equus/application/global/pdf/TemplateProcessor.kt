@@ -9,7 +9,7 @@ class TemplateProcessor(
     private val templateEngine: TemplateEngine
 ) {
     fun convertTemplateIntoHtmlString(template: String?, data: MutableMap<String, Any>?): String {
-        val context: Context = Context()
+        val context = Context()
         context.setVariables(data)
         return templateEngine.process(template, context)
     }

@@ -28,8 +28,9 @@ class ApplicationPdfGenerator(
 
     private fun generateApplicationPdf(application: Application, score: Score): ByteArray {
         val data = pdfDataConverter.applicationToInfo(application, score)
+        val templates = getTemplateFileNames(application)
 
-        val outStream = getTemplateFileNames(application).parallelStream()
+        val outStream = templates.parallelStream()
             .map { template ->
                 templateProcessor.convertTemplateIntoHtmlString(template, data.toMap())
             }
@@ -70,7 +71,7 @@ class ApplicationPdfGenerator(
         }
     }
 
-    private fun getTemplateFileNames(application: Application): List<String> {
+    private fun getTemplateFileNames(application: Application): MutableList<String> {
         val result = LinkedList(
             listOf(
                 TemplateFileName.APPLICATION_FOR_ADMISSION,

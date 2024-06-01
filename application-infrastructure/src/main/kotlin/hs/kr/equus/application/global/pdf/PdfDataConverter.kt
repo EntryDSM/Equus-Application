@@ -112,7 +112,7 @@ class PdfDataConverter(
 
         val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
 
-        val yearMonth = YearMonth.from(graduationInfo!!.graduateDate)
+        val yearMonth = graduationInfo?.graduateDate?.let { YearMonth.from(it) } ?: YearMonth.now()
 
         when (application.educationalStatus!!) {
             QUALIFICATION_EXAM -> {
@@ -131,6 +131,7 @@ class PdfDataConverter(
             }
         }
     }
+
 
 
     private fun setUserType(application: Application, values: MutableMap<String, Any>) {

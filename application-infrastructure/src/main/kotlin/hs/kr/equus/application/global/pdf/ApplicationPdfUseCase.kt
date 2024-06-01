@@ -34,6 +34,5 @@ class ApplicationPdfUseCase(
 
     private fun validatePrintableApplicant(application: Application) {
         if (application.isEducationalStatusEmpty()) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
-        if (!existsScorePort.existsById(application.receiptCode)) throw ScoreNotFoundException()
     }
 }

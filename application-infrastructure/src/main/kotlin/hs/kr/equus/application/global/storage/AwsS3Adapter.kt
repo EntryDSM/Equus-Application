@@ -11,6 +11,7 @@ import com.amazonaws.util.IOUtils
 import hs.kr.equus.application.domain.file.exception.FileExceptions
 import hs.kr.equus.application.domain.file.spi.CheckFilePort
 import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
+import hs.kr.equus.application.domain.file.spi.GetObjectPort
 import hs.kr.equus.application.domain.file.spi.UploadFilePort
 import org.springframework.stereotype.Component
 import java.io.File
@@ -23,7 +24,7 @@ import java.util.*
 class AwsS3Adapter(
     private val awsProperties: AwsS3Properties,
     private val amazonS3Client: AmazonS3Client,
-) : UploadFilePort, CheckFilePort, GenerateFileUrlPort {
+) : UploadFilePort, CheckFilePort, GenerateFileUrlPort, GetObjectPort {
     companion object {
         const val EXP_TIME = 1000 * 60 * 2
         const val BUCKET_NAME = "dsm-s3-bucket-entry"
@@ -39,6 +40,17 @@ class AwsS3Adapter(
             }
 
         return getResource(fullPath)
+    }
+
+    override fun getObject(fileName: String, path: String): ByteArray {
+        try {
+            val `object` = amazonS3Client.getObject(awsProperties.bucket, path + fileName)
+            return IOUtils.toByteArray(`object`.objectContent)
+        } catch (e: RuntimeException) {
+            throw Exception()
+        } catch (e: IOException) {
+            throw Exception()
+        }
     }
 
     private fun inputS3(file: File, fullPath: String) {

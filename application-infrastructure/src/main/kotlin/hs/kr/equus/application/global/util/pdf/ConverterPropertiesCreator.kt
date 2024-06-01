@@ -10,7 +10,7 @@ import java.io.IOException
 @Component
 class ConverterPropertiesCreator {
 
-    @Value("\${rolls-royce.font.path}")
+    @Value("\${equss.font.path}")
     private lateinit var fontPath: String
 
     fun createConverterProperties(): ConverterProperties {

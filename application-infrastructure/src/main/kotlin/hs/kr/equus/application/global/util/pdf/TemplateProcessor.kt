@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.pdf
+package hs.kr.equus.application.global.util.pdf
 
 import org.springframework.stereotype.Component
 import org.thymeleaf.TemplateEngine;

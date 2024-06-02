@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.pdf
+package hs.kr.equus.application.global.util.pdf
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.Application

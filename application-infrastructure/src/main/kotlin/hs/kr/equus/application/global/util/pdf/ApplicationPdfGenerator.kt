@@ -6,6 +6,7 @@ import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.kernel.utils.PdfMerger
 import com.itextpdf.layout.Document
 import hs.kr.equus.application.domain.application.model.Application
+import hs.kr.equus.application.domain.application.spi.ApplicationPdfGeneratorPort
 import hs.kr.equus.application.domain.score.model.Score
 import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
@@ -19,9 +20,9 @@ class ApplicationPdfGenerator(
     private val pdfProcessor: PdfProcessor,
     private val pdfDataConverter: PdfDataConverter,
     private val templateProcessor: TemplateProcessor
-) {
+): ApplicationPdfGeneratorPort {
 
-    fun generate(application: Application, score: Score): ByteArray {
+    override fun generate(application: Application, score: Score): ByteArray {
         return generateApplicationPdf(application, score)
     }
 

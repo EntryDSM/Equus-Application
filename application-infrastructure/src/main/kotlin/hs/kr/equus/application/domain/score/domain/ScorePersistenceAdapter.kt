@@ -23,7 +23,7 @@ class ScorePersistenceAdapter(
             .let(scoreMapper::toDomain)
     }
 
-    override fun existsById(receiptCode: Long): Boolean {
-        return scoreJpaRepository.existsById(receiptCode)
+    override fun existsByReceiptCode(receiptCode: Long): Boolean {
+        return scoreJpaRepository.existsByReceiptCode(receiptCode)
     }
 }

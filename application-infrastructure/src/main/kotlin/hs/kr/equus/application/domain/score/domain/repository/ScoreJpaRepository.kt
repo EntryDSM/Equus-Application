@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository
 
 interface ScoreJpaRepository : CrudRepository<ScoreJpaEntity, Long> {
     fun findByReceiptCode(receiptCode: Long): ScoreJpaEntity?
+
+    fun existsByReceiptCode(receiptCode: Long): Boolean
 }

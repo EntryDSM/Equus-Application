@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController
 class WepApplicationPdfAdapter(
     private val applicationPdfUseCase: ApplicationPdfUseCase
 ) {
-    @GetMapping(produces = [MediaType.APPLICATION_PDF_VALUE])
-    fun pdf(): ByteArray = applicationPdfUseCase.getPreviewApplicationPdf()
+    @GetMapping("/preview", produces = [MediaType.APPLICATION_PDF_VALUE])
+    fun previewPdf(): ByteArray = applicationPdfUseCase.getPreviewApplicationPdf()
 }

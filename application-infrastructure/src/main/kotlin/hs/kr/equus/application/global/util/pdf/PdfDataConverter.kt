@@ -207,7 +207,6 @@ class PdfDataConverter(
     private fun setBase64Image(application: Application, values: MutableMap<String, Any>) {
         val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
         val base64EncodedImage = Base64.getEncoder().encodeToString(imageBytes)
-        println(base64EncodedImage) // 디버깅을 위해 인코딩된 이미지 데이터를 출력합니다.
         values["base64Image"] = base64EncodedImage
     }
 

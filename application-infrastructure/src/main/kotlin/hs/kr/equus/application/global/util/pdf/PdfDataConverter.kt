@@ -10,7 +10,6 @@ import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryScho
 import hs.kr.equus.application.domain.graduationInfo.spi.QueryGraduationInfoPort
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.domain.score.model.Score
-import hs.kr.equus.application.global.storage.AwsS3Adapter
 import org.springframework.stereotype.Component
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
@@ -44,7 +43,7 @@ class PdfDataConverter(
             setRecommendations(application, values)
         }
 
-        if ( application.photoPath.isNullOrBlank()
+        if (!application.photoPath.isNullOrBlank()
         ) {
             setBase64Image(application, values)
         }
@@ -207,9 +206,11 @@ class PdfDataConverter(
 
     private fun setBase64Image(application: Application, values: MutableMap<String, Any>) {
         val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
-        val base64EncodedImage = String(Base64.getEncoder().encode(imageBytes), StandardCharsets.UTF_8)
+        val base64EncodedImage = Base64.getEncoder().encodeToString(imageBytes)
+        println(base64EncodedImage) // 디버깅을 위해 인코딩된 이미지 데이터를 출력합니다.
         values["base64Image"] = base64EncodedImage
     }
+
 
     private fun markIfTrue(isTrue: Boolean): String {
         return if (isTrue) "◯" else ""

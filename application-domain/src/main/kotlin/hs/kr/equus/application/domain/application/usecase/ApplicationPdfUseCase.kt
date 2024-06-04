@@ -8,11 +8,12 @@ import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExc
 import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 import hs.kr.equus.application.domain.score.spi.ExistsScorePort
 import hs.kr.equus.application.domain.score.spi.QueryScorePort
+import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
 
 
-@UseCase
+@ReadOnlyUseCase
 class ApplicationPdfUseCase(
     private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,

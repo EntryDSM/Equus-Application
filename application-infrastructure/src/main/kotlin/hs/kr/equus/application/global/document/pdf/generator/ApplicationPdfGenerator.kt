@@ -10,6 +10,7 @@ import hs.kr.equus.application.domain.application.spi.ApplicationPdfGeneratorPor
 import hs.kr.equus.application.domain.score.model.Score
 import hs.kr.equus.application.global.document.pdf.data.PdfDataConverter
 import hs.kr.equus.application.global.document.pdf.data.TemplateFileName
+import hs.kr.equus.application.global.document.pdf.facade.PdfDocumentFacade
 import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -21,7 +22,8 @@ import java.util.*
 class ApplicationPdfGenerator(
     private val pdfProcessor: PdfProcessor,
     private val pdfDataConverter: PdfDataConverter,
-    private val templateProcessor: TemplateProcessor
+    private val templateProcessor: TemplateProcessor,
+    private val pdfDocumentFacade: PdfDocumentFacade
 ): ApplicationPdfGeneratorPort {
 
     override fun generate(application: Application, score: Score): ByteArray {
@@ -47,23 +49,13 @@ class ApplicationPdfGenerator(
         val document = Document(mergedDocument)
 
         for (pdfStream in outStream) {
-            val pdfDoc = getPdfDocument(pdfStream)
+            val pdfDoc = pdfDocumentFacade.getPdfDocument(pdfStream!!)
             mergeDocument(pdfMerger, pdfDoc)
         }
 
         document.close()
 
         return outputStream.toByteArray()
-    }
-
-    private fun getPdfDocument(outputStream: ByteArrayOutputStream?): PdfDocument? {
-        return try {
-            val inputStream: InputStream = ByteArrayInputStream(outputStream?.toByteArray())
-            PdfDocument(PdfReader(inputStream))
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
     }
 
     private fun mergeDocument(merger: PdfMerger, document: PdfDocument?) {

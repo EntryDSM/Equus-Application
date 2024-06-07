@@ -23,7 +23,7 @@ class PdfDataConverter(
     private val getObjectPort: GetObjectPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort
 ) {
-    fun applicationToInfo(application: Application, score: Score?): PdfData {
+    fun applicationToInfo(application: Application, score: Score): PdfData {
         val values: MutableMap<String, Any> = HashMap()
         setReceiptCode(application, values)
         setEntranceYear(values)
@@ -33,7 +33,7 @@ class PdfDataConverter(
         setPhoneNumber(application, values)
         setGraduationClassification(application, values)
         setUserType(application, values)
-        setGradeScore(application, score!!, values)
+        setGradeScore(application, score, values)
         setLocalDate(values)
         setIntroduction(application, values)
         setParentInfo(application, values)
@@ -65,6 +65,7 @@ class PdfDataConverter(
         values["isFemale"] = toBallotBox(application.isFemale())
         values["address"] = setBlankIfNull(application.streetAddress)
         values["detailAddress"] = setBlankIfNull(application.detailAddress)
+        values["birthday"] = setBlankIfNull(application.birthDate.toString())
     }
 
     private fun setGenderInfo(application: Application, values: MutableMap<String, Any>) {
@@ -78,7 +79,7 @@ class PdfDataConverter(
         if (!application.isEducationalStatusEmpty() && !application.isQualificationExam()) {
             val graduation =
                 queryGraduationInfoPort.queryGraduationInfoByApplication(application)
-                    ?: throw Exception("")
+                    ?: throw GraduationInfoExceptions.GraduationNotFoundException()
             if (graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
 

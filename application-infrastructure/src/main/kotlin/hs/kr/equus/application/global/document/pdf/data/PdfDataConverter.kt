@@ -80,9 +80,9 @@ class PdfDataConverter(
             val graduation =
                 queryGraduationInfoPort.queryGraduationInfoByApplication(application)
                     ?: throw GraduationInfoExceptions.GraduationNotFoundException()
-            if (graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-
+            if (graduation !is Graduation)
+                throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
             val school = graduationInfoQuerySchoolPort.querySchoolBySchoolCode(graduation.schoolCode!!)
                 ?: throw SchoolExceptions.SchoolNotFoundException()

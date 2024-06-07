@@ -34,10 +34,7 @@ class AwsS3Adapter(
         val fileName = UUID.randomUUID().toString() + file.name
         runCatching { inputS3(file, path, fileName) }
             .also { file.delete() }
-            .onFailure { e ->
-                e.printStackTrace()
-                throw e
-            }
+
         return fileName
     }
 
@@ -46,8 +43,7 @@ class AwsS3Adapter(
             val `object` = amazonS3Client.getObject(awsProperties.bucket, path + fileName)
             return IOUtils.toByteArray(`object`.objectContent)
         } catch (e: Exception) {
-            e.printStackTrace()
-            throw RuntimeException(e)
+            throw FileExceptions.PathNotFound()
         }
     }
 
@@ -68,7 +64,6 @@ class AwsS3Adapter(
                 ).withCannedAcl(CannedAccessControlList.PublicRead)
             )
         } catch (e: IOException) {
-            e.printStackTrace()
             throw FileExceptions.IOInterrupted()
         }
     }

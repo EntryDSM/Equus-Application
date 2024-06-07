@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.util.pdf
+package hs.kr.equus.application.global.document.pdf.generator
 
 import com.itextpdf.kernel.pdf.PdfDocument
 import com.itextpdf.kernel.pdf.PdfReader
@@ -8,6 +8,8 @@ import com.itextpdf.layout.Document
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.spi.ApplicationPdfGeneratorPort
 import hs.kr.equus.application.domain.score.model.Score
+import hs.kr.equus.application.global.document.pdf.data.PdfDataConverter
+import hs.kr.equus.application.global.document.pdf.data.TemplateFileName
 import org.springframework.stereotype.Component
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream

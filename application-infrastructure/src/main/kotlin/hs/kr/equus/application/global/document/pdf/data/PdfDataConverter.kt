@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.util.pdf
+package hs.kr.equus.application.global.document.pdf.data
 
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus.*
@@ -11,7 +11,6 @@ import hs.kr.equus.application.domain.graduationInfo.spi.QueryGraduationInfoPort
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
 import hs.kr.equus.application.domain.score.model.Score
 import org.springframework.stereotype.Component
-import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -43,8 +42,7 @@ class PdfDataConverter(
             setRecommendations(application, values)
         }
 
-        if (!application.photoPath.isNullOrBlank()
-        ) {
+        if (!application.photoPath.isNullOrBlank()) {
             setBase64Image(application, values)
         }
 
@@ -110,8 +108,9 @@ class PdfDataConverter(
         values.putAll(emptyGraduationClassification())
 
         val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
+            ?: throw Exception()
 
-        val yearMonth = graduationInfo?.graduateDate?.let { YearMonth.from(it) } ?: YearMonth.now()
+        val yearMonth = graduationInfo.graduateDate?.let { YearMonth.from(it) } ?: YearMonth.now()
 
         when (application.educationalStatus!!) {
             QUALIFICATION_EXAM -> {

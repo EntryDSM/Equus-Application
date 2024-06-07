@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.util.pdf
+package hs.kr.equus.application.global.document.pdf.data
 
 class PdfData(
     val data: MutableMap<String, Any>? = null

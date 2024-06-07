@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.util.pdf
+package hs.kr.equus.application.global.document.pdf.config
 
 import com.itextpdf.html2pdf.ConverterProperties
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider
@@ -24,7 +24,7 @@ class ConverterPropertiesCreator {
             }
         }
 
-        properties.setFontProvider(fontProvider)
+        properties.fontProvider = fontProvider
         return properties
     }
 }

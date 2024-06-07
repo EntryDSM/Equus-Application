@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.util.pdf
+package hs.kr.equus.application.global.document.pdf.data
 
 object TemplateFileName {
     const val APPLICATION_FOR_ADMISSION = "/application_for_admission.html"

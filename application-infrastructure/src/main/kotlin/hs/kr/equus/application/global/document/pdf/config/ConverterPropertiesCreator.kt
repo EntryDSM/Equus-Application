@@ -21,7 +21,7 @@ class ConverterPropertiesCreator {
                 val fontProgram = FontProgramFactory.createFont("$fontPath$font")
                 fontProvider.addFont(fontProgram)
             } catch (e: IOException) {
-                FileExceptions.PathNotFound()
+                throw FileExceptions.PathNotFound()
             }
         }
 

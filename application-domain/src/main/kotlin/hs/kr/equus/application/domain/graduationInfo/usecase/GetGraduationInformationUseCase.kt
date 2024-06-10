@@ -38,7 +38,7 @@ class GetGraduationInformationUseCase(
         return GetGraduationInformationResponse(
             sex = application.sex,
             birthDate = application.birthDate,
-            photoPath = generateFileUrlPort.generateFileUrl(FilePathList.APPLICATION+application.photoPath!!),
+            photoPath = application.photoPath?.let { generateFileUrlPort.generateFileUrl(FilePathList.APPLICATION+it) },
             applicantName = application.applicantName,
             applicantTel = application.applicantTel,
             parentTel = application.parentTel,

@@ -1,6 +1,8 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.file.FilePathList
+import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryApplicationPort
@@ -17,6 +19,7 @@ class GetGraduationInformationUseCase(
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
+    private val generateFileUrlPort: GenerateFileUrlPort
 ) {
     fun execute(): GetGraduationInformationResponse {
         val userId = securityPort.getCurrentUserId()
@@ -37,7 +40,7 @@ class GetGraduationInformationUseCase(
         return GetGraduationInformationResponse(
             sex = application.sex,
             birthDate = application.birthDate,
-            photoPath = application.photoPath,
+            photoPath = generateFileUrlPort.generateFileUrl(FilePathList.APPLICATION+application.photoPath!!),
             applicantName = application.applicantName,
             applicantTel = application.applicantTel,
             parentTel = application.parentTel,

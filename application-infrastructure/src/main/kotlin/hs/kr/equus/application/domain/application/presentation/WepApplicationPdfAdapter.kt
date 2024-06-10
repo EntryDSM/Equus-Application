@@ -15,6 +15,11 @@ class WepApplicationPdfAdapter(
     private val getPreviewApplicationPdfUseCase: GetPreviewApplicationPdfUseCase,
     private val getFinalApplicationPdfUseCase: GetFinalApplicationPdfUseCase
 ) {
+
+    companion object {
+        const val FILE_NAME = "entry"
+    }
+
     @GetMapping("/preview", produces = [MediaType.APPLICATION_PDF_VALUE])
     fun previewPdf(): ByteArray = getPreviewApplicationPdfUseCase.execute()
 
@@ -26,8 +31,5 @@ class WepApplicationPdfAdapter(
 
     private fun encodeFileName(): String {
         return String(FILE_NAME.toByteArray(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1)
-    }
-    companion object {
-        const val FILE_NAME = "entry"
     }
 }

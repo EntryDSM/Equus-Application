@@ -33,9 +33,7 @@ class GetGraduationInformationUseCase(
 
         if(graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-        val school =
-            graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }
-                ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school = graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }
 
         return GetGraduationInformationResponse(
             sex = application.sex,
@@ -49,9 +47,9 @@ class GetGraduationInformationUseCase(
             postalCode = application.postalCode,
             detailAddress = application.detailAddress,
             studentNumber = graduation.studentNumber,
-            schoolCode = school.code,
-            schoolTel = school.tel,
-            schoolName = school.name,
+            schoolCode = school?.code,
+            schoolTel = school?.tel,
+            schoolName = school?.name,
         )
     }
 }

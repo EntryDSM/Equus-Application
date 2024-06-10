@@ -11,6 +11,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplic
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
+import java.awt.print.Pageable
 import java.util.UUID
 
 @Component
@@ -42,6 +43,21 @@ class ApplicationPersistenceAdapter(
     override fun queryApplicationByReceiptCode(receiptCode: Long): Application? {
         return applicationJpaRepository.findByReceiptCode(receiptCode)
             .let(applicationMapper::toDomain)
+    }
+
+    override fun queryAllApplicationByFilter(
+        receiptCode: String,
+        schoolName: String,
+        name: String,
+        isDaejeon: Boolean,
+        isOutOfHeadcount: Boolean,
+        isCommon: Boolean,
+        isMeister: Boolean,
+        isSocial: Boolean,
+        isSubmitted: Boolean,
+        pageable: Pageable
+    ): List<Application> {
+        TODO("Not yet implemented")
     }
 
     override fun queryApplicationCountByApplicationTypeAndIsDaejeon(

@@ -49,12 +49,12 @@ class WebApplicationAdapter(
         createApplicationUseCase.execute()
     }
 
-    @PostMapping("/files")
-    fun uploadFile(@RequestPart(name = "file") file: MultipartFile): UploadImageWebResponse? {
+    @PostMapping("/photo")
+    fun uploadFile(@RequestPart(name = "image") file: MultipartFile): UploadImageWebResponse {
         return UploadImageWebResponse(
             uploadPhotoUseCase.execute(
                 file.let(ImageFileConverter::transferTo)
-            )!!
+            )
         )
     }
 

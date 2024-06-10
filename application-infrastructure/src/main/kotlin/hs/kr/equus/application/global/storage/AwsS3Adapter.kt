@@ -27,7 +27,6 @@ class AwsS3Adapter(
 ) : UploadFilePort, CheckFilePort, GenerateFileUrlPort, GetObjectPort {
     companion object {
         const val EXP_TIME = 1000 * 60 * 2
-        const val BUCKET_NAME = "dsm-s3-bucket-entry"
     }
 
     override fun upload(file: File, path: String): String {
@@ -79,7 +78,7 @@ class AwsS3Adapter(
             }
         return amazonS3Client.generatePresignedUrl(
             GeneratePresignedUrlRequest(
-                BUCKET_NAME,
+                awsProperties.bucket,
                 filePath
             ).withMethod(HttpMethod.GET).withExpiration(expiration)
         ).toString()

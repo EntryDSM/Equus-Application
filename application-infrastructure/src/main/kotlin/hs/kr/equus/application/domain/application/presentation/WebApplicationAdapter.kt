@@ -100,6 +100,7 @@ class WebApplicationAdapter(
             request.run {
                 UpdateEducationalStatusRequest(
                     educationalStatus = educationalStatus,
+                    graduateDate = graduateDate
                 )
             },
         )

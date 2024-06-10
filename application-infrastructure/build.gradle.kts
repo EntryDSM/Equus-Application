@@ -82,7 +82,7 @@ dependencies {
 
     implementation(Dependencies.CACHE)
 
-    implementation(Dependencies.PDF_ITEXT)
+//    implementation(Dependencies.PDF_ITEXT)
     implementation(Dependencies.PDF_HTML)
     implementation (Dependencies.THYMELEAF)
 }

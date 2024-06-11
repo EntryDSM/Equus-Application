@@ -28,13 +28,6 @@ class JwtFilter : OncePerRequestFilter() {
             return
         }
 
-        try {
-            UUID.fromString(userId)
-        } catch (e: IllegalArgumentException) {
-            filterChain.doFilter(request, response)
-            return
-        }
-
         val authorities = mutableListOf(SimpleGrantedAuthority("ROLE_${role.name}"))
         val userDetails: UserDetails = User(userId, "", authorities)
         val authentication: Authentication =

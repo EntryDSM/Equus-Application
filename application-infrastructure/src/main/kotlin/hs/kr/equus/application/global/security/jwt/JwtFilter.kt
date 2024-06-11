@@ -8,6 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.web.filter.OncePerRequestFilter
+import java.lang.IllegalArgumentException
+import java.util.UUID
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -22,6 +24,13 @@ class JwtFilter : OncePerRequestFilter() {
         val role: UserRole? = request.getHeader("Request-User-Role")?.let { UserRole.valueOf(it) }
 
         if ((userId == null) || (role == null)) {
+            filterChain.doFilter(request, response)
+            return
+        }
+
+        try {
+            UUID.fromString(userId)
+        } catch (e: IllegalArgumentException) {
             filterChain.doFilter(request, response)
             return
         }

@@ -39,8 +39,6 @@ class SecurityConfig(
         http
             .apply(FilterConfig(objectMapper))
 
-        http.anonymous().disable()
-
         return http.build()
     }
 }

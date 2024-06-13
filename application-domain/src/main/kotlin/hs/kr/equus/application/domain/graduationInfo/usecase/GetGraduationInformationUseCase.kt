@@ -1,6 +1,8 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.file.FilePathList
+import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryApplicationPort
@@ -17,6 +19,7 @@ class GetGraduationInformationUseCase(
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
+    private val generateFileUrlPort: GenerateFileUrlPort
 ) {
     fun execute(): GetGraduationInformationResponse {
         val userId = securityPort.getCurrentUserId()
@@ -30,14 +33,12 @@ class GetGraduationInformationUseCase(
 
         if(graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-        val school =
-            graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }
-                ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school = graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }
 
         return GetGraduationInformationResponse(
             sex = application.sex,
             birthDate = application.birthDate,
-            photoPath = application.photoPath,
+            photoPath = application.photoPath?.let { generateFileUrlPort.generateFileUrl(FilePathList.APPLICATION+it) },
             applicantName = application.applicantName,
             applicantTel = application.applicantTel,
             parentTel = application.parentTel,
@@ -46,9 +47,9 @@ class GetGraduationInformationUseCase(
             postalCode = application.postalCode,
             detailAddress = application.detailAddress,
             studentNumber = graduation.studentNumber,
-            schoolCode = school.code,
-            schoolTel = school.tel,
-            schoolName = school.name,
+            schoolCode = school?.code,
+            schoolTel = school?.tel,
+            schoolName = school?.name,
         )
     }
 }

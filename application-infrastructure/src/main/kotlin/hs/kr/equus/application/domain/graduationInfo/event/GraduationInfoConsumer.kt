@@ -1,6 +1,7 @@
 package hs.kr.equus.application.domain.graduationInfo.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import hs.kr.equus.application.domain.application.event.dto.UpdateEducationStatusEvent
 import hs.kr.equus.application.domain.graduationInfo.usecase.ChangeGraduationInfoUseCase
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.annotation.KafkaListener
@@ -16,8 +17,12 @@ class GraduationInfoConsumer(
         groupId = "change-graduation-info",
         containerFactory = "kafkaListenerContainerFactory",
     )
-    fun changeGraduationInfo(message: String) {
-        val receiptCode = mapper.readValue(message, Long::class.java)
-        changeGraduationInfoUseCase.execute(receiptCode)
+    fun changeGraduationInfo(dto: UpdateEducationStatusEvent) {
+        dto.apply {
+            changeGraduationInfoUseCase.execute(
+                receiptCode = receiptCode,
+                graduateDate = graduateDate
+            )
+        }
     }
 }

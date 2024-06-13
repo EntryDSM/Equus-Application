@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase
 
+import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.file.FilePathList
@@ -15,15 +16,16 @@ class UploadPhotoUseCase(
     private val commandApplicationPort: CommandApplicationPort,
     private val uploadFilePort: UploadFilePort,
     ) {
-    fun execute(file: File): String? {
+    fun execute(file: File): String {
 
         val user = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(user)
+            ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val photo = uploadFilePort.upload(file, FilePathList.APPLICATION)
 
         commandApplicationPort.save(
-            application!!.copy(
+            application.copy(
                 photoPath = photo
             )
         )

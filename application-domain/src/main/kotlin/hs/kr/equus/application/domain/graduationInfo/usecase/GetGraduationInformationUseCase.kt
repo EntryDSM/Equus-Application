@@ -33,14 +33,12 @@ class GetGraduationInformationUseCase(
 
         if(graduation !is Graduation) throw GraduationInfoExceptions.EducationalStatusUnmatchedException()
 
-        val school =
-            graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }
-                ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school = graduation.schoolCode?.let { graduationInfoQuerySchoolPort.querySchoolBySchoolCode(it) }
 
         return GetGraduationInformationResponse(
             sex = application.sex,
             birthDate = application.birthDate,
-            photoPath = generateFileUrlPort.generateFileUrl(FilePathList.APPLICATION+application.photoPath!!),
+            photoPath = application.photoPath?.let { generateFileUrlPort.generateFileUrl(FilePathList.APPLICATION+it) },
             applicantName = application.applicantName,
             applicantTel = application.applicantTel,
             parentTel = application.parentTel,
@@ -49,9 +47,9 @@ class GetGraduationInformationUseCase(
             postalCode = application.postalCode,
             detailAddress = application.detailAddress,
             studentNumber = graduation.studentNumber,
-            schoolCode = school.code,
-            schoolTel = school.tel,
-            schoolName = school.name,
+            schoolCode = school?.code,
+            schoolTel = school?.tel,
+            schoolName = school?.name,
         )
     }
 }

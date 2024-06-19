@@ -1,0 +1,6 @@
+config:
+    name: equus-application
+    service_type: be
+    port: 8080
+    prefix: /equus-application
+

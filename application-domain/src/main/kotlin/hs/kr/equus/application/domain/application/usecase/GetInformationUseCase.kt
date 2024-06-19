@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.application.usecase
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
+import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
 
@@ -10,6 +11,7 @@ import hs.kr.equus.application.global.security.spi.SecurityPort
 class GetInformationUseCase(
     private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,
+    private val generateFileUrlPort: GenerateFileUrlPort
 ) {
     fun execute(): GetInformationResponse {
         val userId = securityPort.getCurrentUserId()
@@ -20,7 +22,7 @@ class GetInformationUseCase(
             GetInformationResponse(
                 sex = sex,
                 birthDate = birthDate,
-                photoPath = photoPath,
+                photoPath = photoPath?.let { generateFileUrlPort.generateFileUrl(it) },
                 applicantName = applicantName,
                 applicantTel = applicantTel,
                 parentName = parentName,

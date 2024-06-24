@@ -72,14 +72,14 @@ class AwsS3Adapter(
         return amazonS3Client.doesObjectExist(awsProperties.bucket, key)
     }
 
-    override fun generateFileUrl(filePath: String): String {
+    override fun generateFileUrl(fileName: String, path: String): String {
         val expiration = Date().apply {
             time += EXP_TIME
             }
         return amazonS3Client.generatePresignedUrl(
             GeneratePresignedUrlRequest(
                 awsProperties.bucket,
-                filePath
+                "${path}$fileName"
             ).withMethod(HttpMethod.GET).withExpiration(expiration)
         ).toString()
         }

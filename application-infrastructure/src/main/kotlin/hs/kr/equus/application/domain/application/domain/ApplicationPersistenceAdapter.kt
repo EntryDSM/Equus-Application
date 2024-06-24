@@ -68,4 +68,34 @@ class ApplicationPersistenceAdapter(
             count,
         )
     }
+
+    override fun queryStaticsCount(
+        applicationType: ApplicationType,
+        isDaejeon: Boolean
+    ): List<GetApplicationCountResponse> {
+        val statusMap: Map<Long, StatusInfoElement> =
+            statusClient.getStatusList()
+                .associateBy(StatusInfoElement::receiptCode)
+
+        val applicationList = jpaQueryFactory
+            .selectFrom(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.applicationType.eq(applicationType),
+                applicationJpaEntity.isDaejeon.eq(isDaejeon)
+            )
+            .fetch()
+
+        val count = applicationList.count {
+            val status = statusMap[it.receiptCode]
+            status != null && status.isSubmitted
+        }
+
+        return listOf(
+            GetApplicationCountResponse(
+                applicationType = applicationType,
+                isDaejeon = isDaejeon,
+                count = count
+            )
+        )
+    }
 }

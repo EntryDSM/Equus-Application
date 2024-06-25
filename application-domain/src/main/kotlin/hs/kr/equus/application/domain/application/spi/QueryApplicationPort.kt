@@ -1,9 +1,9 @@
 package hs.kr.equus.application.domain.application.spi
 
+import hs.kr.equus.application.domain.application.model.Applicant
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
-import java.awt.print.Pageable
 import java.util.*
 
 interface QueryApplicationPort {
@@ -18,16 +18,16 @@ interface QueryApplicationPort {
 
     fun queryApplicationByReceiptCode(receiptCode: Long): Application?
 
-    fun queryAllApplicationByFilter(
-        receiptCode: String,
+    fun queryAllApplicantsByFilter(
         schoolName: String,
         name: String,
-        isDaejeon: Boolean,
-        isOutOfHeadcount: Boolean,
+        isDaejeon: Boolean?,
+        isOutOfHeadcount: Boolean?,
         isCommon: Boolean,
         isMeister: Boolean,
         isSocial: Boolean,
-        isSubmitted: Boolean,
-        pageable: Pageable
-    ): List<Application>
+        isSubmitted: Boolean?,
+        pageSize: Long,
+        offset: Long
+    ): List<Applicant>
 }

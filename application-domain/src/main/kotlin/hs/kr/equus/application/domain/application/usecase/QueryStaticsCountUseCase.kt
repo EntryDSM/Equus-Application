@@ -13,8 +13,8 @@ class QueryStaticsCountUseCase(
         return ApplicationType.values().flatMap { it ->
             // 대전 true false를 나누어 처리한다
             listOf(false, true).map { isDaejeon ->
-                val count = queryStaticsCountPort.queryStaticsCount(it, isDaejeon).count()
-                GetStaticsCountResponse(it, isDaejeon, count)
+                val count = queryStaticsCountPort.queryStaticsCount(it, isDaejeon)
+                GetStaticsCountResponse(it, isDaejeon, count[0].count)
             }
         }
     }

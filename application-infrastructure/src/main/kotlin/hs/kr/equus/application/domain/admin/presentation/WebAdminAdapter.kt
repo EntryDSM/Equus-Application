@@ -5,16 +5,19 @@ import hs.kr.equus.application.domain.application.usecase.GetApplicationCountUse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
 import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
+import hs.kr.equus.application.global.excel.generator.PrintApplicantCodesGenerator
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 @RequestMapping("/admin")
 class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
-    private val getApplicationUseCase: GetApplicationUseCase
+    private val getApplicationUseCase: GetApplicationUseCase,
+    private val printApplicantCodesGenerator: PrintApplicantCodesGenerator
 ) {
     @GetMapping("/application-count") //todo 이걸 아예 통계쪽으로 빼야할수도?
     fun getApplicationCount(): GetApplicationCountResponse {
@@ -28,4 +31,8 @@ class WebAdminAdapter(
     fun getApplication(@PathVariable("receipt-code") receiptCode: Long): GetApplicationResponse {
         return getApplicationUseCase.execute(receiptCode)
     }
+
+    @GetMapping("/excel/applicants/code")
+    fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
+        printApplicantCodesGenerator.execute(httpServletResponse)
 }

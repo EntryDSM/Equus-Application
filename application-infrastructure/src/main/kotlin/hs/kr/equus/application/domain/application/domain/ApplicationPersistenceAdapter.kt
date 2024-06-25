@@ -88,7 +88,7 @@ class ApplicationPersistenceAdapter(
 
         val count = applicationList.count {
             val status = statusMap[it.receiptCode]
-            status?.isSubmitted==true
+            status?.isSubmitted == true
         }
 
         return listOf(

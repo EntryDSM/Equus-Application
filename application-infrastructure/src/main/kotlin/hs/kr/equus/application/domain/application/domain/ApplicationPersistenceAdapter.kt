@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.application.domain
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
+import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicantCodeResponse
 import hs.kr.equus.application.domain.application.domain.repository.ApplicationJpaRepository
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
@@ -68,4 +69,23 @@ class ApplicationPersistenceAdapter(
             count,
         )
     }
+    override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicantCodeResponse> {
+        val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
+
+        return jpaQueryFactory
+            .select(
+                applicationJpaEntity
+            )
+            .from(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList()),
+            )
+            .fetch()
+            .map { it ->
+                val examCode = statusMap[it.receiptCode]?.examCode ?: ""
+                ApplicantCodeResponse(it.receiptCode, examCode, it.applicantName!!)
+            }.filter { statusMap[it.receiptCode]?.isFirstRoundPass == true }
+    }
+
 }
+

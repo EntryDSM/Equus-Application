@@ -20,7 +20,8 @@ class WebAdminAdapter(
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase
 ) {
     @GetMapping("/statics/count")
-    fun queryStaticsCount(): List<GetStaticsCountResponse> = queryStaticsCountUseCase.execute()
+    fun queryStaticsCount(): List<GetStaticsCountResponse> =
+        queryStaticsCountUseCase.execute()
 
     @GetMapping("/application-count") //todo 이걸 아예 통계쪽으로 빼야할수도?
     fun getApplicationCount(): GetApplicationCountResponse {

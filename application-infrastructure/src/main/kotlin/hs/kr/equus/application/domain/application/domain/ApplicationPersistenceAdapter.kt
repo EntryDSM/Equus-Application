@@ -3,12 +3,12 @@ package hs.kr.equus.application.domain.application.domain
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
-import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicantCodeResponse
 import hs.kr.equus.application.domain.application.domain.repository.ApplicationJpaRepository
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicationCodeVO
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
@@ -69,7 +69,7 @@ class ApplicationPersistenceAdapter(
             count,
         )
     }
-    override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicantCodeResponse> {
+    override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
 
         return jpaQueryFactory
@@ -84,7 +84,7 @@ class ApplicationPersistenceAdapter(
             .filter { statusMap[it.receiptCode]?.isFirstRoundPass == true }
             .map { it ->
                 val examCode = statusMap[it.receiptCode]?.examCode ?: ""
-                ApplicantCodeResponse(it.receiptCode, examCode, it.applicantName!!)
+                ApplicationCodeVO(it.receiptCode, examCode, it.applicantName!!)
             }
     }
 }

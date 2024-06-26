@@ -1,7 +1,7 @@
 package hs.kr.equus.application.global.excel.generator
 
 import hs.kr.equus.application.domain.application.spi.QueryApplicantCodesByIsFirstRoundPassPort
-import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicantCodeResponse
+import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicationCodeVO
 import hs.kr.equus.application.global.excel.ApplicantCode
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.Row
@@ -38,9 +38,9 @@ class PrintApplicantCodesGenerator(
         }
     }
 
-    private fun insertCode(row: Row, applicantCodeResponse: ApplicantCodeResponse) {
-        row.createCell(0).setCellValue(applicantCodeResponse.examCode)
-        row.createCell(1).setCellValue(applicantCodeResponse.receiptCode.toString())
-        row.createCell(2).setCellValue(applicantCodeResponse.name)
+    private fun insertCode(row: Row, applicationCodeVO: ApplicationCodeVO) {
+        row.createCell(0).setCellValue(applicationCodeVO.examCode)
+        row.createCell(1).setCellValue(applicationCodeVO.receiptCode.toString())
+        row.createCell(2).setCellValue(applicationCodeVO.name)
     }
 }

@@ -7,5 +7,5 @@ interface QueryStaticsCountPort {
     fun queryStaticsCount(
         applicationType: ApplicationType,
         isDaejeon: Boolean
-    ): List<GetStaticsCountResponse>
+    ): GetStaticsCountResponse
 }

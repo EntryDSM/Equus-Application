@@ -8,6 +8,7 @@ import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicationCodeVO
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
@@ -86,5 +87,33 @@ class ApplicationPersistenceAdapter(
                 val examCode = statusMap[it.receiptCode]?.examCode ?: ""
                 ApplicationCodeVO(it.receiptCode, examCode, it.applicantName!!)
             }
+    }
+
+    override fun queryStaticsCount(
+        applicationType: ApplicationType,
+        isDaejeon: Boolean
+    ): GetStaticsCountResponse {
+        val statusMap: Map<Long, StatusInfoElement> =
+            statusClient.getStatusList()
+                .associateBy(StatusInfoElement::receiptCode)
+
+        val applicationList = jpaQueryFactory
+            .selectFrom(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.applicationType.eq(applicationType),
+                applicationJpaEntity.isDaejeon.eq(isDaejeon)
+            )
+            .fetch()
+
+        val count = applicationList.count {
+            val status = statusMap[it.receiptCode]
+            status?.isSubmitted == true
+        }
+
+        return GetStaticsCountResponse(
+                applicationType = applicationType,
+                isDaejeon = isDaejeon,
+                count = count
+        )
     }
 }

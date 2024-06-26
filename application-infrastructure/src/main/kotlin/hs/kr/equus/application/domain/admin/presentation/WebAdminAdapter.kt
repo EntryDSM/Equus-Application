@@ -6,6 +6,8 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplic
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
 import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
 import hs.kr.equus.application.global.excel.generator.PrintApplicantCodesGenerator
+import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -18,7 +20,12 @@ class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
     private val getApplicationUseCase: GetApplicationUseCase,
     private val printApplicantCodesGenerator: PrintApplicantCodesGenerator
+    private val queryStaticsCountUseCase: QueryStaticsCountUseCase
 ) {
+    @GetMapping("/statics/count")
+    fun queryStaticsCount(): List<GetStaticsCountResponse> =
+        queryStaticsCountUseCase.execute()
+
     @GetMapping("/application-count") //todo 이걸 아예 통계쪽으로 빼야할수도?
     fun getApplicationCount(): GetApplicationCountResponse {
         return getApplicationCountUseCase.execute(

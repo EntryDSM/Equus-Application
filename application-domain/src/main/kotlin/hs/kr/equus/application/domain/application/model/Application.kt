@@ -79,7 +79,6 @@ data class Application(
             streetAddress,
             postalCode,
             photoPath,
-            applicationRemark,
             applicationType,
             selfIntroduce,
             studyPlan

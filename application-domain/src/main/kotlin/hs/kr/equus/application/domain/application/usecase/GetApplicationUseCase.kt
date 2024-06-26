@@ -7,6 +7,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.*
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
+import hs.kr.equus.application.domain.file.usecase.`object`.PathList
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
@@ -81,7 +82,7 @@ class GetApplicationUseCase(
             return null
         }
         return ApplicationMoreInformationResponse(
-            photoUrl = generateFileUrlPort.generateFileUrl(application.photoPath!!),
+            photoUrl = generateFileUrlPort.generateFileUrl(application.photoPath!!, PathList.PHOTO),
             birthDay = application.birthDate!!,
             educationalStatus = application.educationalStatus!!,
             applicationRemark = application.applicationRemark,

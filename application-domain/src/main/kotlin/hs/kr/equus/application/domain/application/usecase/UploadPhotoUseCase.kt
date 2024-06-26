@@ -3,8 +3,8 @@ package hs.kr.equus.application.domain.application.usecase
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
-import hs.kr.equus.application.domain.file.FilePathList
 import hs.kr.equus.application.domain.file.spi.UploadFilePort
+import hs.kr.equus.application.domain.file.usecase.`object`.PathList
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
 import java.io.File
@@ -22,7 +22,7 @@ class UploadPhotoUseCase(
         val application = queryApplicationPort.queryApplicationByUserId(user)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val photo = uploadFilePort.upload(file, FilePathList.APPLICATION)
+        val photo = uploadFilePort.upload(file, PathList.PHOTO)
 
         commandApplicationPort.save(
             application.copy(

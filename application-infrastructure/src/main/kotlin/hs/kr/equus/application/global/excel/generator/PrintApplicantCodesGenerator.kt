@@ -3,6 +3,7 @@ package hs.kr.equus.application.global.excel.generator
 import hs.kr.equus.application.domain.application.spi.QueryApplicantCodesByIsFirstRoundPassPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicantCodeResponse
 import hs.kr.equus.application.global.excel.ApplicantCode
+import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.stereotype.Component
 import java.io.IOException
@@ -33,7 +34,7 @@ class PrintApplicantCodesGenerator(
 
             applicantCode.getWorkbook().write(response.outputStream)
         } catch (e: IOException) {
-            throw IOException()
+            throw ExcelExceptions.ExcelIOException()
         }
     }
 

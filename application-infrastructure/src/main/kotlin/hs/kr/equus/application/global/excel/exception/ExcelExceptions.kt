@@ -8,7 +8,7 @@ sealed class ExcelExceptions(
     override val message: String,
 ) : WebException(status, message) {
 
-    class ExcelOException(message: String = EXCEL_IO_EXCEPTION) : ExcelExceptions(400, message)
+    class ExcelIOException(message: String = EXCEL_IO_EXCEPTION) : ExcelExceptions(400, message)
 
     companion object {
         private const val EXCEL_IO_EXCEPTION = "엑셀 파일을 다운로드 할 수 없습니다"

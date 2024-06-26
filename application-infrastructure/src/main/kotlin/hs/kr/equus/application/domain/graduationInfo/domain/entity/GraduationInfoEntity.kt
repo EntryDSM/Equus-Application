@@ -1,7 +1,7 @@
 package hs.kr.equus.application.domain.graduationInfo.domain.entity
 
 import hs.kr.equus.application.global.entity.BaseTimeEntity
-import java.time.LocalDate
+import java.time.YearMonth
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull
 abstract class GraduationInfoEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-    val graduateDate: LocalDate?,
+    val graduateDate: YearMonth?,
     @get:JvmName("getIsProspectiveGraduate")
     val isProspectiveGraduate: Boolean,
     @NotNull

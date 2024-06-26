@@ -1,8 +1,8 @@
 package hs.kr.equus.application.domain.application.event.dto
 
-import java.time.LocalDate
+import java.time.YearMonth
 
 data class UpdateEducationStatusEvent(
     val receiptCode: Long,
-    val graduateDate: LocalDate
+    val graduateDate: YearMonth
 )

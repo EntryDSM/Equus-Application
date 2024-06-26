@@ -7,13 +7,14 @@ import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 import hs.kr.equus.application.domain.graduationInfo.model.Qualification
 import hs.kr.equus.application.global.annotation.Factory
 import java.time.LocalDate
+import java.time.YearMonth
 
 @Factory
 class GraduationInfoFactory {
     fun createGraduationInfo(
         receiptCode: Long,
         educationalStatus: EducationalStatus?,
-        graduateDate: LocalDate
+        graduateDate: YearMonth
     ): GraduationInfo {
         return when (educationalStatus) {
             EducationalStatus.QUALIFICATION_EXAM ->

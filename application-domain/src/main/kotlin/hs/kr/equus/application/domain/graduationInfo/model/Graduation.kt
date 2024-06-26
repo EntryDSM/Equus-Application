@@ -2,10 +2,11 @@ package hs.kr.equus.application.domain.graduationInfo.model
 
 import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
 import java.time.LocalDate
+import java.time.YearMonth
 
 data class Graduation(
     override val id: Long = 0,
-    override val graduateDate: LocalDate? = null,
+    override val graduateDate: YearMonth? = null,
     override val isProspectiveGraduate: Boolean,
     override val receiptCode: Long,
     val studentNumber: StudentNumber? = null,

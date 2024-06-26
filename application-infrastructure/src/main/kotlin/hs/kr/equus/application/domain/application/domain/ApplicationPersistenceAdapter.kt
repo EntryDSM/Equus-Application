@@ -81,11 +81,10 @@ class ApplicationPersistenceAdapter(
                 applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList()),
             )
             .fetch()
+            .filter { statusMap[it.receiptCode]?.isFirstRoundPass == true }
             .map { it ->
                 val examCode = statusMap[it.receiptCode]?.examCode ?: ""
                 ApplicantCodeResponse(it.receiptCode, examCode, it.applicantName!!)
-            }.filter { statusMap[it.receiptCode]?.isFirstRoundPass == true }
+            }
     }
-
 }
-

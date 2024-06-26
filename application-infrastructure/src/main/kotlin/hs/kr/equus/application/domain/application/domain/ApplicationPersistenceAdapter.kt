@@ -2,7 +2,6 @@ package hs.kr.equus.application.domain.application.domain
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
-import hs.kr.equus.application.domain.application.domain.entity.vo.ApplicantVo
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
 import hs.kr.equus.application.domain.application.domain.repository.ApplicationJpaRepository
 import hs.kr.equus.application.domain.application.model.Applicant

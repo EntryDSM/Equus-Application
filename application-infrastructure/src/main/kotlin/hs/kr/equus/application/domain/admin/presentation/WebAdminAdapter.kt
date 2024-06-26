@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse
 class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
     private val getApplicationUseCase: GetApplicationUseCase,
-    private val printApplicantCodesGenerator: PrintApplicantCodesGenerator
+    private val printApplicantCodesGenerator: PrintApplicantCodesGenerator,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase
 ) {
     @GetMapping("/statics/count")

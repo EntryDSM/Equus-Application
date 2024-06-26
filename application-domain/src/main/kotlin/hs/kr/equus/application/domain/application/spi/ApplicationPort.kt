@@ -9,5 +9,6 @@ interface ApplicationPort :
     QueryApplicationPort,
     GraduationInfoQueryApplicationPort,
     ScoreQueryApplicationPort,
-    QueryApplicantCodesByIsFirstRoundPassPort
-    QueryStaticsCountPort
+    QueryApplicantCodesByIsFirstRoundPassPort,
+    QueryStaticsCountPort,
+    ApplicationCaseQueryApplicationPort

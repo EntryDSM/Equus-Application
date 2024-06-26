@@ -73,7 +73,7 @@ class ApplicationPersistenceAdapter(
     override fun queryStaticsCount(
         applicationType: ApplicationType,
         isDaejeon: Boolean
-    ): List<GetStaticsCountResponse> {
+    ): GetStaticsCountResponse {
         val statusMap: Map<Long, StatusInfoElement> =
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
@@ -91,12 +91,10 @@ class ApplicationPersistenceAdapter(
             status?.isSubmitted == true
         }
 
-        return listOf(
-            GetStaticsCountResponse(
+        return GetStaticsCountResponse(
                 applicationType = applicationType,
                 isDaejeon = isDaejeon,
                 count = count
-            )
         )
     }
 }

@@ -14,7 +14,7 @@ class QueryStaticsCountUseCase(
             // 대전 true false를 나누어 처리한다
             listOf(false, true).map { isDaejeon ->
                 val count = queryStaticsCountPort.queryStaticsCount(it, isDaejeon)
-                GetStaticsCountResponse(it, isDaejeon, count[0].count)
+                GetStaticsCountResponse(it, isDaejeon, count.count)
             }
         }
     }

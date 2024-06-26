@@ -8,6 +8,7 @@ import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
@@ -66,6 +67,34 @@ class ApplicationPersistenceAdapter(
             applicationType,
             isDaejeon,
             count,
+        )
+    }
+
+    override fun queryStaticsCount(
+        applicationType: ApplicationType,
+        isDaejeon: Boolean
+    ): GetStaticsCountResponse {
+        val statusMap: Map<Long, StatusInfoElement> =
+            statusClient.getStatusList()
+                .associateBy(StatusInfoElement::receiptCode)
+
+        val applicationList = jpaQueryFactory
+            .selectFrom(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.applicationType.eq(applicationType),
+                applicationJpaEntity.isDaejeon.eq(isDaejeon)
+            )
+            .fetch()
+
+        val count = applicationList.count {
+            val status = statusMap[it.receiptCode]
+            status?.isSubmitted == true
+        }
+
+        return GetStaticsCountResponse(
+                applicationType = applicationType,
+                isDaejeon = isDaejeon,
+                count = count
         )
     }
 }

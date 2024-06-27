@@ -3,15 +3,15 @@ package hs.kr.equus.application.domain.graduationInfo.service
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.global.annotation.DomainService
-import java.time.LocalDate
+import java.time.YearMonth
 
 @DomainService
 class CheckGraduateDateService {
     fun checkIsInvalidYear(
         educationalStatus: EducationalStatus,
-        graduateDate: LocalDate,
+        graduateDate: YearMonth,
     ) {
-        var baseYear = LocalDate.now().year
+        var baseYear = YearMonth.now().year
 
         if (checkIsProspectiveGraduate(educationalStatus)) {
             baseYear += 1

@@ -1,7 +1,7 @@
 package hs.kr.equus.application.domain.graduationInfo.domain.entity
 
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.vo.StudentNumber
-import java.time.LocalDate
+import java.time.YearMonth
 import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.Table
@@ -10,7 +10,7 @@ import javax.persistence.Table
 @Table(name = "tbl_graduation")
 class GraduationJpaEntity(
     override val id: Long,
-    override val graduateDate: LocalDate?,
+    override val graduateDate: YearMonth?,
     override val isProspectiveGraduate: Boolean,
     override val receiptCode: Long,
     @Embedded

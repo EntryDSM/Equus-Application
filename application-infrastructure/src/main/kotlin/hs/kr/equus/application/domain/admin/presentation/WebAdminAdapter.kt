@@ -8,20 +8,31 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplic
 import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplicantsRequest
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
+import hs.kr.equus.application.domain.application.usecase.PrintApplicantCodesUseCase
+import hs.kr.equus.application.global.excel.generator.PrintApplicantCodesGenerator
+import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import javax.servlet.http.HttpServletResponse
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/application")
 class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
     private val getApplicationUseCase: GetApplicationUseCase,
-    private val getApplicantsUseCase: GetApplicantsUseCase
+    private val getApplicantsUseCase: GetApplicantsUseCase,
+    private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
+    private val queryStaticsCountUseCase: QueryStaticsCountUseCase
 ) {
+    @GetMapping("/statics/count")
+    fun queryStaticsCount(): List<GetStaticsCountResponse> =
+        queryStaticsCountUseCase.execute()
+
     @GetMapping("/application-count") //todo 이걸 아예 통계쪽으로 빼야할수도?
     fun getApplicationCount(): GetApplicationCountResponse {
         return getApplicationCountUseCase.execute(
@@ -30,16 +41,20 @@ class WebAdminAdapter(
         )
     }
 
-    @GetMapping("/application/{receipt-code}")
+    @GetMapping("/{receipt-code}")
     fun getApplication(@PathVariable("receipt-code") receiptCode: Long): GetApplicationResponse {
         return getApplicationUseCase.execute(receiptCode)
     }
 
+    @GetMapping("/excel/applicants/code")
+    fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
+        printApplicantCodesUseCase.execute(httpServletResponse)
+
     @GetMapping("/applicants")
     fun getApplicants(
-        @RequestParam(name = "pageSize", defaultValue = "10")
+        @RequestParam(name = "offset", defaultValue = "10")
         pageSize: Long,
-        @RequestParam(name = "offset", defaultValue = "0")
+        @RequestParam(name = "pageSize", defaultValue = "0")
         offset: Long,
         @ModelAttribute
         getApplicantsRequest: GetApplicantsRequest

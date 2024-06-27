@@ -14,6 +14,8 @@ import hs.kr.equus.application.domain.graduationInfo.domain.entity.QGraduationJp
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QQualificationJpaEntity.qualificationJpaEntity
 import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.data.domain.PageImpl
@@ -136,6 +138,52 @@ class ApplicationPersistenceAdapter(
             applicationType,
             isDaejeon,
             count,
+        )
+    }
+    override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {
+        val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
+
+        return jpaQueryFactory
+            .select(
+                applicationJpaEntity
+            )
+            .from(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList()),
+            )
+            .fetch()
+            .filter { statusMap[it.receiptCode]?.isFirstRoundPass == true }
+            .map { it ->
+                val examCode = statusMap[it.receiptCode]?.examCode ?: ""
+                ApplicationCodeVO(it.receiptCode, examCode, it.applicantName!!)
+            }
+    }
+
+    override fun queryStaticsCount(
+        applicationType: ApplicationType,
+        isDaejeon: Boolean
+    ): GetStaticsCountResponse {
+        val statusMap: Map<Long, StatusInfoElement> =
+            statusClient.getStatusList()
+                .associateBy(StatusInfoElement::receiptCode)
+
+        val applicationList = jpaQueryFactory
+            .selectFrom(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.applicationType.eq(applicationType),
+                applicationJpaEntity.isDaejeon.eq(isDaejeon)
+            )
+            .fetch()
+
+        val count = applicationList.count {
+            val status = statusMap[it.receiptCode]
+            status?.isSubmitted == true
+        }
+
+        return GetStaticsCountResponse(
+                applicationType = applicationType,
+                isDaejeon = isDaejeon,
+                count = count
         )
     }
 }

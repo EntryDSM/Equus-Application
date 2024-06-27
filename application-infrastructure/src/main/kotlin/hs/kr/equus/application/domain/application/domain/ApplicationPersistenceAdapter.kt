@@ -9,6 +9,7 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
@@ -68,6 +69,24 @@ class ApplicationPersistenceAdapter(
             isDaejeon,
             count,
         )
+    }
+    override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {
+        val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
+
+        return jpaQueryFactory
+            .select(
+                applicationJpaEntity
+            )
+            .from(applicationJpaEntity)
+            .where(
+                applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList()),
+            )
+            .fetch()
+            .filter { statusMap[it.receiptCode]?.isFirstRoundPass == true }
+            .map { it ->
+                val examCode = statusMap[it.receiptCode]?.examCode ?: ""
+                ApplicationCodeVO(it.receiptCode, examCode, it.applicantName!!)
+            }
     }
 
     override fun queryStaticsCount(

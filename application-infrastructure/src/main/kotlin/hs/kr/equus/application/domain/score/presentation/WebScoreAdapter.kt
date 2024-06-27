@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 class WebScoreAdapter(
     private val queryMyTotalScoreUseCase: QueryMyTotalScoreUseCase
 ) {
-    @GetMapping
+    @GetMapping("/total-score")
     fun queryMyTotalScore(): QueryTotalScoreResponse =
         queryMyTotalScoreUseCase.execute()
 }

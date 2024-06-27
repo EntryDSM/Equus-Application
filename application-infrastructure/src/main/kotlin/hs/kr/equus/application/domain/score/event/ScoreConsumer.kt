@@ -3,7 +3,6 @@ package hs.kr.equus.application.domain.score.event
 import com.fasterxml.jackson.databind.ObjectMapper
 import hs.kr.equus.application.domain.score.usecase.CreateScoreUseCase
 import hs.kr.equus.application.domain.score.usecase.UpdateScoreUseCase
-import hs.kr.equus.application.domain.score.usecase.dto.request.UpdateScoreRequest
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component

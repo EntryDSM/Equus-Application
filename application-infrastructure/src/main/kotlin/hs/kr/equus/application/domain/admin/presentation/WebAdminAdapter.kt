@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.application.usecase.GetApplicationCountUse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
 import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
+import hs.kr.equus.application.domain.application.usecase.PrintApplicantCodesUseCase
 import hs.kr.equus.application.global.excel.generator.PrintApplicantCodesGenerator
 import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse
 class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
     private val getApplicationUseCase: GetApplicationUseCase,
-    private val printApplicantCodesGenerator: PrintApplicantCodesGenerator,
+    private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase
 ) {
     @GetMapping("/statics/count")
@@ -41,5 +42,5 @@ class WebAdminAdapter(
 
     @GetMapping("/excel/applicants/code")
     fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
-        printApplicantCodesGenerator.execute(httpServletResponse)
+        printApplicantCodesUseCase.execute(httpServletResponse)
 }

@@ -1,6 +1,6 @@
 package hs.kr.equus.application.global.excel.generator
 
-import hs.kr.equus.application.domain.application.spi.QueryApplicantCodesByIsFirstRoundPassPort
+import hs.kr.equus.application.domain.application.spi.PrintApplicantCodesPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicationCodeVO
 import hs.kr.equus.application.global.excel.ApplicantCode
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
@@ -12,14 +12,11 @@ import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class PrintApplicantCodesGenerator(
-    private val queryApplicantCodesByIsFirstRoundPassPort: QueryApplicantCodesByIsFirstRoundPassPort
-){
-    fun execute(response: HttpServletResponse) {
+class PrintApplicantCodesGenerator(): PrintApplicantCodesPort {
+    override fun execute(response: HttpServletResponse, applicantCodes: List<ApplicationCodeVO>) {
         val applicantCode = ApplicantCode()
         val sheet = applicantCode.getSheet()
         applicantCode.format()
-        val applicantCodes = queryApplicantCodesByIsFirstRoundPassPort.queryApplicantCodesByIsFirstRoundPass()
         applicantCodes.forEachIndexed { index, it ->
             val row = sheet.createRow(index + 1)
             insertCode(row, it)

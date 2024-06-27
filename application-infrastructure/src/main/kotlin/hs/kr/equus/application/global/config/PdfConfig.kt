@@ -12,6 +12,7 @@ class PdfConfig {
     @Bean
     fun templateEngine(): TemplateEngine {
         val templateResolver = ClassLoaderTemplateResolver()
+        templateResolver.prefix = "classpath:/templates"
         templateResolver.suffix = ".html"
         templateResolver.templateMode = TemplateMode.HTML
 

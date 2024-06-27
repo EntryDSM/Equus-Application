@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletResponse
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/application")
 class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
     private val getApplicationUseCase: GetApplicationUseCase,
@@ -35,7 +35,7 @@ class WebAdminAdapter(
         )
     }
 
-    @GetMapping("/application/{receipt-code}")
+    @GetMapping("/{receipt-code}")
     fun getApplication(@PathVariable("receipt-code") receiptCode: Long): GetApplicationResponse {
         return getApplicationUseCase.execute(receiptCode)
     }

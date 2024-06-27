@@ -1,17 +1,22 @@
 package hs.kr.equus.application.domain.admin.presentation
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
+import hs.kr.equus.application.domain.application.usecase.GetApplicantsUseCase
 import hs.kr.equus.application.domain.application.usecase.GetApplicationCountUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
 import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
+import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplicantsRequest
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
 import hs.kr.equus.application.domain.application.usecase.PrintApplicantCodesUseCase
 import hs.kr.equus.application.global.excel.generator.PrintApplicantCodesGenerator
 import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.servlet.http.HttpServletResponse
 
@@ -20,6 +25,7 @@ import javax.servlet.http.HttpServletResponse
 class WebAdminAdapter(
     private val getApplicationCountUseCase: GetApplicationCountUseCase,
     private val getApplicationUseCase: GetApplicationUseCase,
+    private val getApplicantsUseCase: GetApplicantsUseCase,
     private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase
 ) {
@@ -43,4 +49,16 @@ class WebAdminAdapter(
     @GetMapping("/excel/applicants/code")
     fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
         printApplicantCodesUseCase.execute(httpServletResponse)
+
+    @GetMapping("/applicants")
+    fun getApplicants(
+        @RequestParam(name = "offset", defaultValue = "10")
+        pageSize: Long,
+        @RequestParam(name = "pageSize", defaultValue = "0")
+        offset: Long,
+        @ModelAttribute
+        getApplicantsRequest: GetApplicantsRequest
+    ): GetApplicantsResponse {
+        return getApplicantsUseCase.execute(pageSize, offset, getApplicantsRequest)
+    }
 }

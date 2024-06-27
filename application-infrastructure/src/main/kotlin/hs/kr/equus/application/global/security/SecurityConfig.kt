@@ -33,6 +33,8 @@ class SecurityConfig(
             .hasRole(UserRole.ADMIN.name)
             .antMatchers("/schools")
             .permitAll()
+            .antMatchers("/score")
+            .hasRole(UserRole.USER.name)
             .anyRequest()
             .authenticated()
 

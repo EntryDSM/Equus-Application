@@ -17,4 +17,8 @@ class WebApplicationPassAdapter(
     @GetMapping("/first-round")
     fun queryIsFirstRound(): QueryIsFirstRoundPassResponse =
         queryIsFirstRoundPassUseCase.execute()
+
+    @GetMapping("/second-round")
+    fun queryIsSecondRound(): QueryIsSecondRoundPassResponse =
+        queryIsSecondRoundPassUseCase.execute()
 }

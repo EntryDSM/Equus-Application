@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.application.spi.ApplicationQueryStatusPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.QueryIsFirstRoundPassResponse
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.schedule.enums.Type
+import hs.kr.equus.application.domain.schedule.exception.ScheduleExceptions
 import hs.kr.equus.application.domain.schedule.spi.QueryScheduleTypePort
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
@@ -25,8 +26,10 @@ class QueryIsFirstRoundPassUseCase(
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val firstAnnounce = queryScheduleTypePort.queryScheduleType(Type.FIRST_ANNOUNCEMENT)
-            ?: throw IllegalArgumentException("asdfasdf")
-        if (LocalDateTime.now().isBefore(firstAnnounce.date)) throw Exception()
+            ?: throw ScheduleExceptions.ScoreNotFoundException()
+
+        if (LocalDateTime.now().isBefore(firstAnnounce.date))
+            throw ScheduleExceptions.AdmissionUnavailableException()
 
         val status = applicationQueryStatusPort.queryStatusByReceiptCode(application.receiptCode)
             ?: throw StatusExceptions.StatusNotFoundException()

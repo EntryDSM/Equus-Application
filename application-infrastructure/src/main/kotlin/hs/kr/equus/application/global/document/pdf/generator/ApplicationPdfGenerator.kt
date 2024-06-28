@@ -34,7 +34,7 @@ class ApplicationPdfGenerator(
         val data = pdfDataConverter.applicationToInfo(application, score)
         val templates = getTemplateFileNames(application)
 
-        val outStream = templates.parallelStream()
+        val outStream = templates.stream()
             .map { template ->
                 templateProcessor.convertTemplateIntoHtmlString(template, data.toMap())
             }

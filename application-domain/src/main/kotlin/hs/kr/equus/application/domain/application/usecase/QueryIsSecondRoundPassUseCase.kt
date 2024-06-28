@@ -6,7 +6,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.QueryIsSe
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.schedule.enums.ScheduleType
 import hs.kr.equus.application.domain.schedule.exception.ScheduleExceptions
-import hs.kr.equus.application.domain.schedule.spi.QueryScheduleTypePort
+import hs.kr.equus.application.domain.schedule.spi.ApplicationQuerySchedulePort
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
@@ -17,14 +17,14 @@ class QueryIsSecondRoundPassUseCase (
     private val securityPort: SecurityPort,
     private val queryApplicationPort: ApplicationCaseQueryApplicationPort,
     private val applicationQueryStatusPort: ApplicationQueryStatusPort,
-    private val queryScheduleTypePort: QueryScheduleTypePort
+    private val applicationQuerySchedulePort: ApplicationQuerySchedulePort
 ) {
     fun execute(): QueryIsSecondRoundPassResponse {
         val userId = securityPort.getCurrentUserId()
         val application = queryApplicationPort.queryApplicationByUserId(userId)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val secondAnnounce = queryScheduleTypePort.queryScheduleType(ScheduleType.SECOND_ANNOUNCEMENT)
+        val secondAnnounce = applicationQuerySchedulePort.queryByScheduleType(ScheduleType.SECOND_ANNOUNCEMENT)
             ?: throw ScheduleExceptions.ScoreNotFoundException()
 
         if (LocalDateTime.now().isBefore(secondAnnounce.date))

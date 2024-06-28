@@ -33,7 +33,7 @@ class ScorePersistenceAdapter(
             .let(scoreMapper::toDomain)
     }
 
-    fun queryScoreByApplicationTypeAndIsDaejeon(applicationType: ApplicationType, isDaejeon: Boolean): List<Score?> {
+    override fun queryScoreByApplicationTypeAndIsDaejeon(applicationType: ApplicationType, isDaejeon: Boolean): List<Score?> {
         val statusMap: Map<Long, StatusInfoElement> =
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)

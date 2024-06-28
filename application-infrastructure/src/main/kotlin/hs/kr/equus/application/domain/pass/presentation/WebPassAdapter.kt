@@ -1,4 +1,4 @@
-package hs.kr.equus.application.domain.application.presentation
+package hs.kr.equus.application.domain.pass.presentation
 
 import hs.kr.equus.application.domain.application.usecase.QueryIsFirstRoundPassUseCase
 import hs.kr.equus.application.domain.application.usecase.QueryIsSecondRoundPassUseCase
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/pass")
-class WebApplicationPassAdapter(
+class WebPassAdapter(
     private val queryIsFirstRoundPassUseCase: QueryIsFirstRoundPassUseCase,
     private val queryIsSecondRoundPassUseCase: QueryIsSecondRoundPassUseCase
 ) {

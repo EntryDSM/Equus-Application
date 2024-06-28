@@ -15,6 +15,6 @@ sealed class ScheduleExceptions(
 
     companion object {
         private const val SCORE_NOT_FOUND_EXCEPTION = "점수가 존재하지 않습니다"
-        private const val ADMISSION_UNAVAILABLE = "현재 사용할 수 없습니다"
+        private const val ADMISSION_UNAVAILABLE = "합격여부를 확인할 수 없습니다"
     }
 }

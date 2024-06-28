@@ -1,6 +1,6 @@
 package hs.kr.equus.application.domain.schedule.domain
 
-import hs.kr.equus.application.domain.schedule.enums.Type
+import hs.kr.equus.application.domain.schedule.enums.ScheduleType
 import hs.kr.equus.application.domain.schedule.model.Schedule
 import hs.kr.equus.application.domain.schedule.spi.SchedulePort
 import hs.kr.equus.application.global.feign.client.ScheduleClient
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component
 class SchedulePersistenceAdapter(
     private val scheduleClient: ScheduleClient
 ): SchedulePort {
-    override fun queryScheduleType(type: Type): Schedule? {
-        return scheduleClient.queryScheduleByType(type.name)?.let {
+    override fun queryScheduleType(scheduleType: ScheduleType): Schedule? {
+        return scheduleClient.queryScheduleByType(scheduleType.name)?.let {
             Schedule(
-                type = it.type,
+                scheduleType = it.scheduleType,
                 date = it.date
             )
         }

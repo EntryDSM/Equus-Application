@@ -1,6 +1,6 @@
 package hs.kr.equus.application.domain.schedule.enums
 
-enum class Type {
+enum class ScheduleType {
     START_DATE,
     FIRST_ANNOUNCEMENT,
     INTERVIEW,

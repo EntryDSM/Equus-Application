@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestPart
 
 @FeignClient(name = "ScheduleClient", url = "\${url.schedule}", configuration = [FeignConfig::class])
 interface ScheduleClient {
-        @GetMapping("/schedule")
+    @GetMapping("/schedule")
     fun queryScheduleByType(@RequestParam type: String): ScheduleInfoElement?
 }

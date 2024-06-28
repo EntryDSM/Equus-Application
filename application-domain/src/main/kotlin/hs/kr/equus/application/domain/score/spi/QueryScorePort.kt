@@ -6,5 +6,5 @@ import hs.kr.equus.application.domain.score.usecase.dto.response.QueryTotalScore
 interface QueryScorePort {
     fun queryScoreByReceiptCode(receiptCode: Long): Score?
 
-    fun queryTotalScore(receiptCode: Long): QueryTotalScoreResponse
+    fun queryTotalScore(receiptCode: Long): QueryTotalScoreResponse?
 }

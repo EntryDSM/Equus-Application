@@ -8,6 +8,7 @@ import hs.kr.equus.application.domain.score.spi.ScorePort
 import hs.kr.equus.application.domain.score.usecase.dto.response.QueryTotalScoreResponse
 import org.springframework.stereotype.Component
 import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity.scoreJpaEntity
+import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 
 @Component
 class ScorePersistenceAdapter(
@@ -26,11 +27,12 @@ class ScorePersistenceAdapter(
             .let(scoreMapper::toDomain)
     }
 
-    override fun queryTotalScore(receiptCode: Long): QueryTotalScoreResponse {
+    override fun queryTotalScore(receiptCode: Long): QueryTotalScoreResponse? {
         return jpaQueryFactory.select(scoreJpaEntity.totalScore)
             .from(scoreJpaEntity)
             .where(scoreJpaEntity.receiptCode.eq(receiptCode))
             .fetchOne()
-            .let { QueryTotalScoreResponse(it) }
+            ?.let { QueryTotalScoreResponse(it) }
+            ?: throw ScoreExceptions.ScoreNotFoundException()
     }
 }

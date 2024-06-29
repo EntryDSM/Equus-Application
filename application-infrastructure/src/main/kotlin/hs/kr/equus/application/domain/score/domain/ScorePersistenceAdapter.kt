@@ -6,6 +6,7 @@ import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity.scoreJ
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.score.domain.mapper.ScoreMapper
 import hs.kr.equus.application.domain.score.domain.repository.ScoreJpaRepository
+import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 import hs.kr.equus.application.domain.score.model.Score
 import hs.kr.equus.application.domain.score.spi.ScorePort
 import hs.kr.equus.application.global.feign.client.StatusClient
@@ -53,7 +54,7 @@ class ScorePersistenceAdapter(
             .orderBy(scoreJpaEntity.totalScore.desc())
             .fetch()
             .filter { statusMap[it.receiptCode]?.isSubmitted == true }
-            .map { scoreMapper.toDomain(it) }
+            .map { scoreMapper.toDomain(it) ?: throw ScoreExceptions.ScoreNotFoundException() }
     }
 
 

@@ -2,7 +2,7 @@ package hs.kr.equus.application.domain.score.usecase.dto.response
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 
-data class GetScoreResposne(
+data class GetStaticsScoreResponse(
     val isDaejeon: Boolean,
     val applicationType: ApplicationType,
     var score158_170: Int = 0,

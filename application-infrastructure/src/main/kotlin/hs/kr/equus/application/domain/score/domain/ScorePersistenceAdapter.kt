@@ -1,12 +1,9 @@
 package hs.kr.equus.application.domain.score.domain
 
-import com.querydsl.core.JoinType
-import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity.scoreJpaEntity
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsScoreResponse
 import hs.kr.equus.application.domain.score.domain.mapper.ScoreMapper
 import hs.kr.equus.application.domain.score.domain.repository.ScoreJpaRepository
 import hs.kr.equus.application.domain.score.model.Score

@@ -12,8 +12,6 @@ import hs.kr.equus.application.domain.score.spi.ScorePort
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
-import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity.scoreJpaEntity
-import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 import java.math.BigDecimal
 
 @Component
@@ -21,8 +19,7 @@ class ScorePersistenceAdapter(
     private val scoreMapper: ScoreMapper,
     private val scoreJpaRepository: ScoreJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
-    private val statusClient: StatusClient
-    private val jpaQueryFactory: JPAQueryFactory
+    private val statusClient: StatusClient,
 ) : ScorePort {
     override fun save(score: Score): Score {
         return scoreJpaRepository.save(
@@ -61,6 +58,7 @@ class ScorePersistenceAdapter(
             .fetch()
             .filter { statusMap[it.receiptCode]?.isSubmitted == true }
             .map { scoreMapper.toDomain(it) ?: throw ScoreExceptions.ScoreNotFoundException() }
+    }
             
     override fun queryTotalScore(receiptCode: Long): BigDecimal? {
 

@@ -5,10 +5,10 @@ import hs.kr.equus.application.domain.score.domain.mapper.ScoreMapper
 import hs.kr.equus.application.domain.score.domain.repository.ScoreJpaRepository
 import hs.kr.equus.application.domain.score.model.Score
 import hs.kr.equus.application.domain.score.spi.ScorePort
-import hs.kr.equus.application.domain.score.usecase.dto.response.QueryTotalScoreResponse
 import org.springframework.stereotype.Component
 import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity.scoreJpaEntity
 import hs.kr.equus.application.domain.score.exception.ScoreExceptions
+import java.math.BigDecimal
 
 @Component
 class ScorePersistenceAdapter(
@@ -27,13 +27,12 @@ class ScorePersistenceAdapter(
             .let(scoreMapper::toDomain)
     }
 
-    override fun queryTotalScore(receiptCode: Long): QueryTotalScoreResponse? {
+    override fun queryTotalScore(receiptCode: Long): BigDecimal? {
 
-        val totalScore = jpaQueryFactory.select(scoreJpaEntity.totalScore)
+        return jpaQueryFactory.select(scoreJpaEntity.totalScore)
             .from(scoreJpaEntity)
             .where(scoreJpaEntity.receiptCode.eq(receiptCode))
             .fetchOne() ?: throw ScoreExceptions.ScoreNotFoundException()
 
-        return QueryTotalScoreResponse(totalScore)
     }
 }

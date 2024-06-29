@@ -16,6 +16,7 @@ class QueryMyTotalScoreUseCase(
     fun execute(): QueryTotalScoreResponse? {
         val userId = securityPort.getCurrentUserId()
         val applicationId = queryApplicationPort.queryApplicationByUserId(userId) ?: throw ApplicationExceptions.ApplicationNotFoundException()
-        return queryScorePort.queryTotalScore(applicationId.receiptCode)
+        val totalScore = queryScorePort.queryTotalScore(applicationId.receiptCode)
+        return QueryTotalScoreResponse(totalScore)
      }
 }

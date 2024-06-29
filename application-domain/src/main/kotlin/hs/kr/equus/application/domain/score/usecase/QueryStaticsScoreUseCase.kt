@@ -1,6 +1,7 @@
 package hs.kr.equus.application.domain.score.usecase
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
+import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 import hs.kr.equus.application.domain.score.spi.ScoreQueryApplicationTypeAndIsDaejeonPort
 import hs.kr.equus.application.domain.score.usecase.dto.response.GetScoreResposne
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
@@ -18,7 +19,7 @@ class QueryStaticsScoreUseCase(
                 }
                 scoreQueryApplicationTypeAndIsDaejeonPort.queryScoreByApplicationTypeAndIsDaejeon(type, isDaejeon)
                     .forEach { score ->
-                        response.addScore(score?.totalScore!!.toDouble())
+                        response.addScore(score!!.totalScore!!.toDouble())
                     }
                 response
             }

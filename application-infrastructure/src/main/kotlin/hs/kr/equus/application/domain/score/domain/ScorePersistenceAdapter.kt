@@ -31,7 +31,9 @@ class ScorePersistenceAdapter(
             .let(scoreMapper::toDomain)
     }
 
-    override fun queryScoreByApplicationTypeAndIsDaejeon(applicationType: ApplicationType, isDaejeon: Boolean): List<Score?> {
+    override fun queryScoreByApplicationTypeAndIsDaejeon(
+        applicationType: ApplicationType, isDaejeon: Boolean
+    ): List<Score?> {
         val statusMap: Map<Long, StatusInfoElement> =
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
@@ -56,7 +58,4 @@ class ScorePersistenceAdapter(
             .filter { statusMap[it.receiptCode]?.isSubmitted == true }
             .map { scoreMapper.toDomain(it) ?: throw ScoreExceptions.ScoreNotFoundException() }
     }
-
-
-
 }

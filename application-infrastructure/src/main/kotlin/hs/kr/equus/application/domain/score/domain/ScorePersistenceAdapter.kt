@@ -28,11 +28,12 @@ class ScorePersistenceAdapter(
     }
 
     override fun queryTotalScore(receiptCode: Long): QueryTotalScoreResponse? {
-        return jpaQueryFactory.select(scoreJpaEntity.totalScore)
+
+        val totalScore = jpaQueryFactory.select(scoreJpaEntity.totalScore)
             .from(scoreJpaEntity)
             .where(scoreJpaEntity.receiptCode.eq(receiptCode))
-            .fetchOne()
-            ?.let { QueryTotalScoreResponse(it) }
-            ?: throw ScoreExceptions.ScoreNotFoundException()
+            .fetchOne() ?: throw ScoreExceptions.ScoreNotFoundException()
+
+        return QueryTotalScoreResponse(totalScore)
     }
 }

@@ -22,4 +22,3 @@ class WebPassAdapter(
     fun queryIsSecondRound(): QueryIsSecondRoundPassResponse =
         queryIsSecondRoundPassUseCase.execute()
 }
-

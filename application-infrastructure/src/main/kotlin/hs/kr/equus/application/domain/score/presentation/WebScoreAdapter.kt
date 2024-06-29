@@ -2,6 +2,8 @@ package hs.kr.equus.application.domain.score.presentation
 
 import hs.kr.equus.application.domain.score.presentation.dto.reponse.GetScoreResponse
 import hs.kr.equus.application.domain.score.usecase.QueryStaticsScoreUseCase
+import hs.kr.equus.application.domain.score.usecase.QueryMyTotalScoreUseCase
+import hs.kr.equus.application.domain.score.usecase.dto.response.QueryTotalScoreResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -9,11 +11,12 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/score")
 class WebScoreAdapter(
-    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase
+    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase,
+    private val queryMyTotalScoreUseCase: QueryMyTotalScoreUseCase
 ) {
     @GetMapping
-    fun queryStaticsScore(): List<GetScoreResponse> {
-        return queryStaticsScoreUseCase.execute().map {
+    fun queryStaticsScore(): List<GetScoreResponse> =
+        queryStaticsScoreUseCase.execute().map {
             GetScoreResponse(
                 applicationType = it.applicationType,
                 isDaejeon = it.isDaejeon,
@@ -27,5 +30,9 @@ class WebScoreAdapter(
                 score158_170 = it.score158_170
             )
         }
-    }
+    
+    @GetMapping("/total-score")
+    fun queryMyTotalScore(): QueryTotalScoreResponse? =
+        queryMyTotalScoreUseCase.execute()
+        
 }

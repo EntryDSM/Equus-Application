@@ -6,4 +6,4 @@ interface ScorePort :
         CommandScorePort,
         QueryScorePort,
         ApplicationQueryScorePort,
-        ScoreQueryApplicationTypeAndIsDaejeonPort
+        ApplicationScorePort

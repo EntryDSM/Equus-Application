@@ -1,31 +1,33 @@
 package hs.kr.equus.application.domain.score.usecase.dto.response
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
+import java.math.BigDecimal
 
 data class GetStaticsScoreResponse(
     val isDaejeon: Boolean,
     val applicationType: ApplicationType,
-    var score158_170: Int = 0,
-    var score145_157: Int = 0,
-    var score132_144: Int = 0,
-    var score119_131: Int = 0,
-    var score106_118: Int = 0,
-    var score93_105: Int = 0,
-    var score80_92: Int = 0,
-    var score_79: Int = 0
+    var firstRate: Int = 0,
+    var secondRate: Int = 0,
+    var thirdRate: Int = 0,
+    var fourthRate: Int = 0,
+    var fifthRate: Int = 0,
+    var sixthRate: Int = 0,
+    var seventhRate: Int = 0,
+    var eighthRate: Int = 0,
+
 
 )  {
 
-     fun addScore(score: Double) {
-        when {
-            score <= 79 -> score_79++
-            score <= 92 -> score80_92++
-            score <= 105 -> score93_105++
-            score <= 118 -> score106_118++
-            score <= 131 -> score119_131++
-            score <= 144 -> score132_144++
-            score <= 157 -> score145_157++
-            score <= 170 -> score158_170++
+    fun addScore(score: BigDecimal) {
+        when (score) {
+            in BigDecimal.ZERO..BigDecimal("79") -> eighthRate++
+            in BigDecimal("80")..BigDecimal("92") -> seventhRate++
+            in BigDecimal("93")..BigDecimal("105") -> sixthRate++
+            in BigDecimal("106")..BigDecimal("118") -> fifthRate++
+            in BigDecimal("119")..BigDecimal("131") -> fourthRate++
+            in BigDecimal("132")..BigDecimal("144") -> thirdRate++
+            in BigDecimal("145")..BigDecimal("157") -> secondRate++
+            in BigDecimal("158")..BigDecimal("170") -> firstRate++
         }
     }
 }

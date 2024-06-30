@@ -34,7 +34,7 @@ class ScorePersistenceAdapter(
 
     override fun queryScoreByApplicationTypeAndIsDaejeon(
         applicationType: ApplicationType, isDaejeon: Boolean
-    ): List<Score>? {
+    ): List<Score> {
         val statusMap: Map<Long, StatusInfoElement> =
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
@@ -57,7 +57,7 @@ class ScorePersistenceAdapter(
             .orderBy(scoreJpaEntity.totalScore.desc())
             .fetch()
             .filter { statusMap[it.receiptCode]?.isSubmitted == true }
-            .map { scoreMapper.toDomain(it)!! }
+            .mapNotNull { scoreMapper.toDomain(it) }.let { emptyList() }
     }
             
     override fun queryTotalScore(receiptCode: Long): BigDecimal? {

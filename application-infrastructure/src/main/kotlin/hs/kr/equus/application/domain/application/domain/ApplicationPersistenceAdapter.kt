@@ -8,19 +8,15 @@ import hs.kr.equus.application.domain.application.model.Applicant
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QGraduationJpaEntity.graduationJpaEntity
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QQualificationJpaEntity.qualificationJpaEntity
-import hs.kr.equus.application.domain.score.exception.ScoreExceptions
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
-import org.springframework.data.domain.PageImpl
 import org.springframework.stereotype.Component
-import java.awt.print.Pageable
 import java.util.UUID
 
 @Component

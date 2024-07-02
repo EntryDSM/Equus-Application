@@ -12,6 +12,7 @@ class WebScoreAdapter(
     private val queryMyTotalScoreUseCase: QueryMyTotalScoreUseCase
 ) {
     @GetMapping("/total-score")
-    fun queryMyTotalScore(): QueryTotalScoreResponse? =
+    fun queryMyTotalScore(): QueryTotalScoreResponse =
         queryMyTotalScoreUseCase.execute()
+        
 }

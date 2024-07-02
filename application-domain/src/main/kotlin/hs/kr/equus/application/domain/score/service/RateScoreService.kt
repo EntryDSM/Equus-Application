@@ -4,8 +4,8 @@ import hs.kr.equus.application.global.annotation.DomainService
 import java.math.BigDecimal
 
 @DomainService
-class ScoreRatingCalculatorService {
-    fun rating(scores: List<BigDecimal>): Array<Int> {
+class RateScoreService {
+    fun rate(scores: List<BigDecimal>): Array<Int> {
         val ratingCounts = Array(8) { 0 }
         scores.map {
             score ->

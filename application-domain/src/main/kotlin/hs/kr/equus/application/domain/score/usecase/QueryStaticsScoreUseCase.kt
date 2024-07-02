@@ -1,7 +1,7 @@
 package hs.kr.equus.application.domain.score.usecase
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
-import hs.kr.equus.application.domain.score.service.ScoreRatingCalculatorService
+import hs.kr.equus.application.domain.score.service.RateScoreService
 import hs.kr.equus.application.domain.score.spi.QueryScorePort
 import hs.kr.equus.application.domain.score.usecase.dto.response.GetStaticsScoreResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
@@ -9,14 +9,14 @@ import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 @ReadOnlyUseCase
 class QueryStaticsScoreUseCase(
     private val queryScorePort: QueryScorePort,
-    private val scoreRatingCalculatorService: ScoreRatingCalculatorService
+    private val rateScoreService: RateScoreService
 ) {
     fun execute(): List<GetStaticsScoreResponse> {
         return ApplicationType.values().flatMap { type ->
             listOf(true, false).map { isDaejeon ->
                 val totalScores = queryScorePort.queryScoreByApplicationTypeAndIsDaejeon(type, isDaejeon)
                     .map { it?.totalScore!! }
-                    .let { scoreRatingCalculatorService.rating(it) }
+                    .let { rateScoreService.rate(it) }
 
                 GetStaticsScoreResponse(
                     isDaejeon = isDaejeon,

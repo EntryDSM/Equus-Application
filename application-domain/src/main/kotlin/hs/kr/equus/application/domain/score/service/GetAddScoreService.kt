@@ -16,7 +16,7 @@ class GetAddScoreService {
             score < BigDecimal("145") -> 3
             score < BigDecimal("158") -> 2
             score <= BigDecimal("170") -> 1
-            else -> 0 // 범위 외의 점수인 경우 0 반환
+            else -> 0 // 범위 넘어가는 숫자는 0 반환
         }
     }
 

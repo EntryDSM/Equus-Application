@@ -14,26 +14,24 @@ class QueryStaticsScoreUseCase(
     fun execute(): List<GetStaticsScoreResponse> {
         return ApplicationType.values().flatMap { type ->
             listOf(true, false).map { isDaejeon ->
-                val response = GetStaticsScoreResponse(isDaejeon, type)
-                queryScorePort.queryScoreByApplicationTypeAndIsDaejeon(type, isDaejeon).forEach {
-                    it?.totalScore?.let { totalScore ->
-                        val score = getAddScoreService.addScore(totalScore)
-                        when (score) {
-                            1 -> response.firstRate++
-                            2 -> response.secondRate++
-                            3 -> response.thirdRate++
-                            4 -> response.fourthRate++
-                            5 -> response.fifthRate++
-                            6 -> response.sixthRate++
-                            7 -> response.seventhRate++
-                            8 -> response.eighthRate++
-                        }
-                    }
-                }
-                response
+                val totalScores = queryScorePort.queryScoreByApplicationTypeAndIsDaejeon(type, isDaejeon)
+                    .map { it?.totalScore!! }
+                    .let { getAddScoreService.addScore(it) }
+
+                GetStaticsScoreResponse(
+                    isDaejeon = isDaejeon,
+                    applicationType = type,
+                    firstRate = totalScores[0].toInt(),
+                    secondRate = totalScores[1].toInt(),
+                    thirdRate = totalScores[2].toInt(),
+                    fourthRate = totalScores[3].toInt(),
+                    fifthRate = totalScores[4].toInt(),
+                    sixthRate = totalScores[5].toInt(),
+                    seventhRate = totalScores[6].toInt(),
+                    eighthRate = totalScores[7].toInt()
+                )
             }
         }
     }
-
 }
 

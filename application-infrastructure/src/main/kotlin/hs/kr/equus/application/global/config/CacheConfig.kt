@@ -17,7 +17,7 @@ class CacheConfig {
     @Bean
     fun redisCacheConfiguration(): RedisCacheConfiguration {
         return RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofSeconds(60)) // TTL 60초 후 제거됨
+            .entryTtl(Duration.ofSeconds(60)) //TTL 60초 후 제거됨
             .disableCachingNullValues() // NULL 은 저장 안 됨
             .serializeKeysWith( // cache key 문자열로 직렬화
                 RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer())

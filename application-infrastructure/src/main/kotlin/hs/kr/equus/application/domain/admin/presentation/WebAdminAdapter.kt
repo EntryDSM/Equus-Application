@@ -9,9 +9,10 @@ import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplicantsRequest
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
 import hs.kr.equus.application.domain.application.usecase.PrintApplicantCodesUseCase
-import hs.kr.equus.application.global.excel.generator.PrintApplicantCodesGenerator
 import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
+import hs.kr.equus.application.domain.score.usecase.QueryStaticsScoreUseCase
+import hs.kr.equus.application.domain.score.usecase.dto.response.GetStaticsScoreResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
@@ -27,8 +28,14 @@ class WebAdminAdapter(
     private val getApplicationUseCase: GetApplicationUseCase,
     private val getApplicantsUseCase: GetApplicantsUseCase,
     private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
-    private val queryStaticsCountUseCase: QueryStaticsCountUseCase
+    private val queryStaticsCountUseCase: QueryStaticsCountUseCase,
+    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase
 ) {
+
+    @GetMapping("/statics/score")
+    fun queryStaticsScore(): List<GetStaticsScoreResponse> =
+        queryStaticsScoreUseCase.execute()
+
     @GetMapping("/statics/count")
     fun queryStaticsCount(): List<GetStaticsCountResponse> =
         queryStaticsCountUseCase.execute()

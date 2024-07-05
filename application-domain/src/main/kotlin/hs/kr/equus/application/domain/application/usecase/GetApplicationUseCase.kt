@@ -58,19 +58,19 @@ class GetApplicationUseCase(
         val graduationInfo = applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)
             ?: throw GraduationInfoExceptions.GraduationNotFoundException()
 
-        val graduation = graduationInfo as Graduation
-
-        val school = applicationQuerySchoolPort.querySchoolBySchoolCode(graduation.schoolCode!!)
-            ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school = (graduationInfo as? Graduation)?.let {
+            applicationQuerySchoolPort.querySchoolBySchoolCode(it.schoolCode!!)
+                ?: throw SchoolExceptions.SchoolNotFoundException()
+        }
 
         val user = applicationQueryUserPort.queryUserByUserId(application.userId)
 
         return ApplicationCommonInformationResponse(
             name = user.name,
-            schoolName = school.name,
+            schoolName = school?.name,
             telephoneNumber = user.phoneNumber,
             parentTel = application.parentTel,
-            schoolTel = school.tel
+            schoolTel = school?.tel
         )
     }
 

@@ -20,10 +20,10 @@ class CacheConfig {
             .entryTtl(Duration.ofSeconds(60)) //TTL 60초 후 제거됨
             .disableCachingNullValues() // NULL 은 저장 안 됨
             .serializeKeysWith( // cache key 문자열로 직렬화
-                RedisSerializationContext.SerializationPair.fromSerializer<String>(StringRedisSerializer())
+                RedisSerializationContext.SerializationPair.fromSerializer(StringRedisSerializer())
             )
             .serializeValuesWith( // cache value 를 json 으로 직렬화
-                RedisSerializationContext.SerializationPair.fromSerializer<Any>(GenericJackson2JsonRedisSerializer())
+                RedisSerializationContext.SerializationPair.fromSerializer(GenericJackson2JsonRedisSerializer())
             )
     }
 }

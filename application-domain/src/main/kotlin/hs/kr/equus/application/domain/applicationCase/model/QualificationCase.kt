@@ -26,6 +26,7 @@ data class QualificationCase(
         return arrayOf(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)
     }
 
+    // TODO :: 선생님의 요구사항으로 검정고시 점수 계산이 없어질 예정입니다.
     override fun calculateTotalGradeScore(isCommon: Boolean): BigDecimal {
         val totalGradeScore =
             ((averageScore - BigDecimal(50)) * BigDecimal.valueOf(1.6))

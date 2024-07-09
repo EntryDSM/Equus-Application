@@ -19,6 +19,7 @@ class ScoreJpaEntity(
     val thirdBeforeScore: BigDecimal?,
     val thirdGradeScore: BigDecimal?,
     val totalGradeScore: BigDecimal?,
+    val extraScore: Int?,
     val totalScore: BigDecimal?,
     @Column(unique = true)
     val receiptCode: Long,

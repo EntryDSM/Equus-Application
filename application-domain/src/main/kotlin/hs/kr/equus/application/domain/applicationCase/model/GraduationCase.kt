@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.applicationCase.model
 
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -8,6 +9,7 @@ import java.math.RoundingMode
 data class GraduationCase(
     override val id: Long = 0,
     override val receiptCode: Long,
+    val extraScoreItem: ExtraScoreItem = ExtraScoreItem(false, false),
     val volunteerTime: Int = 0,
     val absenceDayCount: Int = 0,
     val lectureAbsenceCount: Int = 0,

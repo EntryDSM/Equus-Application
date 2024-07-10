@@ -10,6 +10,12 @@ import java.math.BigDecimal
 
 @DomainService
 class CalculateExtraScoreService{
+    companion object {
+        private val COMPETITION_PRIZE_EXTRA_SCORE = BigDecimal(3)
+        private val CERTIFICATE_EXTRA_SCORE = BigDecimal(6)
+        private val COMMON_TYPE_MAX_EXTRA_SCORE = BigDecimal(3)
+        private val SPECIAL_TYPE_MAX_EXTRA_SCORE = BigDecimal(9)
+    }
     fun calculateScore(application: Application, applicationCase: ApplicationCase): BigDecimal {
         if(applicationCase is QualificationCase) {
             return BigDecimal.ZERO
@@ -18,16 +24,22 @@ class CalculateExtraScoreService{
         val applicationType = application.applicationType ?: return BigDecimal.ZERO
 
         return when (applicationType) {
-            ApplicationType.COMMON -> if (graduationCase.extraScoreItem.hasCompetitionPrize) {
-                BigDecimal(3)
-            } else {
-                BigDecimal.ZERO
+            ApplicationType.COMMON -> {
+                val score = if (graduationCase.extraScoreItem.hasCompetitionPrize) {
+                    COMPETITION_PRIZE_EXTRA_SCORE
+                } else {
+                    BigDecimal.ZERO
+                }
+                score.min(COMMON_TYPE_MAX_EXTRA_SCORE)
             }
-            ApplicationType.SOCIAL, ApplicationType.MEISTER -> listOf(
-                graduationCase.extraScoreItem.hasCertificate to BigDecimal(6),
-                graduationCase.extraScoreItem.hasCompetitionPrize to BigDecimal(3)
-            ).filter { it.first }
-                .sumOf { it.second }
+            ApplicationType.SOCIAL, ApplicationType.MEISTER -> {
+                val score = listOf(
+                    graduationCase.extraScoreItem.hasCertificate to CERTIFICATE_EXTRA_SCORE,
+                    graduationCase.extraScoreItem.hasCompetitionPrize to COMPETITION_PRIZE_EXTRA_SCORE
+                ).filter { it.first }
+                    .sumOf { it.second }
+                score.min(SPECIAL_TYPE_MAX_EXTRA_SCORE)
+            }
         }
     }
 }

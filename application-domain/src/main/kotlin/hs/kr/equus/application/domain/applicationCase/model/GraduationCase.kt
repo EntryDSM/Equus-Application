@@ -9,7 +9,7 @@ import java.math.RoundingMode
 data class GraduationCase(
     override val id: Long = 0,
     override val receiptCode: Long,
-    val extraScoreItem: ExtraScoreItem,
+    val extraScoreItem: ExtraScoreItem = ExtraScoreItem(),
     val volunteerTime: Int = 0,
     val absenceDayCount: Int = 0,
     val lectureAbsenceCount: Int = 0,

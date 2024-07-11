@@ -14,17 +14,18 @@ data class Score(
     val thirdGradeScore: BigDecimal? = null,
     val totalGradeScore: BigDecimal? = null,
     val totalScore: BigDecimal? = null,
+    val extraScore: BigDecimal? = null,
     val receiptCode: Long,
 ) {
     fun updateScore(
         applicationCase: ApplicationCase,
         isCommon: Boolean,
+        extraScore: BigDecimal
     ): Score {
         val attendanceScore = applicationCase.calculateAttendanceScore()
         val volunteerScore = applicationCase.calculateVolunteerScore()
         val gradeScores = applicationCase.calculateGradeScores()
         val totalGradeScore = applicationCase.calculateTotalGradeScore(isCommon)
-
         return copy(
             attendanceScore = attendanceScore,
             volunteerScore = volunteerScore,
@@ -32,7 +33,8 @@ data class Score(
             thirdBeforeScore = gradeScores[1],
             thirdBeforeBeforeScore = gradeScores[0],
             totalGradeScore = totalGradeScore,
-            totalScore = totalGradeScore + BigDecimal(attendanceScore) + volunteerScore,
+            totalScore = totalGradeScore + BigDecimal(attendanceScore) + volunteerScore + extraScore,
+            extraScore = extraScore
         )
     }
 }

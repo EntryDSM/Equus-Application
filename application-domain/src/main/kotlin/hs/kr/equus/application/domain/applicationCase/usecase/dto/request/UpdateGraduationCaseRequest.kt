@@ -13,4 +13,6 @@ data class UpdateGraduationCaseRequest(
     val scienceGrade: String,
     val englishGrade: String,
     val techAndHomeGrade: String,
+    val extraScore: ExtraScoreRequest
 )
+

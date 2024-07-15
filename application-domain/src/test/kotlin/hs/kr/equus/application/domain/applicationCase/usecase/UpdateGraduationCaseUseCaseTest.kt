@@ -5,9 +5,11 @@ import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.applicationCase.event.spi.ApplicationCaseEventPort
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.CommandApplicationCasePort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
+import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.ExtraScoreRequest
 import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.UpdateGraduationCaseRequest
 import hs.kr.equus.application.global.annotation.EquusTest
 import hs.kr.equus.application.global.security.spi.SecurityPort
@@ -17,7 +19,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.given
 import org.springframework.boot.test.mock.mockito.MockBean
-import java.util.UUID
+import java.util.*
 
 @EquusTest
 class UpdateGraduationCaseUseCaseTest {
@@ -43,6 +45,7 @@ class UpdateGraduationCaseUseCaseTest {
     private val receiptCode = 1L
 
     private val requestStub: UpdateGraduationCaseRequest by lazy {
+        val extraScore = ExtraScoreRequest(hasCertificate = true, hasCompetitionPrize = true)
         UpdateGraduationCaseRequest(
             volunteerTime = 1,
             absenceDayCount = 1,
@@ -55,7 +58,8 @@ class UpdateGraduationCaseUseCaseTest {
             mathGrade = "AAAA",
             scienceGrade = "AAAA",
             englishGrade = "AAAA",
-            techAndHomeGrade = "AAAA"
+            techAndHomeGrade = "AAAA",
+            extraScore = extraScore
         )
     }
 
@@ -67,6 +71,7 @@ class UpdateGraduationCaseUseCaseTest {
     private val graduationCaseStub = GraduationCase(
         receiptCode = receiptCode,
         isProspectiveGraduate = true,
+        extraScoreItem = ExtraScoreItem(hasCertificate = true, hasCompetitionPrize = true)
     )
 
     @BeforeEach

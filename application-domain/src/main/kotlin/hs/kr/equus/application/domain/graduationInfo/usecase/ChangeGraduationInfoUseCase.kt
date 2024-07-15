@@ -7,6 +7,8 @@ import hs.kr.equus.application.domain.graduationInfo.spi.CommandGraduationInfoPo
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryApplicationPort
 import hs.kr.equus.application.domain.graduationInfo.spi.QueryGraduationInfoPort
 import hs.kr.equus.application.global.annotation.UseCase
+import java.time.LocalDate
+import java.time.YearMonth
 
 @UseCase
 class ChangeGraduationInfoUseCase(
@@ -15,7 +17,7 @@ class ChangeGraduationInfoUseCase(
     private val commandGraduationInfoPort: CommandGraduationInfoPort,
     private val graduationInfoFactory: GraduationInfoFactory
 ) {
-    fun execute(receiptCode: Long) {
+    fun execute(receiptCode: Long, graduateDate: YearMonth) {
         val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
@@ -25,8 +27,9 @@ class ChangeGraduationInfoUseCase(
         }
 
         val graduationInfo = graduationInfoFactory.createGraduationInfo(
-            receiptCode,
-            application.educationalStatus
+            receiptCode = receiptCode,
+            educationalStatus = application.educationalStatus,
+            graduateDate = graduateDate
         )
         commandGraduationInfoPort.save(graduationInfo)
     }

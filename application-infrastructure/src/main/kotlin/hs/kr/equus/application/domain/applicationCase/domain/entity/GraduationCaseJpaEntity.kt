@@ -1,5 +1,7 @@
 package hs.kr.equus.application.domain.applicationCase.domain.entity
 
+import hs.kr.equus.application.domain.applicationCase.domain.entity.vo.ExtraScoreItem
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.Table
 
@@ -21,7 +23,9 @@ class GraduationCaseJpaEntity(
     val techAndHomeGrade: String,
     @get:JvmName("getIsProspectiveGraduate")
     val isProspectiveGraduate: Boolean,
-    override val receiptCode: Long
+    override val receiptCode: Long,
+    @Embedded
+    val extraScoreItem: ExtraScoreItem,
 ) : ApplicationCaseEntity(
     id = id,
     receiptCode = receiptCode,

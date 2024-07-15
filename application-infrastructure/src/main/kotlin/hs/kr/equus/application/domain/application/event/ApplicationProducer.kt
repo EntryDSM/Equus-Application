@@ -1,12 +1,17 @@
 package hs.kr.equus.application.domain.application.event
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import hs.kr.equus.application.domain.application.event.spi.ApplicationEventPort
+import hs.kr.equus.application.domain.application.event.dto.UpdateEducationStatusEvent
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
+import java.time.LocalDate
+import java.time.YearMonth
 
 @Component
 class ApplicationProducer(
+    private val mapper: ObjectMapper,
     private val createApplicationTemplate: KafkaTemplate<String, Any>,
     private val updateEducationalStatusTemplate: KafkaTemplate<String, Any>,
     private val submitApplicationFinalTemplate: KafkaTemplate<String, Any>
@@ -18,10 +23,10 @@ class ApplicationProducer(
         )
     }
 
-    override fun updateEducationalStatus(receiptCode: Long) {
+    override fun updateEducationalStatus(receiptCode: Long, graduateDate: YearMonth) {
         updateEducationalStatusTemplate.send(
             KafkaTopics.UPDATE_EDUCATIONAL_STATUS,
-            receiptCode,
+            UpdateEducationStatusEvent(receiptCode, graduateDate),
         )
     }
 

@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.application.exception.ApplicationException
 import hs.kr.equus.application.domain.applicationCase.event.spi.ApplicationCaseEventPort
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.CommandApplicationCasePort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
@@ -44,6 +45,10 @@ class UpdateGraduationCaseUseCase(
                     scienceGrade = scienceGrade,
                     englishGrade = englishGrade,
                     techAndHomeGrade = techAndHomeGrade,
+                    extraScoreItem = ExtraScoreItem(
+                        hasCertificate = extraScore.hasCertificate,
+                        hasCompetitionPrize = extraScore.hasCompetitionPrize
+                    )
                 ),
             )
         }

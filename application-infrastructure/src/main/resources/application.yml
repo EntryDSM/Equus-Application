@@ -8,6 +8,11 @@ feign:
     enabled: true
 
 spring:
+  thymeleaf:
+    prefix: classpath:/templates
+    cache: false
+    suffix: .html
+    check-template-location: true
   config:
     import: "optional:configserver:${CLOUD_CONFIG_IMPORT_URL}"
   cloud:

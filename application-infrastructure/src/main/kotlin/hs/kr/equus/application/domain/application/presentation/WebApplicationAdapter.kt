@@ -11,10 +11,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateEduc
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInformationRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateIntroduceRequest
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateStudyPlanRequest
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationTypeResponse
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetInformationResponse
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetIntroduceResponse
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetStudyPlanResponse
+import hs.kr.equus.application.domain.application.usecase.dto.response.*
 import hs.kr.equus.application.domain.file.presentation.converter.ImageFileConverter
 import hs.kr.equus.application.domain.file.presentation.dto.response.UploadImageWebResponse
 import org.springframework.web.bind.annotation.GetMapping
@@ -42,19 +39,20 @@ class WebApplicationAdapter(
     private val updateStudyPlanUseCase: UpdateStudyPlanUseCase,
     private val uploadPhotoUseCase: UploadPhotoUseCase,
     private val getApplicationTypeUseCase: GetApplicationTypeUseCase,
-    private val submitApplicationFinalUseCase: SubmitApplicationFinalUseCase
+    private val submitApplicationFinalUseCase: SubmitApplicationFinalUseCase,
+    private val getMyApplicationStatusUseCase: GetMyApplicationStatusUseCase
 ) {
     @PostMapping
     fun createApplication() {
         createApplicationUseCase.execute()
     }
 
-    @PostMapping("/files")
-    fun uploadFile(@RequestPart(name = "file") file: MultipartFile): UploadImageWebResponse? {
+    @PostMapping("/photo")
+    fun uploadFile(@RequestPart(name = "image") file: MultipartFile): UploadImageWebResponse {
         return UploadImageWebResponse(
             uploadPhotoUseCase.execute(
                 file.let(ImageFileConverter::transferTo)
-            )!!
+            )
         )
     }
 
@@ -100,6 +98,7 @@ class WebApplicationAdapter(
             request.run {
                 UpdateEducationalStatusRequest(
                     educationalStatus = educationalStatus,
+                    graduateDate = graduateDate
                 )
             },
         )
@@ -146,4 +145,7 @@ class WebApplicationAdapter(
 
     @PostMapping("/final-submit")
     fun submitApplicationFinal() = submitApplicationFinalUseCase.execute()
+
+    @GetMapping("/status")
+    fun getMyApplicationStatus(): GetApplicationStatusResponse = getMyApplicationStatusUseCase.execute()
 }

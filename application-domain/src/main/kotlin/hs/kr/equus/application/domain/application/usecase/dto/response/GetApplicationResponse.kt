@@ -15,9 +15,9 @@ data class GetApplicationResponse(
 
 data class ApplicationCommonInformationResponse(
     val name: String,
-    val schoolName: String,
+    val schoolName: String?,
     val telephoneNumber: String,
-    val schoolTel: String,
+    val schoolTel: String?,
     val parentTel: String?
 )
 

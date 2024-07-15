@@ -7,6 +7,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.*
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.file.spi.GenerateFileUrlPort
+import hs.kr.equus.application.domain.file.usecase.`object`.PathList
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.school.exception.SchoolExceptions
@@ -57,19 +58,19 @@ class GetApplicationUseCase(
         val graduationInfo = applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)
             ?: throw GraduationInfoExceptions.GraduationNotFoundException()
 
-        val graduation = graduationInfo as Graduation
-
-        val school = applicationQuerySchoolPort.querySchoolBySchoolCode(graduation.schoolCode!!)
-            ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school = (graduationInfo as? Graduation)?.let {
+            applicationQuerySchoolPort.querySchoolBySchoolCode(it.schoolCode!!)
+                ?: throw SchoolExceptions.SchoolNotFoundException()
+        }
 
         val user = applicationQueryUserPort.queryUserByUserId(application.userId)
 
         return ApplicationCommonInformationResponse(
             name = user.name,
-            schoolName = school.name,
+            schoolName = school?.name,
             telephoneNumber = user.phoneNumber,
             parentTel = application.parentTel,
-            schoolTel = school.tel
+            schoolTel = school?.tel
         )
     }
 
@@ -81,7 +82,7 @@ class GetApplicationUseCase(
             return null
         }
         return ApplicationMoreInformationResponse(
-            photoUrl = generateFileUrlPort.generateFileUrl(application.photoPath!!),
+            photoUrl = generateFileUrlPort.generateFileUrl(application.photoPath!!, PathList.PHOTO),
             birthDay = application.birthDate!!,
             educationalStatus = application.educationalStatus!!,
             applicationRemark = application.applicationRemark,

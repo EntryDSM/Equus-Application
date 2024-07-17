@@ -5,4 +5,5 @@ data class UpdateGraduationInformationRequest(
     val classNumber: String,
     val studentNumber: String,
     val schoolCode: String,
+    val teacherName: String ? = null
 )

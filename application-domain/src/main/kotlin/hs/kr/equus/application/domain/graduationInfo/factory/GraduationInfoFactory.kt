@@ -14,7 +14,8 @@ class GraduationInfoFactory {
     fun createGraduationInfo(
         receiptCode: Long,
         educationalStatus: EducationalStatus?,
-        graduateDate: YearMonth
+        graduateDate: YearMonth,
+        teacherName: String? = null
     ): GraduationInfo {
         return when (educationalStatus) {
             EducationalStatus.QUALIFICATION_EXAM ->
@@ -29,6 +30,7 @@ class GraduationInfoFactory {
                     graduateDate = graduateDate,
                     receiptCode = receiptCode,
                     isProspectiveGraduate = false,
+                    teacherName = teacherName!!
                 )
 
             EducationalStatus.PROSPECTIVE_GRADUATE ->
@@ -36,6 +38,7 @@ class GraduationInfoFactory {
                     graduateDate = graduateDate,
                     receiptCode = receiptCode,
                     isProspectiveGraduate = true,
+                    teacherName = teacherName!!
                 )
 
             null ->

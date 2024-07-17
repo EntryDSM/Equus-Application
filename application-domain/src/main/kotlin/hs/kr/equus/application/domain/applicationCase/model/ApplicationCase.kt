@@ -6,7 +6,7 @@ import java.math.BigDecimal
 sealed class ApplicationCase(
     open val receiptCode: Long,
     open val id: Long,
-    open val extraScoreItem: ExtraScoreItem
+    open val extraScoreItem: ExtraScoreItem = ExtraScoreItem(false, false)
 ) {
     companion object {
         const val MAX_ATTENDANCE_SCORE = 15

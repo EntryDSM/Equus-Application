@@ -16,6 +16,7 @@ class GraduationJpaEntity(
     @Embedded
     val studentNumber: StudentNumber?,
     val schoolCode: String?,
+    val teacherName: String
 ) : GraduationInfoEntity(
     id = id,
     graduateDate = graduateDate,

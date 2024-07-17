@@ -13,4 +13,5 @@ data class GetGraduationCaseResponse(
     val scienceGrade: String,
     val englishGrade: String,
     val techAndHomeGrade: String,
+    val extraScore: GetExtraScoreResponse
 )

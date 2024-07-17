@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.applicationCase.model
 
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -8,10 +9,12 @@ import java.math.RoundingMode
 data class QualificationCase(
     override val id: Long = 0,
     override val receiptCode: Long,
+    override val extraScoreItem: ExtraScoreItem = ExtraScoreItem(false, false),
     val averageScore: BigDecimal = BigDecimal(0),
 ) : ApplicationCase(
     id = id,
-    receiptCode = receiptCode
+    receiptCode = receiptCode,
+    extraScoreItem = extraScoreItem
 ) {
     override fun calculateVolunteerScore(): BigDecimal {
         return (averageScore - BigDecimal(40))

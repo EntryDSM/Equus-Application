@@ -1,10 +1,12 @@
 package hs.kr.equus.application.domain.applicationCase.model
 
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import java.math.BigDecimal
 
 sealed class ApplicationCase(
     open val receiptCode: Long,
-    open val id: Long
+    open val id: Long,
+    open val extraScoreItem: ExtraScoreItem
 ) {
     companion object {
         const val MAX_ATTENDANCE_SCORE = 15

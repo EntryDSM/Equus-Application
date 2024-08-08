@@ -48,7 +48,19 @@ class WebApplicationCaseAdapter(
     fun updateQualificationCase(
         @RequestBody @Valid request: UpdateQualificationCaseWebRequest,
     ) {
-        updateQualificationCaseUseCase.execute(UpdateQualificationCaseRequest(request.averageScore, request.extraScore))
+        updateQualificationCaseUseCase.execute(
+            request.run {
+                UpdateQualificationCaseRequest(
+                    koreanGrade = koreanGrade,
+                    socialGrade = scienceGrade,
+                    mathGrade = mathGrade,
+                    scienceGrade = scienceGrade,
+                    englishGrade = englishGrade,
+                    optGrade = optGrade,
+                    extraScore = extraScore
+                )
+            }
+        )
     }
 
     @GetMapping("/graduation")

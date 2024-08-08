@@ -52,7 +52,7 @@ class WebApplicationCaseAdapter(
             request.run {
                 UpdateQualificationCaseRequest(
                     koreanGrade = koreanGrade,
-                    socialGrade = scienceGrade,
+                    socialGrade = socialGrade,
                     mathGrade = mathGrade,
                     scienceGrade = scienceGrade,
                     englishGrade = englishGrade,

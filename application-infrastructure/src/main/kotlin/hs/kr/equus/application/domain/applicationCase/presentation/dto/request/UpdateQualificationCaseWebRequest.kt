@@ -8,11 +8,11 @@ import javax.validation.constraints.Digits
 import javax.validation.constraints.NotNull
 
 data class UpdateQualificationCaseWebRequest(
-    val koreanGrade: BigDecimal = BigDecimal.ZERO,
-    val socialGrade: BigDecimal = BigDecimal.ZERO,
-    val mathGrade: BigDecimal = BigDecimal.ZERO,
-    val scienceGrade: BigDecimal = BigDecimal.ZERO,
-    val englishGrade: BigDecimal = BigDecimal.ZERO,
-    val optGrade: BigDecimal = BigDecimal.ZERO,
+    val koreanGrade: BigDecimal,
+    val socialGrade: BigDecimal,
+    val mathGrade: BigDecimal,
+    val scienceGrade: BigDecimal,
+    val englishGrade: BigDecimal,
+    val optGrade: BigDecimal,
     val extraScore: ExtraScoreRequest
 )

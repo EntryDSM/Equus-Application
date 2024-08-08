@@ -27,7 +27,7 @@ class GetQualificationCaseUseCase(
         if(qualificationCase !is QualificationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
 
         return GetQualificationCaseResponse(
-            qualificationCase.averageScore,
+            qualificationCase.calculateAverageScore(),
             extraScore = qualificationCase.extraScoreItem.run {
                 GetExtraScoreResponse(
                     hasCertificate = hasCertificate,

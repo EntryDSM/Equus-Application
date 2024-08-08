@@ -35,8 +35,20 @@ data class QualificationCase(
         }
     }
 
-    // 과목 등급점수 평균 구하기
     fun calculateAverageScore(): BigDecimal {
+        val totalPoints =
+                    optGrade +
+                    socialGrade +
+                    mathGrade +
+                    englishGrade +
+                    scienceGrade +
+                    koreanGrade
+
+        return totalPoints.divide(BigDecimal(6), 3, RoundingMode.HALF_UP)
+    }
+
+    // 과목 등급점수 평균 구하기
+    fun calculatePointAverageScore(): BigDecimal {
         val totalPoints = listOf(
             getScorePoint(koreanGrade),
             getScorePoint(socialGrade),
@@ -66,7 +78,7 @@ data class QualificationCase(
     // 일반전형 → 평균 * 34 + 알고리즘 대회(3)  = 173
     //그 외 전형 → 평균 * 22 + 알고리즘 대회(3) + 자격증 취득(6) = 119
     override fun calculateTotalGradeScore(isCommon: Boolean): BigDecimal {
-        val averageScore = calculateAverageScore()
+        val averageScore = calculatePointAverageScore()
         return if (isCommon) {
             (averageScore * BigDecimal(34) + BigDecimal(3)).setScale(3, RoundingMode.HALF_UP)
         } else {

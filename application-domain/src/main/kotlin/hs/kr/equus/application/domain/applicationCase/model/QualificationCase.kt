@@ -48,7 +48,7 @@ data class QualificationCase(
     }
 
     // 과목 등급점수 평균 구하기
-    fun calculatePointAverageScore(): BigDecimal {
+    private fun calculatePointAverageScore(): BigDecimal {
         val totalPoints = listOf(
             getScorePoint(koreanGrade),
             getScorePoint(socialGrade),

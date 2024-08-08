@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.application.exception.ApplicationException
 import hs.kr.equus.application.domain.applicationCase.event.spi.ApplicationCaseEventPort
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.CommandApplicationCasePort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
@@ -32,6 +33,10 @@ class UpdateQualificationCaseUseCase(
         commandApplicationCasePort.save(
             qualificationCase.copy(
                 averageScore = request.averageScore,
+                extraScoreItem = ExtraScoreItem(
+                    hasCertificate = request.extraScore.hasCertificate,
+                    hasCompetitionPrize = request.extraScore.hasCompetitionPrize
+                )
             ),
         )
 

@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseE
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
+import hs.kr.equus.application.domain.applicationCase.usecase.dto.response.GetExtraScoreResponse
 import hs.kr.equus.application.domain.applicationCase.usecase.dto.response.GetQualificationCaseResponse
 import hs.kr.equus.application.global.annotation.UseCase
 import hs.kr.equus.application.global.security.spi.SecurityPort
@@ -25,6 +26,14 @@ class GetQualificationCaseUseCase(
 
         if(qualificationCase !is QualificationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
 
-        return GetQualificationCaseResponse(qualificationCase.averageScore)
+        return GetQualificationCaseResponse(
+            qualificationCase.averageScore,
+            extraScore = qualificationCase.extraScoreItem.run {
+                GetExtraScoreResponse(
+                    hasCertificate = hasCertificate,
+                    hasCompetitionPrize = hasCompetitionPrize
+                )
+            }
+        )
     }
 }

@@ -11,6 +11,7 @@ data class Graduation(
     override val receiptCode: Long,
     val studentNumber: StudentNumber? = null,
     val schoolCode: String? = null,
+    val teacherName: String? = null
 ) : GraduationInfo(
     graduateDate = graduateDate,
     isProspectiveGraduate = isProspectiveGraduate,
@@ -21,7 +22,8 @@ data class Graduation(
         return listOf(
             graduateDate,
             schoolCode,
-            studentNumber
+            studentNumber,
+            teacherName
         ).any { it == null }
     }
 }

@@ -25,8 +25,9 @@ class GraduationCaseJpaEntity(
     val isProspectiveGraduate: Boolean,
     override val receiptCode: Long,
     @Embedded
-    val extraScoreItem: ExtraScoreItem,
+    override val extraScoreItem: ExtraScoreItem,
 ) : ApplicationCaseEntity(
     id = id,
     receiptCode = receiptCode,
+    extraScoreItem = extraScoreItem
 )

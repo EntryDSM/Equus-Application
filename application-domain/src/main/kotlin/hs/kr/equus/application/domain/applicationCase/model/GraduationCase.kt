@@ -9,7 +9,7 @@ import java.math.RoundingMode
 data class GraduationCase(
     override val id: Long = 0,
     override val receiptCode: Long,
-    val extraScoreItem: ExtraScoreItem = ExtraScoreItem(false, false),
+    override val extraScoreItem: ExtraScoreItem = ExtraScoreItem(false, false),
     val volunteerTime: Int = 0,
     val absenceDayCount: Int = 0,
     val lectureAbsenceCount: Int = 0,
@@ -26,7 +26,8 @@ data class GraduationCase(
     val isProspectiveGraduate: Boolean,
 ) : ApplicationCase(
     id = id,
-    receiptCode = receiptCode
+    receiptCode = receiptCode,
+    extraScoreItem = extraScoreItem
 ) {
     operator fun BigDecimal.div(other: BigDecimal): BigDecimal = this.divide(other, 5, RoundingMode.HALF_EVEN)
 

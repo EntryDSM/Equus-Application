@@ -32,7 +32,12 @@ class UpdateQualificationCaseUseCase(
 
         commandApplicationCasePort.save(
             qualificationCase.copy(
-                averageScore = request.averageScore,
+                koreanGrade = request.koreanGrade,
+                scienceGrade = request.scienceGrade,
+                socialGrade = request.socialGrade,
+                mathGrade = request.mathGrade,
+                englishGrade = request.englishGrade,
+                optGrade = request.optGrade,
                 extraScoreItem = ExtraScoreItem(
                     hasCertificate = request.extraScore.hasCertificate,
                     hasCompetitionPrize = request.extraScore.hasCompetitionPrize

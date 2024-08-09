@@ -127,7 +127,7 @@ class GetApplicationUseCase(
                     lectureAbsenceCount = null,
                     earlyLeaveCount = null,
                     latenessCount = null,
-                    averageScore = averageScore,
+                    averageScore = applicationCase.calculateAverageScore(),
                     selfIntroduce = application.selfIntroduce!!,
                     studyPlan = application.studyPlan!!
                 )

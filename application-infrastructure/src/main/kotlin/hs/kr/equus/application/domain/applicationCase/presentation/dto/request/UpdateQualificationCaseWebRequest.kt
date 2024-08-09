@@ -8,10 +8,18 @@ import javax.validation.constraints.Digits
 import javax.validation.constraints.NotNull
 
 data class UpdateQualificationCaseWebRequest(
-    @DecimalMin("60.0")
-    @DecimalMax("100.0")
-    @Digits(integer = 3, fraction = 2)
-    @NotNull(message = "ged_average_score는 null이면 안됩니다.")
-    val averageScore: BigDecimal,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val koreanGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val socialGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val mathGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val scienceGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val englishGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val optGrade: BigDecimal = BigDecimal.ZERO,
+    @field:NotNull
     val extraScore: ExtraScoreRequest
 )

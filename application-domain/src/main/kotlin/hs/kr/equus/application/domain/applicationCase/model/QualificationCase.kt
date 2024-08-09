@@ -10,36 +10,89 @@ data class QualificationCase(
     override val id: Long = 0,
     override val receiptCode: Long,
     override val extraScoreItem: ExtraScoreItem = ExtraScoreItem(false, false),
-    val averageScore: BigDecimal = BigDecimal(0),
+    val koreanGrade: BigDecimal = BigDecimal.ZERO,
+    val socialGrade: BigDecimal = BigDecimal.ZERO,
+    val mathGrade: BigDecimal = BigDecimal.ZERO,
+    val scienceGrade: BigDecimal = BigDecimal.ZERO,
+    val englishGrade: BigDecimal = BigDecimal.ZERO,
+    val optGrade: BigDecimal = BigDecimal.ZERO,
+    // 일반전형 여부
+    val isCommon: Boolean = true,
 ) : ApplicationCase(
     id = id,
     receiptCode = receiptCode,
     extraScoreItem = extraScoreItem
 ) {
+
+    // 과목 등급 나누기
+    private fun getScorePoint(grade: BigDecimal): Int {
+        return when {
+            grade >= BigDecimal(98) -> 5
+            grade >= BigDecimal(94) -> 4
+            grade >= BigDecimal(90) -> 3
+            grade >= BigDecimal(86) -> 2
+            else -> 1
+        }
+    }
+
+    fun calculateAverageScore(): BigDecimal {
+        val totalPoints =
+                    optGrade +
+                    socialGrade +
+                    mathGrade +
+                    englishGrade +
+                    scienceGrade +
+                    koreanGrade
+
+        return totalPoints.divide(BigDecimal(6), 3, RoundingMode.HALF_UP)
+    }
+
+    // 과목 등급점수 평균 구하기
+    private fun calculatePointAverageScore(): BigDecimal {
+        val totalPoints = listOf(
+            getScorePoint(koreanGrade),
+            getScorePoint(socialGrade),
+            getScorePoint(mathGrade),
+            getScorePoint(scienceGrade),
+            getScorePoint(englishGrade),
+            getScorePoint(optGrade)
+        ).sum()
+        return BigDecimal(totalPoints).divide(BigDecimal(6), 3, RoundingMode.HALF_UP)
+    }
+
+    // 검정고시에서는 X
     override fun calculateVolunteerScore(): BigDecimal {
-        return (averageScore - BigDecimal(40))
-            .divide(BigDecimal(4), 3, RoundingMode.HALF_UP)
+        return BigDecimal.ZERO
     }
 
+    // 검정고시에서는 X
     override fun calculateAttendanceScore(): Int {
-        return MAX_ATTENDANCE_SCORE
+        return 0
     }
 
+    // 검정고시에서는 X
     override fun calculateGradeScores(): Array<BigDecimal> {
         return arrayOf(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)
     }
 
-    // TODO :: 선생님의 요구사항으로 검정고시 점수 계산이 없어질 예정입니다.
+    // 일반전형 → 평균 * 34 + 알고리즘 대회(3)  = 173
+    //그 외 전형 → 평균 * 22 + 알고리즘 대회(3) + 자격증 취득(6) = 119
     override fun calculateTotalGradeScore(isCommon: Boolean): BigDecimal {
-        val totalGradeScore =
-            ((averageScore - BigDecimal(50)) * BigDecimal.valueOf(1.6))
-                .setScale(3, RoundingMode.HALF_UP)
-
+        val averageScore = calculatePointAverageScore()
+        val competitionPrize =
+            when(extraScoreItem.hasCompetitionPrize) {
+                true -> BigDecimal(3)
+                else -> BigDecimal.ZERO
+            }
+        val certificate =
+            when(extraScoreItem.hasCertificate) {
+                true -> BigDecimal(6)
+                else -> BigDecimal.ZERO
+            }
         return if (isCommon) {
-            (totalGradeScore * (COMMON_GRADE_RATE))
-                .setScale(3, RoundingMode.HALF_UP)
+            (averageScore * BigDecimal(34) + competitionPrize).setScale(3, RoundingMode.HALF_UP)
         } else {
-            totalGradeScore
+            (averageScore * BigDecimal(22) + competitionPrize + certificate).setScale(3, RoundingMode.HALF_UP)
         }
     }
 }

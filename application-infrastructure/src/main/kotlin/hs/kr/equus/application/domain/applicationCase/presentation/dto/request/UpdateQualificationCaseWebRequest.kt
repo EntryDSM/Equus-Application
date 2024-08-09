@@ -8,11 +8,18 @@ import javax.validation.constraints.Digits
 import javax.validation.constraints.NotNull
 
 data class UpdateQualificationCaseWebRequest(
-    val koreanGrade: BigDecimal,
-    val socialGrade: BigDecimal,
-    val mathGrade: BigDecimal,
-    val scienceGrade: BigDecimal,
-    val englishGrade: BigDecimal,
-    val optGrade: BigDecimal,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val koreanGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val socialGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val mathGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val scienceGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val englishGrade: BigDecimal = BigDecimal.ZERO,
+    @field:DecimalMin("0.0") @field:DecimalMax("100.0")  @field:NotNull
+    val optGrade: BigDecimal = BigDecimal.ZERO,
+    @field:NotNull
     val extraScore: ExtraScoreRequest
 )

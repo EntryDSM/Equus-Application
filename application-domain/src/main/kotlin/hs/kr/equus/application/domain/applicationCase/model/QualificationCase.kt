@@ -79,10 +79,20 @@ data class QualificationCase(
     //그 외 전형 → 평균 * 22 + 알고리즘 대회(3) + 자격증 취득(6) = 119
     override fun calculateTotalGradeScore(isCommon: Boolean): BigDecimal {
         val averageScore = calculatePointAverageScore()
+        val competitionPrize =
+            when(extraScoreItem.hasCompetitionPrize) {
+                true -> BigDecimal(3)
+                else -> BigDecimal.ZERO
+            }
+        val certificate =
+            when(extraScoreItem.hasCertificate) {
+                true -> BigDecimal(6)
+                else -> BigDecimal.ZERO
+            }
         return if (isCommon) {
-            (averageScore * BigDecimal(34) + BigDecimal(3)).setScale(3, RoundingMode.HALF_UP)
+            (averageScore * BigDecimal(34) + competitionPrize).setScale(3, RoundingMode.HALF_UP)
         } else {
-            (averageScore * BigDecimal(22) + BigDecimal(3) + BigDecimal(6)).setScale(3, RoundingMode.HALF_UP)
+            (averageScore * BigDecimal(22) + competitionPrize + certificate).setScale(3, RoundingMode.HALF_UP)
         }
     }
 }

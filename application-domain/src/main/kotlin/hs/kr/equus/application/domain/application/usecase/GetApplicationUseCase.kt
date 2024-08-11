@@ -70,7 +70,8 @@ class GetApplicationUseCase(
             schoolName = school?.name,
             telephoneNumber = user.phoneNumber,
             parentTel = application.parentTel,
-            schoolTel = school?.tel
+            schoolTel = school?.tel,
+            parentRelation = application.parentRelation
         )
     }
 

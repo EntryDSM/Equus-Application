@@ -31,6 +31,7 @@ class GetInformationUseCase(
                 streetAddress = streetAddress,
                 postalCode = postalCode,
                 detailAddress = detailAddress,
+                parentRelation = parentRelation
             )
         }
     }

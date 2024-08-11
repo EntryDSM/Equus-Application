@@ -70,7 +70,8 @@ class GetApplicationUseCase(
             schoolName = school?.name,
             telephoneNumber = user.phoneNumber,
             parentTel = application.parentTel,
-            schoolTel = school?.tel
+            schoolTel = school?.tel,
+            parentRelation = application.parentRelation
         )
     }
 
@@ -127,7 +128,7 @@ class GetApplicationUseCase(
                     lectureAbsenceCount = null,
                     earlyLeaveCount = null,
                     latenessCount = null,
-                    averageScore = averageScore,
+                    averageScore = applicationCase.calculateAverageScore(),
                     selfIntroduce = application.selfIntroduce!!,
                     studyPlan = application.studyPlan!!
                 )

@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.application.usecase.dto.response
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
+import hs.kr.equus.application.domain.application.model.types.ParentRelation
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -18,7 +19,8 @@ data class ApplicationCommonInformationResponse(
     val schoolName: String?,
     val telephoneNumber: String,
     val schoolTel: String?,
-    val parentTel: String?
+    val parentTel: String?,
+    val parentRelation: ParentRelation?
 )
 
 data class ApplicationStatusResponse(

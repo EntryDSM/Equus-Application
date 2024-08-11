@@ -1,10 +1,7 @@
 package hs.kr.equus.application.domain.application.model
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
-import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
-import hs.kr.equus.application.domain.application.model.types.ApplicationType
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
-import hs.kr.equus.application.domain.application.model.types.Sex
+import hs.kr.equus.application.domain.application.model.types.*
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
 import java.util.*
@@ -24,6 +21,7 @@ data class Application(
     val applicantTel: String? = null,
     val parentName: String? = null,
     val parentTel: String? = null,
+    val parentRelation: ParentRelation? = null,
     val streetAddress: String? = null,
     val postalCode: String? = null,
     val detailAddress: String? = null,

@@ -10,10 +10,15 @@ import javax.persistence.Table
 @Table(name = "tbl_qualification_case")
 class QualificationCaseJpaEntity(
     override val id: Long,
-    val averageScore: BigDecimal,
     override val receiptCode: Long,
     @Embedded
     override val extraScoreItem: ExtraScoreItem,
+    val koreanGrade: BigDecimal,
+    val socialGrade: BigDecimal,
+    val optGrade: BigDecimal,
+    val mathGrade: BigDecimal,
+    val scienceGrade: BigDecimal,
+    val englishGrade: BigDecimal,
 ) : ApplicationCaseEntity(
     id = id,
     receiptCode = receiptCode,

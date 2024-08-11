@@ -1,20 +1,9 @@
 package hs.kr.equus.application.domain.application.domain.entity
 
-import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
-import hs.kr.equus.application.domain.application.model.types.ApplicationType
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
-import hs.kr.equus.application.domain.application.model.types.Sex
+import hs.kr.equus.application.domain.application.model.types.*
 import java.time.LocalDate
-import java.util.UUID
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.validation.constraints.NotNull
+import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "tbl_application")
@@ -38,6 +27,8 @@ class ApplicationJpaEntity(
     val parentName: String?,
     @Column(columnDefinition = "char(11)")
     val parentTel: String?,
+    @Enumerated(EnumType.STRING)
+    val parentRelation: ParentRelation?,
     val streetAddress: String?,
     val postalCode: String?,
     val detailAddress: String?,

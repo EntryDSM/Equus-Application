@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.presentation.dto.request
 
+import hs.kr.equus.application.domain.application.model.types.ParentRelation
 import hs.kr.equus.application.domain.application.model.types.Sex
 import org.hibernate.validator.constraints.Length
 import java.time.LocalDate
@@ -30,6 +31,7 @@ data class UpdateInformationWebRequest(
     val parentTel: String,
     @Length(max = 5, message = "TOO LONG NAME")
     val parentName: String,
+    val parentRelation: ParentRelation,
     @NotEmpty(message = "address는 Null 또는 공백을 허용하지 않습니다.") @Length(
         max = 300,
         message = "TOO LONG ADDRESS",

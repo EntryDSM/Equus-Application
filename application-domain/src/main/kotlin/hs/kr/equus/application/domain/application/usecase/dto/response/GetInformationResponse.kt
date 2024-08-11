@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase.dto.response
 
+import hs.kr.equus.application.domain.application.model.types.ParentRelation
 import hs.kr.equus.application.domain.application.model.types.Sex
 import java.time.LocalDate
 
@@ -14,4 +15,5 @@ data class GetInformationResponse(
     val streetAddress: String?,
     val postalCode: String?,
     val detailAddress: String?,
+    val parentRelation: ParentRelation?
 )

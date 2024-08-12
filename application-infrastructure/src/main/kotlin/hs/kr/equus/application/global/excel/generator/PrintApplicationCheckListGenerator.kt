@@ -54,7 +54,6 @@ class PrintApplicationCheckListGenerator : PrintApplicationCheckListPort {
         row.createCell(13).setCellValue(applicationCheckListVO.parentName)
         row.createCell(14).setCellValue(applicationCheckListVO.parentTel)
 
-        // Insert grades for each semester and subject separately
         row.createCell(15).setCellValue(applicationCheckListVO.koreanGrade.getOrElse(3) { 'X' }.toString())
         row.createCell(16).setCellValue(applicationCheckListVO.socialGrade.getOrElse(3) { 'X' }.toString())
         row.createCell(17).setCellValue(applicationCheckListVO.historyGrade.getOrElse(3) { 'X' }.toString())
@@ -96,7 +95,7 @@ class PrintApplicationCheckListGenerator : PrintApplicationCheckListPort {
         row.createCell(49).setCellValue(applicationCheckListVO.absenceDayCount.toString())
         row.createCell(50).setCellValue(applicationCheckListVO.latenessCount.toString())
         row.createCell(51).setCellValue(applicationCheckListVO.earlyLeaveCount.toString())
-        row.createCell(52).setCellValue(applicationCheckListVO.result.toString())
+        row.createCell(52).setCellValue(applicationCheckListVO.result)
         row.createCell(53).setCellValue(applicationCheckListVO.attendanceScore.toString())
         row.createCell(54).setCellValue(applicationCheckListVO.competition.toString())
         row.createCell(55).setCellValue(applicationCheckListVO.certification.toString())

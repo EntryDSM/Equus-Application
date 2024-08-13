@@ -1,6 +1,5 @@
 package hs.kr.equus.application.domain.application.presentation.dto.request
 
-import hs.kr.equus.application.domain.application.model.types.ParentRelation
 import hs.kr.equus.application.domain.application.model.types.Sex
 import org.hibernate.validator.constraints.Length
 import java.time.LocalDate

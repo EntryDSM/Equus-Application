@@ -12,3 +12,4 @@ data class ApplicationInfoVO (
     val graduationCase: GraduationCase? = null,
     val score: Score? = null
 )
+

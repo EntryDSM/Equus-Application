@@ -32,9 +32,11 @@ class PrintApplicationInfoGenerator : PrintApplicationInfoPort {
             val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
             httpServletResponse.setHeader("Content-Disposition", fileName)
 
-            applicationInfo.getWorkbook().write(httpServletResponse.outputStream)
+            applicationInfo.getWorkbook().use { workbook ->
+                workbook.write(httpServletResponse.outputStream)
+            }
         } catch (e: IOException) {
-            throw ExcelExceptions.ExcelIOException()
+            throw ExcelExceptions.ExcelIOException().initCause(e)
         }
     }
     private fun insertCode(row: Row, applicationInfoVO: ApplicationInfoVO) {

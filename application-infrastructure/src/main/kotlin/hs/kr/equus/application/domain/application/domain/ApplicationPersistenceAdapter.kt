@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.domain
 
+import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
@@ -13,7 +14,11 @@ import hs.kr.equus.application.domain.graduationInfo.domain.entity.QGraduationJp
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QQualificationJpaEntity.qualificationJpaEntity
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
+import hs.kr.equus.application.domain.applicationCase.domain.entity.QGraduationCaseJpaEntity
+import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity
+import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
@@ -136,6 +141,42 @@ class ApplicationPersistenceAdapter(
             count,
         )
     }
+
+    override fun queryApplicationInfoListByStatusIsSubmittedTrue(): List<ApplicationInfoVO> {
+        val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
+
+        return jpaQueryFactory
+            .select(
+                Projections.constructor(
+                    ApplicationInfoVO::class.java,
+                    applicationJpaEntity,
+                    graduationJpaEntity,
+                    QGraduationCaseJpaEntity.graduationCaseJpaEntity,
+                    QScoreJpaEntity.scoreJpaEntity
+                )
+            )
+            .from(applicationJpaEntity)
+            .leftJoin(graduationJpaEntity).on(applicationJpaEntity.receiptCode.eq(graduationJpaEntity.receiptCode))
+            .leftJoin(QScoreJpaEntity.scoreJpaEntity).on(applicationJpaEntity.receiptCode.eq(QScoreJpaEntity.scoreJpaEntity.receiptCode))
+            .leftJoin(QGraduationCaseJpaEntity.graduationCaseJpaEntity).on(applicationJpaEntity.receiptCode.eq(QGraduationCaseJpaEntity.graduationCaseJpaEntity.receiptCode))
+            .where(
+                applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList())
+            )
+            .fetch()
+            .filter {
+                statusMap[it.application.receiptCode]?.isSubmitted == true
+            }
+            .map { it ->
+                ApplicationInfoVO(
+                    application = it.application,
+                    graduation = it.graduation,
+                    score = it.score,
+                    graduationCase = it.graduationCase
+                )
+            }
+    }
+
+
     override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
 

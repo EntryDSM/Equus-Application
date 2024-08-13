@@ -5,7 +5,7 @@ import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
-class ApplicationCheckList {
+class ApplicationInfo {
     private val workbook: Workbook = XSSFWorkbook()
     private val sheet: Sheet = workbook.createSheet("점검표")
 

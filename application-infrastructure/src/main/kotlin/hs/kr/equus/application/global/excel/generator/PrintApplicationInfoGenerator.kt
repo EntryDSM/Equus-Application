@@ -27,7 +27,7 @@ class PrintApplicationInfoGenerator : PrintApplicationInfoPort {
 
         try {
             httpServletResponse.contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            val formatFilename = "attachment;filename=\"지원자점검표"
+            val formatFilename = "attachment;filename=\"전형자료"
             val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
             val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
             httpServletResponse.setHeader("Content-Disposition", fileName)

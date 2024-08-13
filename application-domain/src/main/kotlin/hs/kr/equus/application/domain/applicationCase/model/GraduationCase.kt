@@ -49,6 +49,24 @@ data class GraduationCase(
         private const val THIRD_GRADE = 2 // 3학년 1학기 + 3학년 2학기
     }
 
+    fun calculateAdditionalScore(isCommon: Boolean): BigDecimal {
+        val competitionPrize =
+            when(extraScoreItem.hasCompetitionPrize) {
+                true -> BigDecimal(3)
+                else -> BigDecimal.ZERO
+            }
+        val certificate =
+            when(extraScoreItem.hasCertificate) {
+                true -> BigDecimal(6)
+                else -> BigDecimal.ZERO
+            }
+        return if (isCommon) {
+            certificate
+        } else{
+            competitionPrize + certificate
+        }
+    }
+
     override fun calculateVolunteerScore(): BigDecimal {
         return if (volunteerTime >= MAX_VOLUNTEER_TIME) {
             BigDecimal(MAX_VOLUNTEER_SCORE)

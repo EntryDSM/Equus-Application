@@ -1,15 +1,11 @@
 package hs.kr.equus.application.domain.admin.presentation
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
-import hs.kr.equus.application.domain.application.usecase.GetApplicantsUseCase
-import hs.kr.equus.application.domain.application.usecase.GetApplicationCountUseCase
+import hs.kr.equus.application.domain.application.usecase.*
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
-import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplicantsRequest
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
-import hs.kr.equus.application.domain.application.usecase.PrintApplicantCodesUseCase
-import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import hs.kr.equus.application.domain.score.usecase.QueryStaticsScoreUseCase
 import hs.kr.equus.application.domain.score.usecase.dto.response.GetStaticsScoreResponse
@@ -29,7 +25,8 @@ class WebAdminAdapter(
     private val getApplicantsUseCase: GetApplicantsUseCase,
     private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase,
-    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase
+    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase,
+    private val printApplicationInfoUseCase: PrintApplicationInfoUseCase
 ) {
 
     @GetMapping("/statics/score")
@@ -56,6 +53,10 @@ class WebAdminAdapter(
     @GetMapping("/excel/applicants/code")
     fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
         printApplicantCodesUseCase.execute(httpServletResponse)
+
+    @GetMapping("/excel/application/info")
+    fun printApplicationInfo(httpServletResponse: HttpServletResponse) =
+        printApplicationInfoUseCase.execute(httpServletResponse)
 
     @GetMapping("/applicants")
     fun getApplicants(

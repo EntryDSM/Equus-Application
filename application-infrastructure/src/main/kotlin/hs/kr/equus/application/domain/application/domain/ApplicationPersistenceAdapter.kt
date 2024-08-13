@@ -1,6 +1,5 @@
 package hs.kr.equus.application.domain.application.domain
 
-import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
@@ -14,14 +13,7 @@ import hs.kr.equus.application.domain.graduationInfo.domain.entity.QGraduationJp
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QQualificationJpaEntity.qualificationJpaEntity
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
-import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
-import hs.kr.equus.application.domain.applicationCase.domain.entity.QGraduationCaseJpaEntity
-import hs.kr.equus.application.domain.applicationCase.domain.mapper.GraduationCaseMapper
-import hs.kr.equus.application.domain.graduationInfo.domain.mapper.GraduationMapper
-import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity
-import hs.kr.equus.application.domain.score.domain.mapper.ScoreMapper
-import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
@@ -33,9 +25,6 @@ class ApplicationPersistenceAdapter(
     private val applicationJpaRepository: ApplicationJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
     private val statusClient: StatusClient,
-    private val scoreMapper: ScoreMapper,
-    private val graduationCaseMapper: GraduationCaseMapper,
-    private val graduationMapper: GraduationMapper
 ) : ApplicationPort {
     override fun save(application: Application): Application {
         return applicationJpaRepository.save(
@@ -148,39 +137,23 @@ class ApplicationPersistenceAdapter(
         )
     }
 
-    override fun queryApplicationInfoListByStatusIsSubmittedTrue(): List<ApplicationInfoVO> {
+    override fun queryApplicationInfoListByStatusIsSubmittedTrue(): List<Application> {
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
 
         return jpaQueryFactory
             .select(
                 applicationJpaEntity,
-                graduationJpaEntity,
-                QGraduationCaseJpaEntity.graduationCaseJpaEntity,
-                QScoreJpaEntity.scoreJpaEntity
             )
             .from(applicationJpaEntity)
-            .leftJoin(graduationJpaEntity).on(applicationJpaEntity.receiptCode.eq(graduationJpaEntity.receiptCode))
-            .leftJoin(QScoreJpaEntity.scoreJpaEntity).on(applicationJpaEntity.receiptCode.eq(QScoreJpaEntity.scoreJpaEntity.receiptCode))
-            .leftJoin(QGraduationCaseJpaEntity.graduationCaseJpaEntity).on(applicationJpaEntity.receiptCode.eq(QGraduationCaseJpaEntity.graduationCaseJpaEntity.receiptCode))
             .where(
                 applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList())
             )
             .fetch()
-            .filter { tuple ->
-                val applicationEntity = tuple.get(applicationJpaEntity)
-                statusMap[applicationEntity?.receiptCode]?.isSubmitted == true
+            .filter {
+                statusMap[it?.receiptCode]?.isSubmitted == true
             }
             .map { it ->
-                val application = applicationMapper.toDomain(it.get(applicationJpaEntity))
-                val graduation = graduationMapper.toDomain(it.get(graduationJpaEntity))
-                val graduationCase = graduationCaseMapper.toDomain(it.get(QGraduationCaseJpaEntity.graduationCaseJpaEntity))
-                val score = scoreMapper.toDomain(it.get(QScoreJpaEntity.scoreJpaEntity))
-                ApplicationInfoVO(
-                    application = application!!,
-                    graduation = graduation,
-                    score = score,
-                    graduationCase = graduationCase
-                )
+                applicationMapper.toDomain(it)!!
             }
     }
 

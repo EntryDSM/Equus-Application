@@ -10,6 +10,5 @@ data class ApplicationInfoVO (
     val application: Application,
     val graduation: Graduation,
     val graduationCase: GraduationCase,
-    val status: Status,
     val score: Score
 )

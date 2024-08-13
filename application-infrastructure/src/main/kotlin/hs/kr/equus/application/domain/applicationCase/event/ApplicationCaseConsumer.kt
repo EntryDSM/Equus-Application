@@ -18,7 +18,6 @@ class ApplicationCaseConsumer(
         containerFactory = "kafkaListenerContainerFactory",
     )
     fun changeApplicationCase(dto: UpdateEducationStatusEvent) {
-        print("gdgd")
         changeApplicationCaseUseCase.execute(dto.receiptCode)
     }
 }

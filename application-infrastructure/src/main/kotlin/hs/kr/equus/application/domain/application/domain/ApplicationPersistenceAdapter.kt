@@ -184,9 +184,6 @@ class ApplicationPersistenceAdapter(
             }
     }
 
-
-
-
     override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
 

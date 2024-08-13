@@ -29,7 +29,7 @@ class ChangeGraduationInfoUseCase(
         val graduationInfo = graduationInfoFactory.createGraduationInfo(
             receiptCode = receiptCode,
             educationalStatus = application.educationalStatus,
-            graduateDate = graduateDate,
+            graduateDate = graduateDate
         )
         commandGraduationInfoPort.save(graduationInfo)
     }

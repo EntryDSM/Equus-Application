@@ -1,7 +1,13 @@
 package hs.kr.equus.application.global.document.pdf.data
 
 import hs.kr.equus.application.domain.application.model.Application
+import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus.*
+import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
+import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
+import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
+import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
 import hs.kr.equus.application.domain.file.spi.GetObjectPort
 import hs.kr.equus.application.domain.file.usecase.`object`.PathList
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
@@ -21,7 +27,8 @@ import java.util.*
 class PdfDataConverter(
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val getObjectPort: GetObjectPort,
-    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort
+    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
+    private val queryApplicationCasePort: QueryApplicationCasePort
 ) {
     fun applicationToInfo(application: Application, score: Score): PdfData {
         val values: MutableMap<String, Any> = HashMap()
@@ -37,6 +44,10 @@ class PdfDataConverter(
         setLocalDate(values)
         setIntroduction(application, values)
         setParentInfo(application, values)
+        setAllSubjectScores(application, values)
+        setAttendanceAndVolunteer(application, values)
+        setExtraScore(application, values)
+        setTeacherInfo(application, values)
 
         if (application.isRecommendationsRequired()) {
             setRecommendations(application, values)
@@ -66,6 +77,44 @@ class PdfDataConverter(
         values["address"] = setBlankIfNull(application.streetAddress)
         values["detailAddress"] = setBlankIfNull(application.detailAddress)
         values["birthday"] = setBlankIfNull(application.birthDate.toString())
+
+        values["region"] = when {
+            application.isDaejeon == true -> "대전"
+            application.isDaejeon == false -> "전국"
+            else -> ""
+        }
+
+        values["applicationType"] = when {
+            application.isCommon() -> "일반전형"
+            application.isSocial() -> "사회통합 전형"
+            application.isMeister() -> "마이스터인재 전형"
+            else -> ""
+        }
+
+        values["applicationRemark"] = if (application.isSocial()) {
+            when (application.applicationRemark) {
+                ApplicationRemark.BASIC_LIVING -> "기초생활수급자"
+                ApplicationRemark.ONE_PARENT -> "한부모가족"
+                ApplicationRemark.TEEN_HOUSEHOLDER -> "소년소녀가장"
+                ApplicationRemark.LOWEST_INCOME -> "차상위계층"
+                ApplicationRemark.FROM_NORTH -> "북한이탈주민"
+                ApplicationRemark.MULTICULTURAL -> "다문화가정"
+                ApplicationRemark.PROTECTED_CHILDREN -> "보호대상아동"
+                else -> ""
+            }
+        } else ""
+    }
+
+    private fun setAttendanceAndVolunteer(application: Application, values: MutableMap<String, Any>) {
+        val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
+
+        if(applicationCase is GraduationCase) {
+            values["absenceDayCount"] = applicationCase.absenceDayCount
+            values["latenessCount"] = applicationCase.latenessCount
+            values["earlyLeaveCount"] = applicationCase.earlyLeaveCount
+            values["lectureAbsenceCount"] = applicationCase.lectureAbsenceCount
+                values["volunteerTime"] = applicationCase.volunteerTime
+        }
     }
 
     private fun setGenderInfo(application: Application, values: MutableMap<String, Any>) {
@@ -98,7 +147,7 @@ class PdfDataConverter(
 
     private fun setPhoneNumber(application: Application, values: MutableMap<String, Any>) {
         if (application.applicantTel == "00000000000") {
-            values["aplicationTel"] = ""
+            values["applicantTel"] = ""
         } else {
             values["applicantTel"] = toFormattedPhoneNumber(application.applicantTel)
         }
@@ -131,8 +180,6 @@ class PdfDataConverter(
         }
     }
 
-
-
     private fun setUserType(application: Application, values: MutableMap<String, Any>) {
         val list = listOf(
             "isQualificationExam" to application.isQualificationExam(),
@@ -159,6 +206,12 @@ class PdfDataConverter(
         }
     }
 
+    private fun setExtraScore(application: Application, values: MutableMap<String, Any>) {
+        val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
+        values["hasCompetitionPrize"] = toCircleBallotbox(applicationCase?.extraScoreItem!!.hasCompetitionPrize)
+        values["hasCertificate"] = toCircleBallotbox(applicationCase.extraScoreItem.hasCertificate)
+    }
+
     private fun setGradeScore(application: Application, score: Score, values: MutableMap<String, Any>) {
         val isQualificationExam = application.isQualificationExam()
         val score1st = if (isQualificationExam) "" else score.thirdBeforeBeforeScore.toString()
@@ -176,6 +229,37 @@ class PdfDataConverter(
         }
     }
 
+    private fun setAllSubjectScores(application: Application, values: MutableMap<String, Any>) {
+        val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
+
+        if (applicationCase is GraduationCase) {
+            val grades = applicationCase.gradesPerSubject()
+            val subjects = listOf("국어", "사회", "역사", "수학", "과학", "영어", "기술가정")
+
+            subjects.forEach { subject ->
+                val subjectGrades = grades[subject]
+                if (subjectGrades != null) {
+                    val subjectPrefix = when (subject) {
+                        "국어" -> "korean"
+                        "사회" -> "social"
+                        "역사" -> "history"
+                        "수학" -> "math"
+                        "과학" -> "science"
+                        "영어" -> "english"
+                        "기술가정" -> "techAndHome"
+                        else -> subject.toLowerCase()
+                    }
+
+                    with(values) {
+                        put("${subjectPrefix}ThirdGradeSecondSemester", subjectGrades[0])
+                        put("${subjectPrefix}ThirdGradeFirstSemester", subjectGrades[1])
+                        put("${subjectPrefix}SecondGradeSecondSemester", subjectGrades[2])
+                        put("${subjectPrefix}SecondGradeFirstSemester", subjectGrades[3])
+                    }
+                }
+            }
+        }
+    }
 
     private fun setLocalDate(values: MutableMap<String, Any>) {
         val now: LocalDateTime = LocalDateTime.now()
@@ -192,8 +276,16 @@ class PdfDataConverter(
         values["newLineChar"] = "\n"
     }
 
+    private fun setTeacherInfo(application: Application, values: MutableMap<String, Any>) {
+        val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
+        if(graduationInfo is Graduation) {
+            values["teacherName"] = graduationInfo.teacherName ?: ""
+        }
+    }
+
     private fun setParentInfo(application: Application, values: MutableMap<String, Any>) {
         values["parentName"] = application.parentName!!
+        values["parentRelation"] = application.parentRelation ?: ""
     }
 
     private fun setRecommendations(application: Application, values: MutableMap<String, Any>) {
@@ -252,5 +344,9 @@ class PdfDataConverter(
 
     private fun toBallotBox(`is`: Boolean): String {
         return if (`is`) "☑" else "☐"
+    }
+
+    private fun toCircleBallotbox(`is`: Boolean): String {
+        return if (`is`) "O" else "X"
     }
 }

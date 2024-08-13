@@ -29,6 +29,7 @@ class UpdateInformationUseCase(
                     applicantTel = checkTelService.checkParentPutApplicantTel(userId, applicantTel),
                     parentName = parentName,
                     parentTel = parentTel,
+                    parentRelation = parentRelation,
                     streetAddress = streetAddress,
                     postalCode = postalCode,
                     detailAddress = detailAddress,

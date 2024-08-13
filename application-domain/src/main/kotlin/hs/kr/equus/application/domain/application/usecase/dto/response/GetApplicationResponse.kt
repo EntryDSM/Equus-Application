@@ -18,7 +18,8 @@ data class ApplicationCommonInformationResponse(
     val schoolName: String?,
     val telephoneNumber: String,
     val schoolTel: String?,
-    val parentTel: String?
+    val parentTel: String?,
+    val parentRelation: String?
 )
 
 data class ApplicationStatusResponse(

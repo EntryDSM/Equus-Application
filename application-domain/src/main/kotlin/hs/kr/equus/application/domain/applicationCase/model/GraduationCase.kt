@@ -43,10 +43,10 @@ data class GraduationCase(
         private const val E_SCORE = 1
 
         // 학기별 인덱스
-        private const val THIRD_2BEFORE = 0
-        private const val THIRD_BEFORE = 1
-        private const val THIRD_GRADE_SECOND = 3
-        private const val THIRD_GRADE = 2 // 3학년 1학기 + 3학년 2학기
+        private const val THIRD_2BEFORE = 0 // 직전전학기
+        private const val THIRD_BEFORE = 1 // 직전학기
+        private const val THIRD_GRADE_FIRST = 2 // 3학년 1학기
+        private const val THIRD_GRADE_SECOND = 3 // 3학년 2학기
     }
 
     fun calculateAdditionalScore(isCommon: Boolean): BigDecimal {
@@ -72,7 +72,7 @@ data class GraduationCase(
 
     override fun calculateGradeScores(): Array<BigDecimal> {
         val gradeScores: Array<BigDecimal> = calculateScores()
-        for (semester in THIRD_2BEFORE..THIRD_GRADE) {
+        for (semester in THIRD_2BEFORE..THIRD_GRADE_FIRST) {
             gradeScores[semester] = gradeScores[semester].setScale(3, RoundingMode.HALF_UP)
         }
         return gradeScores
@@ -100,9 +100,9 @@ data class GraduationCase(
         }
 
         if (isProspectiveGraduate) { // todo 오버라이딩에 맡추기 위해 isProspectiveGraduate를 파라미터가 아닌 필드로 저장함. 후에 변경 요함
-            calculatedScores[THIRD_GRADE] = scoresPerSemester[THIRD_GRADE] * BigDecimal(2)
+            calculatedScores[THIRD_GRADE_FIRST] = scoresPerSemester[THIRD_GRADE_FIRST] * BigDecimal(2)
         } else {
-            calculatedScores[THIRD_GRADE] = scoresPerSemester[THIRD_GRADE] + scoresPerSemester[3]
+            calculatedScores[THIRD_GRADE_FIRST] = scoresPerSemester[THIRD_GRADE_FIRST] + scoresPerSemester[3]
         }
 
         return checkShortOfSemesterCount(calculatedScores)
@@ -138,6 +138,25 @@ data class GraduationCase(
         return gradesPerSemester
     }
 
+    fun gradesPerSubject(): Map<String, Array<String>> {
+        val subjectNames = arrayOf(
+            "국어", "사회", "역사", "수학", "과학", "영어", "기술가정"
+        )
+        val subjects = arrayOf(
+            koreanGrade,
+            socialGrade,
+            historyGrade,
+            mathGrade,
+            scienceGrade,
+            englishGrade,
+            techAndHomeGrade
+        )
+
+        return subjectNames.zip(subjects).associate { (name, grades) ->
+            name to grades.toCharArray().map { it.toString() }.toTypedArray()
+        }
+    }
+
     private fun gradesToScore(gradesStr: String): BigDecimal {
         val grades = gradesStr.toCharArray()
         var semesterScore = 0
@@ -164,14 +183,14 @@ data class GraduationCase(
             calculatedScores[THIRD_2BEFORE] == BigDecimal.ZERO
         ) {
             for (semester in THIRD_2BEFORE..THIRD_BEFORE) {
-                calculatedScores[semester] += calculatedScores[THIRD_GRADE] / BigDecimal(2)
+                calculatedScores[semester] += calculatedScores[THIRD_GRADE_FIRST] / BigDecimal(2)
             }
         } else if (calculatedScores[THIRD_2BEFORE] == BigDecimal.ZERO) {
             calculatedScores[THIRD_2BEFORE] =
-                (calculatedScores[THIRD_GRADE] + calculatedScores[THIRD_BEFORE]) / BigDecimal(3)
+                (calculatedScores[THIRD_GRADE_FIRST] + calculatedScores[THIRD_BEFORE]) / BigDecimal(3)
         } else if (calculatedScores[THIRD_BEFORE] == BigDecimal.ZERO) {
             calculatedScores[THIRD_BEFORE] =
-                (calculatedScores[THIRD_GRADE] + calculatedScores[THIRD_2BEFORE]) / BigDecimal(3)
+                (calculatedScores[THIRD_GRADE_FIRST] + calculatedScores[THIRD_2BEFORE]) / BigDecimal(3)
         }
         return calculatedScores
     }

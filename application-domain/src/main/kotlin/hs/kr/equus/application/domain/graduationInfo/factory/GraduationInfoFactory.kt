@@ -29,16 +29,14 @@ class GraduationInfoFactory {
                 Graduation(
                     graduateDate = graduateDate,
                     receiptCode = receiptCode,
-                    isProspectiveGraduate = false,
-                    teacherName = teacherName!!
+                    isProspectiveGraduate = false
                 )
 
             EducationalStatus.PROSPECTIVE_GRADUATE ->
                 Graduation(
                     graduateDate = graduateDate,
                     receiptCode = receiptCode,
-                    isProspectiveGraduate = true,
-                    teacherName = teacherName!!
+                    isProspectiveGraduate = true
                 )
 
             null ->

@@ -27,8 +27,7 @@ class ApplicationJpaEntity(
     val parentName: String?,
     @Column(columnDefinition = "char(11)")
     val parentTel: String?,
-    @Enumerated(EnumType.STRING)
-    val parentRelation: ParentRelation?,
+    val parentRelation: String?,
     val streetAddress: String?,
     val postalCode: String?,
     val detailAddress: String?,

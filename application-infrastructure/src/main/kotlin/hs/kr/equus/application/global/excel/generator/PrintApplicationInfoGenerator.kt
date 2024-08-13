@@ -2,6 +2,7 @@ package hs.kr.equus.application.global.excel.generator
 
 import hs.kr.equus.application.domain.application.spi.PrintApplicationInfoPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
+import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import org.apache.poi.ss.usermodel.Row

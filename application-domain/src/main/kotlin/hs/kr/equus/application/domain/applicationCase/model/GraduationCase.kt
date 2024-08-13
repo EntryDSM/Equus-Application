@@ -50,21 +50,9 @@ data class GraduationCase(
     }
 
     fun calculateAdditionalScore(isCommon: Boolean): BigDecimal {
-        val competitionPrize =
-            when(extraScoreItem.hasCompetitionPrize) {
-                true -> BigDecimal(3)
-                else -> BigDecimal.ZERO
-            }
-        val certificate =
-            when(extraScoreItem.hasCertificate) {
-                true -> BigDecimal(6)
-                else -> BigDecimal.ZERO
-            }
-        return if (isCommon) {
-            certificate
-        } else{
-            competitionPrize + certificate
-        }
+        val competitionPrize = if (extraScoreItem.hasCompetitionPrize) BigDecimal(3) else BigDecimal.ZERO
+        val certificate = if (extraScoreItem.hasCertificate) BigDecimal(6) else BigDecimal.ZERO
+        return if (isCommon) certificate else competitionPrize + certificate
     }
 
     override fun calculateVolunteerScore(): BigDecimal {

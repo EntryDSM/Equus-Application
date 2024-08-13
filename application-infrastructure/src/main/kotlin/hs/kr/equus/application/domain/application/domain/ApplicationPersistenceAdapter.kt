@@ -17,7 +17,10 @@ import hs.kr.equus.application.domain.application.usecase.dto.response.GetStatic
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.domain.applicationCase.domain.entity.QGraduationCaseJpaEntity
+import hs.kr.equus.application.domain.applicationCase.domain.mapper.GraduationCaseMapper
+import hs.kr.equus.application.domain.graduationInfo.domain.mapper.GraduationMapper
 import hs.kr.equus.application.domain.score.domain.entity.QScoreJpaEntity
+import hs.kr.equus.application.domain.score.domain.mapper.ScoreMapper
 import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
@@ -30,6 +33,9 @@ class ApplicationPersistenceAdapter(
     private val applicationJpaRepository: ApplicationJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
     private val statusClient: StatusClient,
+    private val scoreMapper: ScoreMapper,
+    private val graduationCaseMapper: GraduationCaseMapper,
+    private val graduationMapper: GraduationMapper
 ) : ApplicationPort {
     override fun save(application: Application): Application {
         return applicationJpaRepository.save(
@@ -147,13 +153,10 @@ class ApplicationPersistenceAdapter(
 
         return jpaQueryFactory
             .select(
-                Projections.constructor(
-                    ApplicationInfoVO::class.java,
-                    applicationJpaEntity,
-                    graduationJpaEntity,
-                    QGraduationCaseJpaEntity.graduationCaseJpaEntity,
-                    QScoreJpaEntity.scoreJpaEntity
-                )
+                applicationJpaEntity,
+                graduationJpaEntity,
+                QGraduationCaseJpaEntity.graduationCaseJpaEntity,
+                QScoreJpaEntity.scoreJpaEntity
             )
             .from(applicationJpaEntity)
             .leftJoin(graduationJpaEntity).on(applicationJpaEntity.receiptCode.eq(graduationJpaEntity.receiptCode))
@@ -163,18 +166,25 @@ class ApplicationPersistenceAdapter(
                 applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList())
             )
             .fetch()
-            .filter {
-                statusMap[it.application.receiptCode]?.isSubmitted == true
+            .filter { tuple ->
+                val applicationEntity = tuple.get(applicationJpaEntity)
+                statusMap[applicationEntity?.receiptCode]?.isSubmitted == true
             }
             .map { it ->
+                val application = applicationMapper.toDomain(it.get(applicationJpaEntity))
+                val graduation = graduationMapper.toDomain(it.get(graduationJpaEntity))
+                val graduationCase = graduationCaseMapper.toDomain(it.get(QGraduationCaseJpaEntity.graduationCaseJpaEntity))
+                val score = scoreMapper.toDomain(it.get(QScoreJpaEntity.scoreJpaEntity))
                 ApplicationInfoVO(
-                    application = it.application,
-                    graduation = it.graduation,
-                    score = it.score,
-                    graduationCase = it.graduationCase
+                    application = application!!,
+                    graduation = graduation,
+                    score = score,
+                    graduationCase = graduationCase
                 )
             }
     }
+
+
 
 
     override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {

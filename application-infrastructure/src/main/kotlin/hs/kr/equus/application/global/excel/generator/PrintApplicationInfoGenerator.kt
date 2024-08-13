@@ -50,53 +50,53 @@ class PrintApplicationInfoGenerator : PrintApplicationInfoPort {
         row.createCell(7).setCellValue(safeGetValue(applicationInfoVO.application.applicantTel))
         row.createCell(8).setCellValue(safeGetValue(applicationInfoVO.application.sex))
         row.createCell(9).setCellValue(safeGetValue(applicationInfoVO.application.educationalStatus))
-        row.createCell(10).setCellValue(safeGetValue(applicationInfoVO.graduation.graduateDate))
-        row.createCell(11).setCellValue(safeGetValue(applicationInfoVO.graduation.schoolCode))
-        row.createCell(12).setCellValue(safeGetValue(applicationInfoVO.graduation.studentNumber))
+        row.createCell(10).setCellValue(safeGetValue(applicationInfoVO.graduation?.graduateDate))
+        row.createCell(11).setCellValue(safeGetValue(applicationInfoVO.graduation?.schoolCode))
+        row.createCell(12).setCellValue(safeGetValue(applicationInfoVO.graduation?.studentNumber))
         row.createCell(13).setCellValue(safeGetValue(applicationInfoVO.application.parentName))
         row.createCell(14).setCellValue(safeGetValue(applicationInfoVO.application.parentTel))
 
         val grades = listOf(
-            applicationInfoVO.graduationCase.koreanGrade,
-            applicationInfoVO.graduationCase.socialGrade,
-            applicationInfoVO.graduationCase.historyGrade,
-            applicationInfoVO.graduationCase.mathGrade,
-            applicationInfoVO.graduationCase.scienceGrade,
-            applicationInfoVO.graduationCase.techAndHomeGrade,
-            applicationInfoVO.graduationCase.englishGrade
+            applicationInfoVO.graduationCase?.koreanGrade,
+            applicationInfoVO.graduationCase?.socialGrade,
+            applicationInfoVO.graduationCase?.historyGrade,
+            applicationInfoVO.graduationCase?.mathGrade,
+            applicationInfoVO.graduationCase?.scienceGrade,
+            applicationInfoVO.graduationCase?.techAndHomeGrade,
+            applicationInfoVO.graduationCase?.englishGrade
         )
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(15 + i).setCellValue(safeGetValue(grade.getOrNull(3)))
+            row.createCell(15 + i).setCellValue(safeGetValue(grade?.getOrNull(3)))
         }
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(22 + i).setCellValue(safeGetValue(grade.getOrNull(2)))
+            row.createCell(22 + i).setCellValue(safeGetValue(grade?.getOrNull(2)))
         }
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(29 + i).setCellValue(safeGetValue(grade.getOrNull(1)))
+            row.createCell(29 + i).setCellValue(safeGetValue(grade?.getOrNull(1)))
         }
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(36 + i).setCellValue(safeGetValue(grade.getOrNull(0)))
+            row.createCell(36 + i).setCellValue(safeGetValue(grade?.getOrNull(0)))
         }
 
-        row.createCell(43).setCellValue(safeGetValue(applicationInfoVO.score.thirdGradeScore))
-        row.createCell(44).setCellValue(safeGetValue(applicationInfoVO.score.thirdBeforeScore))
-        row.createCell(45).setCellValue(safeGetValue(applicationInfoVO.score.thirdBeforeBeforeScore))
-        row.createCell(46).setCellValue(safeGetValue(applicationInfoVO.graduationCase.calculateGradeScores()))
-        row.createCell(47).setCellValue(safeGetValue(applicationInfoVO.graduationCase.volunteerTime))
-        row.createCell(48).setCellValue(safeGetValue(applicationInfoVO.graduationCase.calculateVolunteerScore()))
-        row.createCell(49).setCellValue(safeGetValue(applicationInfoVO.graduationCase.absenceDayCount))
-        row.createCell(50).setCellValue(safeGetValue(applicationInfoVO.graduationCase.lectureAbsenceCount))
-        row.createCell(51).setCellValue(safeGetValue(applicationInfoVO.graduationCase.earlyLeaveCount))
-        row.createCell(52).setCellValue(safeGetValue(applicationInfoVO.graduationCase.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
-        row.createCell(53).setCellValue(safeGetValue(applicationInfoVO.graduationCase.calculateAttendanceScore()))
-        row.createCell(54).setCellValue(safeGetValue(applicationInfoVO.graduationCase.extraScoreItem.hasCompetitionPrize))
-        row.createCell(55).setCellValue(safeGetValue(applicationInfoVO.graduationCase.extraScoreItem.hasCertificate))
-        row.createCell(56).setCellValue(safeGetValue(applicationInfoVO.graduationCase.calculateAdditionalScore(applicationInfoVO.application.isCommon())))
-        row.createCell(57).setCellValue(safeGetValue(applicationInfoVO.score.totalScore))
+        row.createCell(43).setCellValue(safeGetValue(applicationInfoVO.score?.thirdGradeScore))
+        row.createCell(44).setCellValue(safeGetValue(applicationInfoVO.score?.thirdBeforeScore))
+        row.createCell(45).setCellValue(safeGetValue(applicationInfoVO.score?.thirdBeforeBeforeScore))
+        row.createCell(46).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateGradeScores()))
+        row.createCell(47).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
+        row.createCell(48).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateVolunteerScore()))
+        row.createCell(49).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.absenceDayCount))
+        row.createCell(50).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
+        row.createCell(51).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.earlyLeaveCount))
+        row.createCell(52).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
+        row.createCell(53).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateAttendanceScore()))
+        row.createCell(54).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
+        row.createCell(55).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
+        row.createCell(56).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateAdditionalScore(applicationInfoVO.application.isCommon())))
+        row.createCell(57).setCellValue(safeGetValue(applicationInfoVO.score?.totalScore))
     }
 
 }

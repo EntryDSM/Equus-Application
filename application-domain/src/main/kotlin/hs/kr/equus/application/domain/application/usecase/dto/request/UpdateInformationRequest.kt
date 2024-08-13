@@ -11,7 +11,7 @@ data class UpdateInformationRequest(
     val applicantTel: String,
     val parentTel: String,
     val parentName: String,
-    val parentRelation: ParentRelation,
+    val parentRelation: String,
     val streetAddress: String,
     val postalCode: String,
     val detailAddress: String,

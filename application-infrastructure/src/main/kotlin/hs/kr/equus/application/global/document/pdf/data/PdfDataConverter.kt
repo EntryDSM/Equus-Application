@@ -47,6 +47,7 @@ class PdfDataConverter(
         setAllSubjectScores(application, values)
         setAttendanceAndVolunteer(application, values)
         setExtraScore(application, values)
+        setTeacherInfo(application, values)
 
         if (application.isRecommendationsRequired()) {
             setRecommendations(application, values)
@@ -275,8 +276,16 @@ class PdfDataConverter(
         values["newLineChar"] = "\n"
     }
 
+    private fun setTeacherInfo(application: Application, values: MutableMap<String, Any>) {
+        val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
+        if(graduationInfo is Graduation) {
+            values["teacherName"] = graduationInfo.teacherName ?: ""
+        }
+    }
+
     private fun setParentInfo(application: Application, values: MutableMap<String, Any>) {
         values["parentName"] = application.parentName!!
+        values["parentRelation"] = application.parentRelation ?: ""
     }
 
     private fun setRecommendations(application: Application, values: MutableMap<String, Any>) {

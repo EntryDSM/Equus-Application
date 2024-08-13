@@ -21,7 +21,7 @@ data class Application(
     val applicantTel: String? = null,
     val parentName: String? = null,
     val parentTel: String? = null,
-    val parentRelation: ParentRelation? = null,
+    val parentRelation: String? = null,
     val streetAddress: String? = null,
     val postalCode: String? = null,
     val detailAddress: String? = null,

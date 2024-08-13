@@ -18,7 +18,7 @@ class KafkaConsumerConfig(
     fun kafkaListenerContainerFactory(): ConcurrentKafkaListenerContainerFactory<String, String> {
         val factory = ConcurrentKafkaListenerContainerFactory<String, String>()
 
-        factory.setConcurrency(2)
+        factory.setConcurrency(3)
         factory.consumerFactory = DefaultKafkaConsumerFactory(consumerFactoryConfig())
         factory.containerProperties.pollTimeout = 500
         return factory

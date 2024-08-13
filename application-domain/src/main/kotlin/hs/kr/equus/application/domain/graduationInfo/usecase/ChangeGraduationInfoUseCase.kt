@@ -26,10 +26,11 @@ class ChangeGraduationInfoUseCase(
             commandGraduationInfoPort.delete(it)
         }
 
+        print("여기 실행됨")
         val graduationInfo = graduationInfoFactory.createGraduationInfo(
             receiptCode = receiptCode,
             educationalStatus = application.educationalStatus,
-            graduateDate = graduateDate,
+            graduateDate = graduateDate
         )
         commandGraduationInfoPort.save(graduationInfo)
     }

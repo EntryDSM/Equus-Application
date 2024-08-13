@@ -18,6 +18,7 @@ class GraduationInfoConsumer(
         containerFactory = "kafkaListenerContainerFactory",
     )
     fun changeGraduationInfo(dto: UpdateEducationStatusEvent) {
+        print("안녕")
         dto.apply {
             changeGraduationInfoUseCase.execute(
                 receiptCode = receiptCode,

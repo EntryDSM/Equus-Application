@@ -15,5 +15,5 @@ data class GetInformationResponse(
     val streetAddress: String?,
     val postalCode: String?,
     val detailAddress: String?,
-    val parentRelation: ParentRelation?
+    val parentRelation: String?
 )

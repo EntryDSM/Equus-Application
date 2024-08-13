@@ -107,7 +107,7 @@
                     <th style="width: 11%">성명</th>
                     <td style="width: 15%" th:text="${parentName}"></td>
                     <th style="width: 11%">관계</th>
-                    <td style="width: 15%"></td>
+                    <td style="width: 15%" th:text="${parentRelation}"></td>
                     <th style="width: 12%">휴대전화</th>
                     <td style="width: 25%" th:text="${parentTel}"></td>
                 </tr>
@@ -281,11 +281,13 @@
                   "
                         >
                             지원자:
-                            <span style="font-size: medium; margin-left: 60px"
+                            <span style="font-size: medium; margin-left: 30px" th:text="${userName}"></span>
+                            <span style="font-size: medium; margin-left: 30px"
                             >(서명 또는 인)</span
                             ><br />
-                            보호자:<span style="font-size: medium; margin-left: 60px"
-                        >(서명 또는 인)</span
+
+                            보호자:<span style="font-size: medium; margin-left: 30px"
+                        ><span style="font-size: medium; margin-left: 30px" th:text="${parentName}"></span>(서명 또는 인)</span
                         >
                         </p>
                         <p
@@ -338,7 +340,8 @@
                             <span style="margin-right: 4px" th:text="${day}"></span>일
                         </p>
                         <span style="font-size: medium">교사:</span>
-                        <span style="margin-left: 70px; font-size: small"
+                        <span style="font-size: medium; margin-left: 15px" th:text="${teacherName}"></span>
+                        <span style="margin-left: 15px; font-size: small"
                         >(서명 또는 인)</span
                         >
                     </td>
@@ -409,7 +412,8 @@
                     <th style="width: 11%; height: 30px">원서작성자</th>
                     <td style="width: 50%">
                         <span style="font-size: medium">교사:</span>
-                        <span style="margin-left: 150px; font-size: small"
+                        <span style="font-size: medium; margin: 40px" th:text="${teacherName}"></span>
+                        <span style="margin-left: 40px; font-size: small"
                         >(서명 또는 인)</span
                         >
                     </td>

@@ -8,7 +8,7 @@ import hs.kr.equus.application.domain.status.model.Status
 
 data class ApplicationInfoVO (
     val application: Application,
-    val graduation: Graduation,
-    val graduationCase: GraduationCase,
-    val score: Score
+    val graduation: Graduation? = null,
+    val graduationCase: GraduationCase? = null,
+    val score: Score? = null
 )

@@ -2,7 +2,7 @@ package hs.kr.equus.application.global.excel.generator
 
 import hs.kr.equus.application.domain.application.spi.PrintApplicantCodesPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
-import hs.kr.equus.application.global.excel.ApplicantCode
+import hs.kr.equus.application.global.excel.model.ApplicantCode
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.Row
 import org.springframework.stereotype.Component

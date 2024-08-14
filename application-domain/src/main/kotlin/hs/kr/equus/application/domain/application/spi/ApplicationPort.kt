@@ -11,4 +11,5 @@ interface ApplicationPort :
     ScoreQueryApplicationPort,
     QueryApplicantCodesByIsFirstRoundPassPort,
     QueryStaticsCountPort,
-    ApplicationCaseQueryApplicationPort
+    ApplicationCaseQueryApplicationPort,
+    QueryApplicationInfoListByStatusIsSubmittedPort

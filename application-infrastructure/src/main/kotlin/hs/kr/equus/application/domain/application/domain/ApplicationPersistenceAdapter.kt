@@ -138,23 +138,18 @@ class ApplicationPersistenceAdapter(
         )
     }
 
-    override fun queryApplicationInfoListByStatusIsSubmittedTrue(): List<Application> {
+    override fun queryApplicationInfoListByStatusIsSubmitted(isSubmitted: Boolean): List<Application> {
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
+
+        val filteredReceiptCodes = statusMap.filterValues { it.isSubmitted == isSubmitted }.keys.toList()
 
         return jpaQueryFactory
             .select(applicationJpaEntity)
             .from(applicationJpaEntity)
-            .where(
-                applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList())
-                    .and(applicationJpaEntity.receiptCode.`in`(
-                        statusMap.filterValues { it.isSubmitted }
-                            .keys.toList()
-                    ))
-            )
+            .where(applicationJpaEntity.receiptCode.`in`(filteredReceiptCodes))
             .fetch()
-            .map { it ->
-                applicationMapper.toDomain(it)!!
-            }
+            .map { applicationMapper.toDomain(it)!! }
+
     }
 
     override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {

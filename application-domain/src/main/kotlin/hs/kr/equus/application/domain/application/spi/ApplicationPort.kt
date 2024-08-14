@@ -12,4 +12,4 @@ interface ApplicationPort :
     QueryApplicantCodesByIsFirstRoundPassPort,
     QueryStaticsCountPort,
     ApplicationCaseQueryApplicationPort,
-    QueryApplicationInfoListByStatusIsSubmittedTruePort
+    QueryApplicationInfoListByStatusIsSubmittedPort

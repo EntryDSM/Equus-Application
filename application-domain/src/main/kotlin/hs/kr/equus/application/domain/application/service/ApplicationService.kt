@@ -1,13 +1,13 @@
-package hs.kr.equus.application.global.excel
+package hs.kr.equus.application.domain.application.service
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
-import org.springframework.stereotype.Component
+import hs.kr.equus.application.global.annotation.DomainService
 
-@Component
-class ExcelService {
+@DomainService
+class ApplicationService {
      fun translateEducationalStatus(status: EducationalStatus?): String {
         return when(status) {
             EducationalStatus.PROSPECTIVE_GRADUATE -> "졸업예정"

@@ -1,8 +1,13 @@
 package hs.kr.equus.application.global.excel.generator
 
+import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
+import hs.kr.equus.application.domain.application.model.types.ApplicationType
+import hs.kr.equus.application.domain.application.model.types.EducationalStatus
+import hs.kr.equus.application.domain.application.model.types.Sex
 import hs.kr.equus.application.domain.application.spi.PrintApplicationInfoPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.graduationInfo.model.GraduationInfo
+import hs.kr.equus.application.global.excel.ExcelService
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import org.apache.poi.ss.usermodel.Row
@@ -13,7 +18,9 @@ import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class PrintApplicationInfoGenerator : PrintApplicationInfoPort {
+class PrintApplicationInfoGenerator(
+    private val excelService: ExcelService
+) : PrintApplicationInfoPort {
     override fun execute(
         httpServletResponse: HttpServletResponse,
         applicationInfoVO: List<ApplicationInfoVO>
@@ -41,23 +48,22 @@ class PrintApplicationInfoGenerator : PrintApplicationInfoPort {
         }
     }
     private fun insertCode(row: Row, applicationInfoVO: ApplicationInfoVO) {
-        fun safeGetValue(value: Any?): String = value?.toString() ?: "X"
 
-        row.createCell(0).setCellValue(safeGetValue(applicationInfoVO.application.receiptCode))
-        row.createCell(1).setCellValue(safeGetValue(applicationInfoVO.application.applicationType))
-        row.createCell(2).setCellValue(safeGetValue(applicationInfoVO.application.isDaejeon))
-        row.createCell(3).setCellValue(safeGetValue(applicationInfoVO.application.applicationRemark))
-        row.createCell(4).setCellValue(safeGetValue(applicationInfoVO.application.applicantName))
-        row.createCell(5).setCellValue(safeGetValue(applicationInfoVO.application.birthDate))
-        row.createCell(6).setCellValue(safeGetValue(applicationInfoVO.application.detailAddress))
-        row.createCell(7).setCellValue(safeGetValue(applicationInfoVO.application.applicantTel))
-        row.createCell(8).setCellValue(safeGetValue(applicationInfoVO.application.sex))
-        row.createCell(9).setCellValue(safeGetValue(applicationInfoVO.application.educationalStatus))
-        row.createCell(10).setCellValue(safeGetValue(applicationInfoVO.graduation?.graduateDate))
-        row.createCell(11).setCellValue(safeGetValue(applicationInfoVO.graduation?.schoolCode))
-        row.createCell(12).setCellValue(safeGetValue(applicationInfoVO.graduation?.studentNumber))
-        row.createCell(13).setCellValue(safeGetValue(applicationInfoVO.application.parentName))
-        row.createCell(14).setCellValue(safeGetValue(applicationInfoVO.application.parentTel))
+        row.createCell(0).setCellValue(excelService.safeGetValue(applicationInfoVO.application.receiptCode))
+        row.createCell(1).setCellValue(excelService.translateApplicationType(applicationInfoVO.application.applicationType))
+        row.createCell(2).setCellValue(excelService.translateIsDaejeon(applicationInfoVO.application.isDaejeon))
+        row.createCell(3).setCellValue(excelService.translateApplicationRemark(applicationInfoVO.application.applicationRemark))
+        row.createCell(4).setCellValue(excelService.safeGetValue(applicationInfoVO.application.applicantName))
+        row.createCell(5).setCellValue(excelService.safeGetValue(applicationInfoVO.application.birthDate))
+        row.createCell(6).setCellValue(excelService.safeGetValue(applicationInfoVO.application.detailAddress))
+        row.createCell(7).setCellValue(excelService.safeGetValue(applicationInfoVO.application.applicantTel))
+        row.createCell(8).setCellValue(excelService.translateSex(applicationInfoVO.application.sex))
+        row.createCell(9).setCellValue(excelService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
+        row.createCell(10).setCellValue(excelService.safeGetValue(applicationInfoVO.graduation?.graduateDate))
+        row.createCell(11).setCellValue(excelService.safeGetValue(applicationInfoVO.graduation?.schoolCode))
+        row.createCell(12).setCellValue(excelService.safeGetValue(applicationInfoVO.graduation?.studentNumber?.classNumber))
+        row.createCell(13).setCellValue(excelService.safeGetValue(applicationInfoVO.application.parentName))
+        row.createCell(14).setCellValue(excelService.safeGetValue(applicationInfoVO.application.parentTel))
 
         val grades = listOf(
             applicationInfoVO.graduationCase?.koreanGrade,
@@ -70,36 +76,36 @@ class PrintApplicationInfoGenerator : PrintApplicationInfoPort {
         )
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(15 + i).setCellValue(safeGetValue(grade?.getOrNull(3)))
+            row.createCell(15 + i).setCellValue(excelService.safeGetValue(grade?.getOrNull(3)))
         }
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(22 + i).setCellValue(safeGetValue(grade?.getOrNull(2)))
+            row.createCell(22 + i).setCellValue(excelService.safeGetValue(grade?.getOrNull(2)))
         }
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(29 + i).setCellValue(safeGetValue(grade?.getOrNull(1)))
+            row.createCell(29 + i).setCellValue(excelService.safeGetValue(grade?.getOrNull(1)))
         }
 
         grades.forEachIndexed { i, grade ->
-            row.createCell(36 + i).setCellValue(safeGetValue(grade?.getOrNull(0)))
+            row.createCell(36 + i).setCellValue(excelService.safeGetValue(grade?.getOrNull(0)))
         }
 
-        row.createCell(43).setCellValue(safeGetValue(applicationInfoVO.score?.thirdGradeScore))
-        row.createCell(44).setCellValue(safeGetValue(applicationInfoVO.score?.thirdBeforeScore))
-        row.createCell(45).setCellValue(safeGetValue(applicationInfoVO.score?.thirdBeforeBeforeScore))
-        row.createCell(46).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateGradeScores()))
-        row.createCell(47).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
-        row.createCell(48).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateVolunteerScore()))
-        row.createCell(49).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.absenceDayCount))
-        row.createCell(50).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
-        row.createCell(51).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.earlyLeaveCount))
-        row.createCell(52).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
-        row.createCell(53).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateAttendanceScore()))
-        row.createCell(54).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
-        row.createCell(55).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
-        row.createCell(56).setCellValue(safeGetValue(applicationInfoVO.graduationCase?.calculateAdditionalScore(applicationInfoVO.application.isCommon())))
-        row.createCell(57).setCellValue(safeGetValue(applicationInfoVO.score?.totalScore))
+        row.createCell(43).setCellValue(excelService.safeGetValue(applicationInfoVO.score?.thirdGradeScore))
+        row.createCell(44).setCellValue(excelService.safeGetValue(applicationInfoVO.score?.thirdBeforeScore))
+        row.createCell(45).setCellValue(excelService.safeGetValue(applicationInfoVO.score?.thirdBeforeBeforeScore))
+        row.createCell(46).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.calculateGradeScores()))
+        row.createCell(47).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
+        row.createCell(48).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.calculateVolunteerScore()))
+        row.createCell(49).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.absenceDayCount))
+        row.createCell(50).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
+        row.createCell(51).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.earlyLeaveCount))
+        row.createCell(52).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
+        row.createCell(53).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.calculateAttendanceScore()))
+        row.createCell(54).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
+        row.createCell(55).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
+        row.createCell(56).setCellValue(excelService.safeGetValue(applicationInfoVO.graduationCase?.calculateAdditionalScore(applicationInfoVO.application.isCommon())))
+        row.createCell(57).setCellValue(excelService.safeGetValue(applicationInfoVO.score?.totalScore))
     }
 
 }

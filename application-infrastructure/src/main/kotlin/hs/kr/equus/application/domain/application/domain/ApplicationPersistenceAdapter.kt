@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.domain
 
+import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
@@ -141,17 +142,16 @@ class ApplicationPersistenceAdapter(
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
 
         return jpaQueryFactory
-            .select(
-                applicationJpaEntity,
-            )
+            .select(applicationJpaEntity)
             .from(applicationJpaEntity)
             .where(
                 applicationJpaEntity.receiptCode.`in`(statusMap.keys.toList())
+                    .and(applicationJpaEntity.receiptCode.`in`(
+                        statusMap.filterValues { it.isSubmitted }
+                            .keys.toList()
+                    ))
             )
             .fetch()
-            .filter {
-                statusMap[it?.receiptCode]?.isSubmitted == true
-            }
             .map { it ->
                 applicationMapper.toDomain(it)!!
             }

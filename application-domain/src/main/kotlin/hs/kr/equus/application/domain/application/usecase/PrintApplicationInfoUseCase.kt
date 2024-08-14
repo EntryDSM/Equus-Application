@@ -10,15 +10,15 @@ import javax.servlet.http.HttpServletResponse
 @ReadOnlyUseCase
 class PrintApplicationInfoUseCase(
     private val printApplicationInfoPort: PrintApplicationInfoPort,
-    private val queryApplicationInfoListByStatusIsSubmittedTruePort: QueryApplicationInfoListByStatusIsSubmittedTruePort,
+    private val queryApplicationInfoListByStatusIsSubmittedPort: QueryApplicationInfoListByStatusIsSubmittedPort,
     private val queryApplicationPort: QueryApplicationPort,
     private val queryScorePort: ApplicationQueryScorePort,
     private val queryApplicationCasePort: ApplicationQueryApplicationCasePort,
     private val queryGraduationInfoPort: ApplicationQueryGraduationInfoPort,
 ) {
     fun execute(httpServletResponse: HttpServletResponse) {
-        val applications = queryApplicationInfoListByStatusIsSubmittedTruePort
-            .queryApplicationInfoListByStatusIsSubmittedTrue()
+        val applications = queryApplicationInfoListByStatusIsSubmittedPort
+            .queryApplicationInfoListByStatusIsSubmitted(true)
             .map { application ->
                 val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
                 val graduation = graduationInfo as? Graduation

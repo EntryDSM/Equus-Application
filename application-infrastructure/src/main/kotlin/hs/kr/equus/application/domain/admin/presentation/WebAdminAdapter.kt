@@ -26,7 +26,8 @@ class WebAdminAdapter(
     private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase,
     private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase,
-    private val printApplicationInfoUseCase: PrintApplicationInfoUseCase
+    private val printApplicationInfoUseCase: PrintApplicationInfoUseCase,
+    private val printApplicationCheckListUseCase: PrintApplicationCheckListUseCase
 ) {
 
     @GetMapping("/statics/score")
@@ -54,9 +55,13 @@ class WebAdminAdapter(
     fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
         printApplicantCodesUseCase.execute(httpServletResponse)
 
-    @GetMapping("/excel/application/info")
+    @GetMapping("/excel/info")
     fun printApplicationInfo(httpServletResponse: HttpServletResponse) =
         printApplicationInfoUseCase.execute(httpServletResponse)
+
+    @GetMapping("/excel/check-list")
+    fun printApplicationCheckList(httpServletResponse: HttpServletResponse) =
+        printApplicationCheckListUseCase.execute(httpServletResponse)
 
     @GetMapping("/applicants")
     fun getApplicants(

@@ -178,7 +178,7 @@
         <td rowspan="3" style="width: 5%">인적<br />사항</td>
         <td style="padding: 0px 10px; width: 10%">성명</td>
         <td style="padding: 0px 10px; width: 20%" th:text="${userName}"></td>
-        <td style="padding: 0px 10px; width: 10%">접 수 번 호</td>
+        <td style="padding: 0px 10px; width: 10%" colspan="3">접 수 번 호</td>
         <td style="padding: 0px 10px; width: 20%" th:text="${receiptCode}"></td>
     </tr>
     <tr style="text-align: center">
@@ -198,7 +198,7 @@
         <td style="padding: 0px 10px; width: 10%">주소</td>
         <td
                 style="padding: 0px 10px; width: 20%"
-                colspan="3"
+                colspan="5"
                 th:text="|${address} ${detailAddress}|"
         ></td>
     </tr>

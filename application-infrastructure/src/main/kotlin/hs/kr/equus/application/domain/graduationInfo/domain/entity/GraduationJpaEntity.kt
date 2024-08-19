@@ -18,7 +18,9 @@ class GraduationJpaEntity(
     val studentNumber: StudentNumber?,
     val schoolCode: String?,
     @Column(nullable = true)
-    val teacherName: String?
+    val teacherName: String?,
+    @Column(nullable = true)
+    val teacherTel: String?
 ) : GraduationInfoEntity(
     id = id,
     graduateDate = graduateDate,

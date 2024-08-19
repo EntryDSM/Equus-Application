@@ -1,5 +1,6 @@
 package hs.kr.equus.application.domain.application.domain
 
+import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
@@ -136,6 +137,21 @@ class ApplicationPersistenceAdapter(
             count,
         )
     }
+
+    override fun queryApplicationInfoListByStatusIsSubmitted(isSubmitted: Boolean): List<Application> {
+        val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
+
+        val filteredReceiptCodes = statusMap.filterValues { it.isSubmitted == isSubmitted }.keys.toList()
+
+        return jpaQueryFactory
+            .select(applicationJpaEntity)
+            .from(applicationJpaEntity)
+            .where(applicationJpaEntity.receiptCode.`in`(filteredReceiptCodes))
+            .fetch()
+            .map { applicationMapper.toDomain(it)!! }
+
+    }
+
     override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {
         val statusMap = statusClient.getStatusList().associateBy(StatusInfoElement::receiptCode)
 

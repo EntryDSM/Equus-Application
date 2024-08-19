@@ -46,7 +46,8 @@ class UpdateGraduationInformationUseCase(
                         studentNumber = studentNumber,
                     ),
                     schoolCode = schoolCode,
-                    teacherName = teacherName!!
+                    teacherName = teacherName,
+                    teacherTel = teacherTel
                 ),
             )
         }

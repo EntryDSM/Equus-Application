@@ -31,7 +31,8 @@ class WebGraduationInfoAdapter(
                     classNumber = classNumber,
                     studentNumber = studentNumber,
                     schoolCode = schoolCode,
-                    teacherName = teacherName
+                    teacherName = teacherName,
+                    teacherTel = teacherTel
                 )
             },
         )

@@ -67,7 +67,7 @@ class ApplicationCheckList {
         sheet.createRow(16).createCell(0).setCellValue("기술가정")
         sheet.createRow(17).createCell(0).setCellValue("영어")
         sheet.createRow(18).createCell(0).setCellValue("점수")
-        sheet.createRow(19).createCell(5).setCellValue("총점")
+        sheet.createRow(18).createCell(4).setCellValue("총점")
 
         sheet.addMergedRegion(CellRangeAddress(0, 0, 2, 3))
         sheet.addMergedRegion(CellRangeAddress(1, 1, 2, 3))

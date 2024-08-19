@@ -283,6 +283,7 @@ class PdfDataConverter(
         val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
         if(graduationInfo is Graduation) {
             values["teacherName"] = graduationInfo.teacherName ?: ""
+            values["teacherTel"] = toFormattedPhoneNumber(graduationInfo.teacherTel)
         }
     }
 

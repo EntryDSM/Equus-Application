@@ -41,6 +41,13 @@ class ApplicationService {
         }
     }
 
+    fun translateBoolean(boolean: Boolean?): String {
+        return when(boolean) {
+            true -> "O"
+            else -> "X"
+        }
+    }
+
      fun translateApplicationRemark(remark: ApplicationRemark?): String {
         return when(remark) {
             ApplicationRemark.ONE_PARENT -> "한부모가족"

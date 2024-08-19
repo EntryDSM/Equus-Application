@@ -76,7 +76,7 @@ class PdfDataConverter(
         values["isFemale"] = toBallotBox(application.isFemale())
         values["address"] = setBlankIfNull(application.streetAddress)
         values["detailAddress"] = setBlankIfNull(application.detailAddress)
-        values["birthday"] = setBlankIfNull(application.birthDate.toString())
+        values["birthday"] = setBlankIfNull(application.birthDate.toString().replace("-", "."))
 
         values["region"] = when {
             application.isDaejeon == true -> "대전"
@@ -100,9 +100,9 @@ class PdfDataConverter(
                 ApplicationRemark.FROM_NORTH -> "북한이탈주민"
                 ApplicationRemark.MULTICULTURAL -> "다문화가정"
                 ApplicationRemark.PROTECTED_CHILDREN -> "보호대상아동"
-                else -> ""
+                else -> "해당없음"
             }
-        } else ""
+        } else "해당없음"
     }
 
     private fun setAttendanceAndVolunteer(application: Application, values: MutableMap<String, Any>) {
@@ -166,16 +166,19 @@ class PdfDataConverter(
             QUALIFICATION_EXAM -> {
                 values["qualificationExamPassedYear"] = yearMonth.year.toString()
                 values["qualificationExamPassedMonth"] = yearMonth.monthValue.toString()
+                values["educationalStatus"] = "${yearMonth.year}년 ${yearMonth.monthValue}월 중학교 졸업학력 검정고시"
             }
 
             GRADUATE -> {
                 values["graduateYear"] = yearMonth.year.toString()
                 values["graduateMonth"] = yearMonth.monthValue.toString()
+                values["educationalStatus"] = "${yearMonth.year}년 ${yearMonth.monthValue}월 중학교 졸업"
             }
 
             PROSPECTIVE_GRADUATE -> {
                 values["prospectiveGraduateYear"] = yearMonth.year.toString()
                 values["prospectiveGraduateMonth"] = yearMonth.monthValue.toString()
+                values["educationalStatus"] = "${yearMonth.year}년 ${yearMonth.monthValue}월 중학교 졸업예정"
             }
         }
     }

@@ -8,7 +8,7 @@
             padding: 0;
         }
         td {
-            border: 1px solid black;
+            border: 1px solid rgba(0,0,0,0.6);
             text-align: center;
             font-size: small;
             font-family: KoPubWorld_Dotum_Light;
@@ -16,7 +16,7 @@
         th {
             background-color: #f2f2f2;
             text-align: center;
-            border: 1px solid black;
+            border: 1px solid rgba(0,0,0,0.6);
             font-family: KoPubWorld_Dotum_Light;
         }
     </style>
@@ -33,8 +33,8 @@
 </div>
 <table style="border: none; border-collapse: collapse; width: 100%">
     <tr>
-        <td>
-            <table style="border-collapse: collapse; width: 100%; height: 32px">
+        <td style="border: 1px solid black">
+            <table style="border-collapse: collapse; width: 100%; height: 32px;">
                 <tr>
                     <th style="width: 11%">접수번호</th>
                     <td style="width: 23.9%" th:text="${receiptCode}"></td>
@@ -47,7 +47,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td style="border-bottom: 0; border-left: 1px solid black; border-right: 1.2px solid black">
             <table
                     style="border-collapse: collapse; margin-top: -1px; width: 100%"
             >
@@ -88,7 +88,7 @@
                     <td
                             colspan="3"
                             style="width: 64.5%"
-                            th:text="${address} + ' ' + ${detailAddress}"
+                            th:text="${educationalStatus}"
                     ></td>
                 </tr>
                 <tr>
@@ -105,19 +105,19 @@
                 <tr>
                     <th style="width: 11%; height: 29px">보호자</th>
                     <th style="width: 11%">성명</th>
-                    <td style="width: 15%" th:text="${parentName}"></td>
+                    <td style="width: 11%" th:text="${parentName}"></td>
                     <th style="width: 11%">관계</th>
-                    <td style="width: 15%" th:text="${parentRelation}"></td>
-                    <th style="width: 12%">휴대전화</th>
-                    <td style="width: 25%" th:text="${parentTel}"></td>
+                    <td style="width: 17%" th:text="${parentRelation}"></td>
+                    <th style="width: 11%">휴대전화</th>
+                    <td style="width: 28%" th:text="${parentTel}"></td>
                 </tr>
             </table>
         </td>
     </tr>
     <tr>
-        <td>
+        <td style="border-top: 0; border-bottom: 0">
             <table
-                    style="border-collapse: collapse; margin-top: -1px; width: 100%"
+                    style="border-collapse: collapse; margin-top: -1px; width: 100%;"
             >
                 <tr>
                     <th style="width: 11%; height: 29px">지역</th>
@@ -273,23 +273,26 @@
                             <span style="margin-right: 4px" th:text="${year}"></span>년 <span style="margin-right: 4px" th:text="${month}"></span>월
                             <span style="margin-right: 4px" th:text="${day}"></span>일
                         </p>
-                        <p
-                                style="
-                    font-size: larger;
-                    text-align: center;
-                    margin-bottom: 20px;
-                  "
-                        >
-                            지원자:
-                            <span style="font-size: medium; margin-left: 30px" th:text="${userName}"></span>
-                            <span style="font-size: medium; margin-left: 30px"
-                            >(서명 또는 인)</span
-                            ><br />
-
-                            보호자:<span style="font-size: medium; margin-left: 30px"
-                        ><span style="font-size: medium; margin-left: 30px" th:text="${parentName}"></span>(서명 또는 인)</span
-                        >
-                        </p>
+                        <div style="font-size: larger; text-align: center; margin-bottom: 20px">
+                            <div>
+                                <span style="display: inline-block; width: 75px; text-align: right;">지원자:</span>
+                                <span style="display: inline-block; width: 75px; text-align: center;">
+                                    <span style="font-size: medium;" th:text="${userName}"></span>
+                                </span>
+                                                        <span style="display: inline-block; width: 100px; text-align: left; font-size: small;">
+                                    (서명 또는 인)
+                                </span>
+                                                    </div>
+                                                    <div>
+                                                        <span style="display: inline-block; width: 75px; text-align: right;">보호자:</span>
+                                                        <span style="display: inline-block; width: 75px; text-align: center;">
+                                    <span style="font-size: medium;" th:text="${parentName}"></span>
+                                </span>
+                                                        <span style="display: inline-block; width: 100px; text-align: left; font-size: small;">
+                                    (서명 또는 인)
+                                </span>
+                            </div>
+                        </div>
                         <p
                                 style="
                     font-size: large;
@@ -326,7 +329,7 @@
                     margin-bottom: 6px;
                   "
                         >
-                            위 학생은 국가유공자자녀임을 확인함
+                            위 학생은 국가유공자자녀임을 확인함.
                         </p>
                         <p
                                 style="
@@ -381,9 +384,8 @@
                         <span style="margin-right: 4px" th:text="${day}"></span>일
                     </p>
                     <p style="font-size: large; text-align: center">
-                        <span style="font-size: medium">(</span>
-                        <span style="font-size: medium; margin-left: 160px">)</span>
-                        <span style="word-spacing: 16px; font-size: medium"
+                        <span style="font-size: large" th:text="${schoolName}"></span>
+                        <span style="word-spacing: 16px; font-size: large; margin-left:16px"
                         >중학교장 (직인)</span
                         >
                     </p>

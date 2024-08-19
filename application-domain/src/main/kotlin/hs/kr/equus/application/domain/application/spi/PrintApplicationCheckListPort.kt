@@ -4,5 +4,5 @@ import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfo
 import javax.servlet.http.HttpServletResponse
 
 interface PrintApplicationCheckListPort {
-    fun printApplicationCheckList(applicationInfoVO: ApplicationInfoVO, httpServletResponse: HttpServletResponse)
+    fun printApplicationCheckList(applicationInfoVO: List<ApplicationInfoVO>, httpServletResponse: HttpServletResponse)
 }

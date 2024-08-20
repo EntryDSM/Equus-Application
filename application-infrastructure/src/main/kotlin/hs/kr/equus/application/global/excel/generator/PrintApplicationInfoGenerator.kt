@@ -54,52 +54,53 @@ class PrintApplicationInfoGenerator(
         row.createCell(8).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
         row.createCell(9).setCellValue(applicationService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
         row.createCell(10).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.graduateDate))
-        row.createCell(11).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.schoolCode))
+        row.createCell(11).setCellValue(applicationService.safeGetValue(applicationInfoVO.school?.name))
         row.createCell(12).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.studentNumber?.classNumber))
         row.createCell(13).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentName))
         row.createCell(14).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentTel))
-
-        val grades = listOf(
-            applicationInfoVO.graduationCase?.koreanGrade,
-            applicationInfoVO.graduationCase?.socialGrade,
-            applicationInfoVO.graduationCase?.historyGrade,
-            applicationInfoVO.graduationCase?.mathGrade,
-            applicationInfoVO.graduationCase?.scienceGrade,
-            applicationInfoVO.graduationCase?.techAndHomeGrade,
-            applicationInfoVO.graduationCase?.englishGrade
-        )
-
-        grades.forEachIndexed { i, grade ->
-            row.createCell(15 + i).setCellValue(applicationService.safeGetValue(grade?.getOrNull(3)))
-        }
-
-        grades.forEachIndexed { i, grade ->
-            row.createCell(22 + i).setCellValue(applicationService.safeGetValue(grade?.getOrNull(2)))
-        }
-
-        grades.forEachIndexed { i, grade ->
-            row.createCell(29 + i).setCellValue(applicationService.safeGetValue(grade?.getOrNull(1)))
-        }
-
-        grades.forEachIndexed { i, grade ->
-            row.createCell(36 + i).setCellValue(applicationService.safeGetValue(grade?.getOrNull(0)))
-        }
-
+        val subject = applicationInfoVO.graduationCase?.gradesPerSubject()
+        row.createCell(15).setCellValue(applicationService.safeGetValue(subject?.get("국어")?.get(0)))
+        row.createCell(16).setCellValue(applicationService.safeGetValue(subject?.get("사회")?.get(0)))
+        row.createCell(17).setCellValue(applicationService.safeGetValue(subject?.get("역사")?.get(0)))
+        row.createCell(18).setCellValue(applicationService.safeGetValue(subject?.get("수학")?.get(0)))
+        row.createCell(19).setCellValue(applicationService.safeGetValue(subject?.get("과학")?.get(0)))
+        row.createCell(20).setCellValue(applicationService.safeGetValue(subject?.get("기술가정")?.get(0)))
+        row.createCell(21).setCellValue(applicationService.safeGetValue(subject?.get("영어")?.get(0)))
+        row.createCell(22).setCellValue(applicationService.safeGetValue(subject?.get("국어")?.get(1)))
+        row.createCell(23).setCellValue(applicationService.safeGetValue(subject?.get("사회")?.get(1)))
+        row.createCell(24).setCellValue(applicationService.safeGetValue(subject?.get("역사")?.get(1)))
+        row.createCell(25).setCellValue(applicationService.safeGetValue(subject?.get("수학")?.get(1)))
+        row.createCell(26).setCellValue(applicationService.safeGetValue(subject?.get("과학")?.get(1)))
+        row.createCell(27).setCellValue(applicationService.safeGetValue(subject?.get("기술가정")?.get(1)))
+        row.createCell(28).setCellValue(applicationService.safeGetValue(subject?.get("영어")?.get(1)))
+        row.createCell(29).setCellValue(applicationService.safeGetValue(subject?.get("국어")?.get(2)))
+        row.createCell(30).setCellValue(applicationService.safeGetValue(subject?.get("사회")?.get(2)))
+        row.createCell(31).setCellValue(applicationService.safeGetValue(subject?.get("역사")?.get(2)))
+        row.createCell(32).setCellValue(applicationService.safeGetValue(subject?.get("수학")?.get(2)))
+        row.createCell(33).setCellValue(applicationService.safeGetValue(subject?.get("과학")?.get(2)))
+        row.createCell(34).setCellValue(applicationService.safeGetValue(subject?.get("기술가정")?.get(2)))
+        row.createCell(35).setCellValue(applicationService.safeGetValue(subject?.get("영어")?.get(2)))
+        row.createCell(36).setCellValue(applicationService.safeGetValue(subject?.get("국어")?.get(3)))
+        row.createCell(37).setCellValue(applicationService.safeGetValue(subject?.get("사회")?.get(3)))
+        row.createCell(38).setCellValue(applicationService.safeGetValue(subject?.get("역사")?.get(3)))
+        row.createCell(39).setCellValue(applicationService.safeGetValue(subject?.get("수학")?.get(3)))
+        row.createCell(40).setCellValue(applicationService.safeGetValue(subject?.get("과학")?.get(3)))
+        row.createCell(41).setCellValue(applicationService.safeGetValue(subject?.get("기술가정")?.get(3)))
+        row.createCell(42).setCellValue(applicationService.safeGetValue(subject?.get("영어")?.get(3)))
         row.createCell(43).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.thirdGradeScore))
         row.createCell(44).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.thirdBeforeScore))
         row.createCell(45).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.thirdBeforeBeforeScore))
-        row.createCell(46).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateGradeScores()))
+        row.createCell(46).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.totalGradeScore))
         row.createCell(47).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
-        row.createCell(48).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateVolunteerScore()))
+        row.createCell(48).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.volunteerScore))
         row.createCell(49).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.absenceDayCount))
-        row.createCell(50).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
+        row.createCell(50).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.latenessCount))
         row.createCell(51).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.earlyLeaveCount))
-        row.createCell(52).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
-        row.createCell(53).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateAttendanceScore()))
-        row.createCell(54).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
-        row.createCell(55).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
-        row.createCell(56).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateAdditionalScore(applicationInfoVO.application.isCommon())))
-        row.createCell(57).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.totalScore))
+        row.createCell(52).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
+        row.createCell(53).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.attendanceScore))
+        row.createCell(54).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
+        row.createCell(55).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
+        row.createCell(56).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.extraScore))
+        row.createCell(57).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalScore))
     }
-
 }

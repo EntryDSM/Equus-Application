@@ -7,7 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 class ApplicationInfo {
     private val workbook: Workbook = XSSFWorkbook()
-    private val sheet: Sheet = workbook.createSheet("점검표")
+    private val sheet: Sheet = workbook.createSheet("전형자료")
 
     fun getWorkbook(): Workbook {
         return workbook

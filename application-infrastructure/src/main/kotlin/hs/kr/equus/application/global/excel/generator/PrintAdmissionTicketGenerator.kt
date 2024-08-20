@@ -1,6 +1,7 @@
 package hs.kr.equus.application.global.excel.generator
 
 import hs.kr.equus.application.domain.application.model.Application
+import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.application.spi.PrintAdmissionTicketPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
@@ -18,7 +19,10 @@ import javax.servlet.http.HttpServletResponse
 
 
 @Component
-class PrintAdmissionTicketGenerator(private val httpServletResponse: HttpServletResponse) : PrintAdmissionTicketPort {
+class PrintAdmissionTicketGenerator(
+    private val httpServletResponse: HttpServletResponse,
+    private val applicationService: ApplicationService
+) : PrintAdmissionTicketPort {
     companion object {
         const val EXCEL_PATH = "/excel/excel-form.xlsx"
     }
@@ -128,12 +132,12 @@ class PrintAdmissionTicketGenerator(private val httpServletResponse: HttpServlet
     private fun fillApplicationData(sheet: Sheet, startRowIndex: Int, applicationInfoVo: ApplicationInfoVO) {
         val application = applicationInfoVo.application
         val graduation = applicationInfoVo.graduation
-        val school = applicationInfoVo.score
+        val school = applicationInfoVo.school
         setValue(sheet, "E4", "")
         setValue(sheet, "E6", application.applicantName!!)
-        setValue(sheet, "E8", application.)
-        setValue(sheet, "E10", application.applicationType.toString())
-        setValue(sheet, "E12", application.applicantTel!!)
+        setValue(sheet, "E8", school?.name ?: "")
+        setValue(sheet, "E10", applicationService.translateIsDaejeon(application.isDaejeon))
+        setValue(sheet, "E12", applicationService.translateApplicationType(application.applicationType))
         setValue(sheet, "E14", application.receiptCode.toString())
     }
 

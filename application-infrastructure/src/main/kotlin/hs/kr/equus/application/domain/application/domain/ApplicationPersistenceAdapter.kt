@@ -105,6 +105,10 @@ class ApplicationPersistenceAdapter(
         return result
     }
 
+    override fun queryAllApplication(): List<Application> {
+        return applicationJpaRepository.findAll().map { applicationMapper.toDomainNotNull(it) }
+    }
+
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {
         val applicationTypes = mutableListOf<ApplicationType>()
         if (isCommon == true) applicationTypes.add(ApplicationType.COMMON)

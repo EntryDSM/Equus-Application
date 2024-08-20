@@ -43,7 +43,6 @@ class PrintApplicationInfoGenerator(
         }
     }
     private fun insertCode(row: Row, applicationInfoVO: ApplicationInfoVO) {
-
         row.createCell(0).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.receiptCode))
         row.createCell(1).setCellValue(applicationService.translateApplicationType(applicationInfoVO.application.applicationType))
         row.createCell(2).setCellValue(applicationService.translateIsDaejeon(applicationInfoVO.application.isDaejeon))

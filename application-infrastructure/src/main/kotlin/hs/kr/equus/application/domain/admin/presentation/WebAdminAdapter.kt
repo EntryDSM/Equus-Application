@@ -26,7 +26,8 @@ class WebAdminAdapter(
     private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase,
     private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase,
-    private val printApplicationInfoUseCase: PrintApplicationInfoUseCase
+    private val printApplicationInfoUseCase: PrintApplicationInfoUseCase,
+    private val printAdmissionTicketUseCase: PrintAdmissionTicketUseCase
 ) {
 
     @GetMapping("/statics/score")
@@ -69,4 +70,8 @@ class WebAdminAdapter(
     ): GetApplicantsResponse {
         return getApplicantsUseCase.execute(pageSize, offset, getApplicantsRequest)
     }
+
+    @GetMapping("/excel/admission-ticket")
+    fun printAdmissionTicket(httpServletResponse: HttpServletResponse) =
+        printAdmissionTicketUseCase.execute(httpServletResponse)
 }

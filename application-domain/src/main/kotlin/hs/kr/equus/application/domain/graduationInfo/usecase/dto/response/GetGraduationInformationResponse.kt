@@ -20,4 +20,5 @@ data class GetGraduationInformationResponse(
     val schoolTel: String?,
     val teacherName: String?,
     val studentNumber: StudentNumber?,
+    val teacherTel: String?
 )

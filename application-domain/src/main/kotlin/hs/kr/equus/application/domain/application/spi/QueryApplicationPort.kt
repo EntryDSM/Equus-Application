@@ -30,6 +30,4 @@ interface QueryApplicationPort {
         pageSize: Long,
         offset: Long
     ): List<Applicant>
-
-    fun queryAllApplication(): List<Application>
 }

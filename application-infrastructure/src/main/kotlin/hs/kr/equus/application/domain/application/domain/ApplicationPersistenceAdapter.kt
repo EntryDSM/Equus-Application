@@ -1,6 +1,5 @@
 package hs.kr.equus.application.domain.application.domain
 
-import com.querydsl.jpa.JPAExpressions
 import com.querydsl.jpa.impl.JPAQueryFactory
 import hs.kr.equus.application.domain.application.domain.entity.QApplicationJpaEntity.applicationJpaEntity
 import hs.kr.equus.application.domain.application.domain.mapper.ApplicationMapper
@@ -10,15 +9,15 @@ import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
+import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QGraduationJpaEntity.graduationJpaEntity
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QQualificationJpaEntity.qualificationJpaEntity
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
-import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
-import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
-import java.util.UUID
+import java.util.*
 
 @Component
 class ApplicationPersistenceAdapter(
@@ -103,10 +102,6 @@ class ApplicationPersistenceAdapter(
         }
 
         return result
-    }
-
-    override fun queryAllApplication(): List<Application> {
-        return applicationJpaRepository.findAll().map { applicationMapper.toDomainNotNull(it) }
     }
 
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {

@@ -102,5 +102,4 @@ class PrintApplicationInfoGenerator(
         row.createCell(56).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateAdditionalScore(applicationInfoVO.application.isCommon())))
         row.createCell(57).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.totalScore))
     }
-
 }

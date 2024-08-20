@@ -11,7 +11,7 @@ import java.math.BigDecimal
 class ApplicationService {
      fun translateEducationalStatus(status: EducationalStatus?): String {
         return when(status) {
-            EducationalStatus.PROSPECTIVE_GRADUATE -> "졸업예정"
+            EducationalStatus.PROSPECTIVE_GRADUATE -> "졸업예정자"
             EducationalStatus.GRADUATE -> "졸업"
             EducationalStatus.QUALIFICATION_EXAM -> "검정고시"
             else -> "X"

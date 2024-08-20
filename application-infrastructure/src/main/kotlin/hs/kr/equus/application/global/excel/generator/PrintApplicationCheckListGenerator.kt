@@ -258,8 +258,7 @@ class PrintApplicationCheckListGenerator(
         var rowIndex = dh + 11
         subjectGrades.forEach { (subject, grades) ->
             getCell(rowIndex, 1).setCellValue(subject)
-            val reversedGrades = grades.reversed()
-            reversedGrades.forEachIndexed { index, grade ->
+            grades.forEachIndexed { index, grade ->
                 getCell(rowIndex, index + 2).setCellValue(grade)
             }
             rowIndex++

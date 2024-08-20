@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
 import hs.kr.equus.application.global.annotation.DomainService
+import java.math.BigDecimal
 
 @DomainService
 class ApplicationService {
@@ -64,4 +65,6 @@ class ApplicationService {
     }
 
     fun safeGetValue(value: Any?): String = value?.toString() ?: "X"
+
+    fun safeGetDouble(value: BigDecimal?): Double = value?.toDouble() ?: 0.0
 }

@@ -33,9 +33,10 @@ class PrintApplicationCheckListGenerator(
         try {
             httpServletResponse.apply {
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                val formatFilename = "attachment;filename=\"점검표"
                 val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
-                val fileName = "점검표$time.xlsx"
-                setHeader("Content-Disposition", "attachment; filename=\"$fileName\"")
+                val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
+                httpServletResponse.setHeader("Content-Disposition", fileName)
             }
 
             workbook.use { wb ->
@@ -213,7 +214,7 @@ class PrintApplicationCheckListGenerator(
         val number = applicationInfoVO.graduation?.studentNumber
         val studentNumber = (number?.gradeNumber?.toInt()!! * 10000) + (number.classNumber.toInt() * 100) + (number.studentNumber.toInt())
         getCell(1, 2).setCellValue(applicationInfoVO.application.receiptCode.toString())
-        getCell(1, 3).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.schoolCode))
+        getCell(1, 3).setCellValue(applicationService.safeGetValue(applicationInfoVO.school?.name))
         getCell(
             1,
             6
@@ -243,8 +244,8 @@ class PrintApplicationCheckListGenerator(
         ).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
         getCell(8, 5).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.attendanceScore))
         getCell(8, 6).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
-        getCell(8, 7).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.volunteerScore))
-        getCell(10, 7).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.calculateGradeScores()))
+        getCell(8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore))
+        getCell(10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
         val subjectGrades = applicationInfoVO.graduationCase?.gradesPerSubject() ?: emptyMap()
         var rowIndex = 11
         subjectGrades.forEach { (subject, grades) ->
@@ -264,11 +265,11 @@ class PrintApplicationCheckListGenerator(
             12,
             7
         ).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
-        getCell(13, 7).setCellValue(applicationInfoVO.graduationCase?.c)
-        getCell(18, 2).setCellValue(applicationService.safeGetValueToDouble(applicationInfoVO.score?.thirdGradeScore))
-        getCell(18, 4).setCellValue(applicationService.safeGetValueToDouble(applicationInfoVO.score?.thirdBeforeScore))
-        getCell(18, 5).setCellValue(applicationService.safeGetValueToDouble(applicationInfoVO.score?.thirdBeforeBeforeScore))
-        getCell(18, 7).setCellValue(applicationService.safeGetValueToDouble(applicationInfoVO.score?.totalScore))
+        getCell(13, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.extraScore))
+        getCell(18, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdGradeScore))
+        getCell(18, 4).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdBeforeScore))
+        getCell(18, 5).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdBeforeBeforeScore))
+        getCell(18, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalScore))
     }
 
 

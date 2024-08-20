@@ -30,7 +30,7 @@ class SecurityConfig(
             .antMatchers("/")
             .permitAll()
             .antMatchers("/admin/**")
-            .permitAll()
+            .hasRole(UserRole.ADMIN.name)
             .antMatchers("/schools")
             .permitAll()
             .antMatchers("/score/**")

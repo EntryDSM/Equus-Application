@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.application.model.types.Sex
 import hs.kr.equus.application.global.annotation.DomainService
+import java.math.BigDecimal
 
 @DomainService
 class ApplicationService {
@@ -41,6 +42,13 @@ class ApplicationService {
         }
     }
 
+    fun translateBoolean(boolean: Boolean?): String {
+        return when(boolean) {
+            true -> "O"
+            else -> "X"
+        }
+    }
+
      fun translateApplicationRemark(remark: ApplicationRemark?): String {
         return when(remark) {
             ApplicationRemark.ONE_PARENT -> "한부모가족"
@@ -52,10 +60,11 @@ class ApplicationService {
             ApplicationRemark.PRIVILEGED_ADMISSION -> "특례입학대상자"
             ApplicationRemark.NATIONAL_MERIT -> "국가유공자"
             ApplicationRemark.PROTECTED_CHILDREN -> "보호대상아동"
-            null -> "X"
-            else -> "해당 없음"
+            null -> "일반전형"
         }
     }
 
     fun safeGetValue(value: Any?): String = value?.toString() ?: "X"
+
+    fun safeGetDouble(value: BigDecimal?): Double = value?.toDouble() ?: 0.0
 }

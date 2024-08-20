@@ -55,11 +55,11 @@ class WebAdminAdapter(
     fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
         printApplicantCodesUseCase.execute(httpServletResponse)
 
-    @GetMapping("/excel/info")
+    @GetMapping("/excel/applicants")
     fun printApplicationInfo(httpServletResponse: HttpServletResponse) =
         printApplicationInfoUseCase.execute(httpServletResponse)
 
-    @GetMapping("/excel/check-list")
+    @GetMapping("/excel/applicants/check-list")
     fun printApplicationCheckList(httpServletResponse: HttpServletResponse) =
         printApplicationCheckListUseCase.execute(httpServletResponse)
 

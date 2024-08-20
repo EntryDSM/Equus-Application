@@ -27,7 +27,8 @@ class WebAdminAdapter(
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase,
     private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase,
     private val printApplicationInfoUseCase: PrintApplicationInfoUseCase,
-    private val printApplicationCheckListUseCase: PrintApplicationCheckListUseCase
+    private val printApplicationCheckListUseCase: PrintApplicationCheckListUseCase,
+    private val printAdmissionTicketUseCase: PrintAdmissionTicketUseCase
 ) {
 
     @GetMapping("/statics/score")

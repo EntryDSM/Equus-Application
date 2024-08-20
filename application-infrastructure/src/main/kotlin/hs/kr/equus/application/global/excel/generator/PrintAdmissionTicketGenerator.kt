@@ -1,14 +1,16 @@
 package hs.kr.equus.application.global.excel.generator
 
-import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.application.spi.PrintAdmissionTicketPort
-import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
+import hs.kr.equus.application.domain.file.spi.GetObjectPort
+import hs.kr.equus.application.domain.file.usecase.`object`.PathList
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellReference
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor
+import org.apache.poi.xssf.usermodel.XSSFDrawing
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
@@ -21,7 +23,8 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class PrintAdmissionTicketGenerator(
     private val httpServletResponse: HttpServletResponse,
-    private val applicationService: ApplicationService
+    private val applicationService: ApplicationService,
+    private val getObjectPort: GetObjectPort
 ) : PrintAdmissionTicketPort {
     companion object {
         const val EXCEL_PATH = "/excel/excel-form.xlsx"
@@ -34,15 +37,15 @@ class PrintAdmissionTicketGenerator(
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
 
-        // 스타일 맵을 미리 생성
         val styleMap = createStyleMap(sourceWorkbook, targetWorkbook)
 
         targetSheet.setDefaultColumnWidth(13)
 
         var currentRowIndex = 0
         applications.forEach { application ->
-            fillApplicationData(sourceSheet, 0, application)
+            fillApplicationData(sourceSheet, 0, application, sourceWorkbook)
             copyRows(sourceSheet, targetSheet, 0, 16, currentRowIndex, styleMap)
+            copyImage(sourceSheet, targetSheet, application, currentRowIndex)
             currentRowIndex += 20
         }
 
@@ -129,16 +132,33 @@ class PrintAdmissionTicketGenerator(
         }
     }
 
-    private fun fillApplicationData(sheet: Sheet, startRowIndex: Int, applicationInfoVo: ApplicationInfoVO) {
+    private fun fillApplicationData(sheet: Sheet, startRowIndex: Int, applicationInfoVo: ApplicationInfoVO, workbook: Workbook) {
         val application = applicationInfoVo.application
-        val graduation = applicationInfoVo.graduation
         val school = applicationInfoVo.school
+
         setValue(sheet, "E4", "")
         setValue(sheet, "E6", application.applicantName!!)
         setValue(sheet, "E8", school?.name ?: "")
         setValue(sheet, "E10", applicationService.translateIsDaejeon(application.isDaejeon))
         setValue(sheet, "E12", applicationService.translateApplicationType(application.applicationType))
         setValue(sheet, "E14", application.receiptCode.toString())
+    }
+
+    private fun copyImage(sourceSheet: Sheet, targetSheet: Sheet, applicationInfoVo: ApplicationInfoVO, targetRowIndex: Int) {
+        val application = applicationInfoVo.application
+        val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+        val workbook = targetSheet.workbook
+        val pictureId = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_PNG)
+        val drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
+        val anchor = XSSFClientAnchor()
+
+        // 이미지 위치 및 크기 설정 (필요에 따라 조정)
+        anchor.setCol1(0)
+        anchor.row1 = targetRowIndex + 3
+        anchor.setCol2(2)
+        anchor.row2 = targetRowIndex + 15
+
+        drawing.createPicture(anchor, pictureId)
     }
 
     private fun setValue(sheet: Sheet, position: String, value: String) {
@@ -156,5 +176,17 @@ class PrintAdmissionTicketGenerator(
         val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
         val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
         httpServletResponse.setHeader("Content-Disposition", fileName)
+    }
+
+    private fun insertImageToCell(sheet: Sheet, rowIndex: Int, colIndex: Int, imageData: ByteArray) {
+        val patriarch = sheet.createDrawingPatriarch()
+        val anchor = patriarch.createAnchor(0, 0, 0, 0, colIndex, rowIndex, colIndex + 1, rowIndex + 1)
+
+        val picture = patriarch.createPicture(anchor, loadPictureData(sheet.workbook, imageData))
+        picture.resize()
+    }
+
+    private fun loadPictureData(workbook: Workbook, imageData: ByteArray): Int {
+        return workbook.addPicture(imageData, Workbook.PICTURE_TYPE_JPEG)
     }
 }

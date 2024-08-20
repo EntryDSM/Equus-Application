@@ -25,7 +25,7 @@ class ApplicationPersistenceAdapter(
     private val applicationMapper: ApplicationMapper,
     private val applicationJpaRepository: ApplicationJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
-    private val statusClient: StatusClient,
+    private val statusClient: StatusClient
 ) : ApplicationPort {
     override fun save(application: Application): Application {
         return applicationJpaRepository.save(

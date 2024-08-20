@@ -19,7 +19,7 @@ class PrintAdmissionTicketUseCase(
     private val queryApplicationInfoListByStatusIsSubmittedPort: QueryApplicationInfoListByStatusIsSubmittedPort
 ){
     fun execute(httpServletResponse: HttpServletResponse) {
-        val applications = queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(false)
+        val applications = queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
             .map { it ->
                 val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(it)
                 val graduation = graduationInfo as? Graduation

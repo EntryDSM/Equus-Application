@@ -66,9 +66,9 @@ class WebAdminAdapter(
 
     @GetMapping("/applicants")
     fun getApplicants(
-        @RequestParam(name = "offset", defaultValue = "10")
+        @RequestParam(name = "offset", defaultValue = "0")
         pageSize: Long,
-        @RequestParam(name = "pageSize", defaultValue = "0")
+        @RequestParam(name = "pageSize", defaultValue = "10")
         offset: Long,
         @ModelAttribute
         getApplicantsRequest: GetApplicantsRequest

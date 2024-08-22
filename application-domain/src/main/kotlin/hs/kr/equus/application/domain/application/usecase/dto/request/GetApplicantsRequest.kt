@@ -3,8 +3,8 @@ package hs.kr.equus.application.domain.application.usecase.dto.request
 data class GetApplicantsRequest(
     val name: String? = "",
     val schoolName: String? = "",
-    var isDaejeon: Boolean = false,
-    var isNationwide: Boolean = false,
+    var isDaejeon: Boolean? = false,
+    var isNationwide: Boolean? = false,
     var isCommon: Boolean = false,
     var isMeister: Boolean = false,
     var isSocial: Boolean = false,
@@ -23,9 +23,9 @@ data class GetApplicantsRequest(
             isSubmitted = null
         }
 
-        if(isDaejeon && isNationwide) {
-            isDaejeon = true
-            isNationwide = true
+        if(isDaejeon!! && isNationwide!!) {
+            isDaejeon = null
+            isNationwide = null
         }
     }
 }

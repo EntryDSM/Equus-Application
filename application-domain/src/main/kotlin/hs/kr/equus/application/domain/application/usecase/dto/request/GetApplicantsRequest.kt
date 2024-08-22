@@ -19,11 +19,11 @@ data class GetApplicantsRequest(
             isSocial = true
         }
 
-        if(isSubmitted!! && isNotSubmitted) {
+        if(!isSubmitted!! && !isNotSubmitted) {
             isSubmitted = null
         }
 
-        if(isDaejeon!! && isNationwide!!) {
+        if(!isDaejeon!! && !isNationwide!!) {
             isDaejeon = null
             isNationwide = null
         }

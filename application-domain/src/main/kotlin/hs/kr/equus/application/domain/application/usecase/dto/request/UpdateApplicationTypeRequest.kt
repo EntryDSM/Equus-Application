@@ -8,4 +8,5 @@ data class UpdateApplicationTypeRequest(
     val applicationRemark: ApplicationRemark?,
     val isDaejeon: Boolean,
     val isOutOfHeadcount: Boolean,
+    val veteransNumber: Int?
 )

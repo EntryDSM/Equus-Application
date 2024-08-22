@@ -82,6 +82,7 @@ class WebApplicationAdapter(
                     applicationRemark = applicationRemark,
                     isDaejeon = isDaejeon,
                     isOutOfHeadcount = isOutOfHeadcount,
+                    veteransNumber = veteransNumber
                 )
             },
         )

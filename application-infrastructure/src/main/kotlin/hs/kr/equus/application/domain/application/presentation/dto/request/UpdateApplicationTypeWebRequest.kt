@@ -12,4 +12,5 @@ data class UpdateApplicationTypeWebRequest(
     val isDaejeon: Boolean,
     @NotNull
     val isOutOfHeadcount: Boolean,
+    val veteransNumber: Int?
 )

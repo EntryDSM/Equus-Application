@@ -27,6 +27,7 @@ data class Application(
     val detailAddress: String? = null,
     val applicationType: ApplicationType? = null,
     val applicationRemark: ApplicationRemark? = null,
+    val veteransNumber: Int? = null,
     val studyPlan: String? = null,
     val selfIntroduce: String? = null,
     val userId: UUID,

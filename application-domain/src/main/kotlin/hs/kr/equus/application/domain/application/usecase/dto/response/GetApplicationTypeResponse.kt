@@ -12,5 +12,6 @@ data class GetApplicationTypeResponse(
     val isDaejeon: Boolean?,
     val applicationRemark: ApplicationRemark?,
     val isOutOfHeadCount: Boolean?,
-    val graduatedDate: YearMonth?
+    val graduatedDate: YearMonth?,
+    val veteransNumber: Int?
 )

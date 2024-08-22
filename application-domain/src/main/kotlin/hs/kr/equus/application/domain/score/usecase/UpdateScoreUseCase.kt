@@ -28,7 +28,7 @@ class UpdateScoreUseCase(
         val score = queryScorePort.queryScoreByReceiptCode(receiptCode)
             ?: throw ScoreExceptions.ScoreNotFoundException()
 
-        val extraScore = calculateExtraScoreService.calculateScore(application, applicationCase)
+        val extraScore = calculateExtraScoreService.calculateScore(applicationCase, application.isCommon())
 
         commandScorePort.save(
             score.updateScore(

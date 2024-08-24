@@ -31,7 +31,6 @@ class QueryStaticsScoreUseCase(
                     eighthRate = totalScores[7],
                     ninthRate = totalScores[8],
                     tenthRate = totalScores[9],
-                    eleventhRate = totalScores[10]
                 )
             }
         }

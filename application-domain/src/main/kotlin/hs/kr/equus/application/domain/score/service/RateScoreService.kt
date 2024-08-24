@@ -7,10 +7,9 @@ import java.math.BigDecimal
 @DomainService
 class RateScoreService {
     fun rate(scores: List<BigDecimal>, applicationType: ApplicationType): Array<Int> {
-        val ratingCounts = if (applicationType == ApplicationType.COMMON) {
-            Array(12) { 0 }
-        } else {
-            Array(7) { 0 }
+        val ratingCounts = when(applicationType) {
+            ApplicationType.COMMON -> Array(11) { 0 }
+            else -> Array(7) { 0 }
         }
 
         scores.map { score ->
@@ -36,7 +35,7 @@ class RateScoreService {
                     score < BigDecimal(81) -> ratingCounts[5]++
                     score < BigDecimal(91) -> ratingCounts[4]++
                     score < BigDecimal(101) -> ratingCounts[3]++
-                    score < BigDecimal(121) -> ratingCounts[2]++
+                    score < BigDecimal(111) -> ratingCounts[2]++
                     score < BigDecimal(119) -> ratingCounts[1]++
                     score >= BigDecimal(119) -> ratingCounts[0]++
                     else -> 0 // 범위 넘어가는 숫자는 0 반환

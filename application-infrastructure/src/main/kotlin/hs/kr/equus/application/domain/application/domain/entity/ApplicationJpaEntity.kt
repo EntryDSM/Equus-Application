@@ -35,7 +35,9 @@ class ApplicationJpaEntity(
     val applicationType: ApplicationType?,
     @Enumerated(EnumType.STRING)
     val applicationRemark: ApplicationRemark?,
+    @Column(length = 1600)
     val studyPlan: String?,
+    @Column(length = 1600)
     val selfIntroduce: String?,
 //    @field:NotNull
     @Column(unique = true, columnDefinition = "BINARY(16)")

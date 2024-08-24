@@ -6,5 +6,5 @@ import java.math.BigDecimal
 data class GetStaticsScoreResponse(
     val isDaejeon: Boolean,
     val applicationType: ApplicationType,
-    var indices: List<Int>
+    var totalScore: List<Int>
 )

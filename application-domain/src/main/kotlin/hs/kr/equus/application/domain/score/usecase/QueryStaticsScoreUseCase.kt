@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.score.service.RateScoreService
 import hs.kr.equus.application.domain.score.spi.QueryScorePort
 import hs.kr.equus.application.domain.score.usecase.dto.response.GetStaticsScoreResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
+import java.math.BigDecimal
 
 @ReadOnlyUseCase
 class QueryStaticsScoreUseCase(
@@ -15,13 +16,13 @@ class QueryStaticsScoreUseCase(
         return ApplicationType.values().flatMap { type ->
             listOf(true, false).map { isDaejeon ->
                 val totalScores = queryScorePort.queryScoreByApplicationTypeAndIsDaejeon(type, isDaejeon)
-                    .map { it?.totalScore!! }
+                    .map { it?.totalScore ?: BigDecimal.ZERO }
                     .let { rateScoreService.rate(it, type) }
 
                 GetStaticsScoreResponse(
                     isDaejeon = isDaejeon,
                     applicationType = type,
-                    indices = totalScores.toList()
+                    totalScore = totalScores.toList()
                 )
             }
         }

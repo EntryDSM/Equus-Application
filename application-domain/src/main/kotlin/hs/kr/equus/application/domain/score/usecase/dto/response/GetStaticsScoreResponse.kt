@@ -14,4 +14,7 @@ data class GetStaticsScoreResponse(
     var sixthRate: Int = 0,
     var seventhRate: Int = 0,
     var eighthRate: Int = 0,
+    var ninthRate: Int = 0,
+    var tenthRate: Int = 0,
+    var eleventhRate: Int = 0
 )

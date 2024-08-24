@@ -30,7 +30,8 @@ class SchoolPersistenceAdapter(
                     name = it.schulNm,
                     tel = it.orgTelno,
                     type = it.schulKndScNm,
-                    address = it.orgRdnma
+                    address = it.orgRdnma,
+                    regionName = it.lctnScNm
                 )
             }?.firstOrNull()
         }
@@ -46,7 +47,8 @@ class SchoolPersistenceAdapter(
                     name = it.schulNm,
                     tel = it.orgTelno,
                     type = it.schulKndScNm,
-                    address = it.orgRdnma
+                    address = it.orgRdnma,
+                    regionName = it.lctnScNm
                 )
             }
         } ?: emptyList()

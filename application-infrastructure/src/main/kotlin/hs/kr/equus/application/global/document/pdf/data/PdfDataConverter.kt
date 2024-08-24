@@ -137,7 +137,7 @@ class PdfDataConverter(
                 ?: throw SchoolExceptions.SchoolNotFoundException()
 
             values["schoolCode"] = setBlankIfNull(school.code)
-            values["schoolRegion"] = setBlankIfNull(school.address)
+            values["schoolRegion"] = setBlankIfNull(school.regionName)
             values["schoolClass"] = setBlankIfNull(graduation.studentNumber!!.classNumber)
             values["schoolTel"] = toFormattedPhoneNumber(school.tel)
             values["schoolName"] = setBlankIfNull(school.name)

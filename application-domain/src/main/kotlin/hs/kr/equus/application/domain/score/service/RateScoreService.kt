@@ -8,7 +8,7 @@ import java.math.BigDecimal
 class RateScoreService {
     fun rate(scores: List<BigDecimal>, applicationType: ApplicationType): Array<Int> {
         val ratingCounts = when(applicationType) {
-            ApplicationType.COMMON -> Array(11) { 0 }
+            ApplicationType.COMMON -> Array(12) { 0 }
             else -> Array(7) { 0 }
         }
 

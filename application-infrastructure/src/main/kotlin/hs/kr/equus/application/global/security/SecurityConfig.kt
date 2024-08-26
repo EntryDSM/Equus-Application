@@ -25,8 +25,6 @@ class SecurityConfig(
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         http.authorizeRequests()
-            .requestMatchers(CorsUtils::isCorsRequest)
-            .permitAll()
             .antMatchers("/")
             .permitAll()
             .antMatchers("/admin/**")

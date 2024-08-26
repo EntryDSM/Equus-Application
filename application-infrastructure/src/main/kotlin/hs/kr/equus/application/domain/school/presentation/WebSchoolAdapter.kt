@@ -15,21 +15,25 @@ class WebSchoolAdapter(
     private val querySchoolUseCase: QuerySchoolUseCase
 ) {
 
+    private val lock = Any()
+
     @Cacheable(value = ["school_info"], key = "#name")
     @GetMapping
     fun querySchool (
-        @RequestParam(value = "school_name")
-        name: String
+        @RequestParam(value = "school_name") name: String
     ): QuerySchoolWebResponse {
-        return QuerySchoolWebResponse(
-            content = querySchoolUseCase.querySchool(name).content.map {
-                SchoolWebResponse(
-                    code = it.code,
-                    name = it.name,
-                    information = it.information,
-                    address = it.address
-                )
-            }
-        )
+        synchronized(lock) {
+            return QuerySchoolWebResponse(
+                content = querySchoolUseCase.querySchool(name).content.map {
+                    SchoolWebResponse(
+                        code = it.code,
+                        name = it.name,
+                        information = it.information,
+                        address = it.address
+                    )
+                }
+            )
+        }
     }
+
 }

@@ -10,32 +10,9 @@ import java.math.BigDecimal
 
 @DomainService
 class CalculateExtraScoreService{
-    companion object {
-        private val COMPETITION_PRIZE_EXTRA_SCORE = BigDecimal(3)
-        private val CERTIFICATE_EXTRA_SCORE = BigDecimal(6)
-        private val COMMON_TYPE_MAX_EXTRA_SCORE = BigDecimal(3)
-        private val SPECIAL_TYPE_MAX_EXTRA_SCORE = BigDecimal(9)
-    }
-    fun calculateScore(application: Application, applicationCase: ApplicationCase): BigDecimal {
-        val applicationType = application.applicationType ?: return BigDecimal.ZERO
-
-        return when (applicationType) {
-            ApplicationType.COMMON -> {
-                val score = if (applicationCase.extraScoreItem.hasCompetitionPrize) {
-                    COMPETITION_PRIZE_EXTRA_SCORE
-                } else {
-                    BigDecimal.ZERO
-                }
-                score.min(COMMON_TYPE_MAX_EXTRA_SCORE)
-            }
-            ApplicationType.SOCIAL, ApplicationType.MEISTER -> {
-                val score = listOf(
-                    applicationCase.extraScoreItem.hasCertificate to CERTIFICATE_EXTRA_SCORE,
-                    applicationCase.extraScoreItem.hasCompetitionPrize to COMPETITION_PRIZE_EXTRA_SCORE
-                ).filter { it.first }
-                    .sumOf { it.second }
-                score.min(SPECIAL_TYPE_MAX_EXTRA_SCORE)
-            }
-        }
+    fun calculateScore(applicationCase: ApplicationCase, isCommon: Boolean): BigDecimal {
+        val competitionPrize = if (applicationCase.extraScoreItem.hasCompetitionPrize) BigDecimal(3) else BigDecimal.ZERO
+        val certificate = if (applicationCase.extraScoreItem.hasCertificate) BigDecimal(6) else BigDecimal.ZERO
+        return if (isCommon) certificate else competitionPrize + certificate
     }
 }

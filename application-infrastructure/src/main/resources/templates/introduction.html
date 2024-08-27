@@ -59,7 +59,7 @@
     </tr>
     <tr>
         <td style="min-height: 230px; text-align: left; padding: 0px 7px;">
-            <p style="min-height: 230px; overflow-wrap: break-word; text-wrap: wrap"
+            <p style="min-height: 230px; overflow-wrap: break-word; text-wrap: wrap; word-break: break-all; line-break: anywhere;"
                th:utext="${#strings.replace(selfIntroduction, newLineChar, '&lt;br /&gt;')}"></p></td>
     </tr>
 </table>
@@ -71,7 +71,7 @@
     </tr>
     <tr>
         <td style=" min-height: 230px;text-align: left; padding: 0px 7px;">
-            <p style="min-height: 230px; overflow-wrap: break-word; text-wrap:wrap"
+            <p style="min-height: 230px; overflow-wrap: break-word; text-wrap: wrap; word-break: break-all; line-break: anywhere;"
                th:utext="${#strings.replace(studyPlan, newLineChar, '&lt;br /&gt;')}"></p></td>
     </tr>
 </table>

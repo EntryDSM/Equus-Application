@@ -46,6 +46,6 @@ data class ApplicationEvaluationResponse(
     val earlyLeaveCount: Int?,
     val latenessCount: Int?,
     val averageScore: BigDecimal?,
-    val selfIntroduce: String,
-    val studyPlan: String
+    val selfIntroduce: String? = null,
+    val studyPlan: String? = null
 )

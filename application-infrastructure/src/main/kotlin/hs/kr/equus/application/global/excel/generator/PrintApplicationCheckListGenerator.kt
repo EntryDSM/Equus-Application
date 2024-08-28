@@ -10,6 +10,7 @@ import org.apache.poi.ss.util.RegionUtil
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
 import java.io.IOException
+import java.net.URLEncoder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.servlet.ServletOutputStream
@@ -39,10 +40,12 @@ class PrintApplicationCheckListGenerator(
 
             httpServletResponse.apply {
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                val formatFilename = "attachment;filename=\"점검표"
+                val formatFilename = "점검표"
                 val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
-                val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
-                httpServletResponse.setHeader("Content-Disposition", fileName)
+                val encodedFilename = URLEncoder.encode("$formatFilename$time.xlsx", "UTF-8").replace("+", "%20")
+                val contentDisposition = "attachment; filename*=UTF-8''$encodedFilename"
+                httpServletResponse.setHeader("Content-Disposition", contentDisposition)
+
             }
 
             outputStream = httpServletResponse.outputStream

@@ -138,7 +138,7 @@ data class GraduationCase(
         return gradesPerSemester
     }
 
-    fun gradesPerSubject(): Map<String, Array<String?>> {
+    fun gradesPerSubject(): Map<String, Array<String>> {
         val subjectNames = arrayOf(
             "국어", "사회", "역사", "수학", "과학", "영어", "기술가정"
         )

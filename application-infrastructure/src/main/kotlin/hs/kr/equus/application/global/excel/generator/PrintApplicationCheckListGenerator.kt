@@ -33,10 +33,9 @@ class PrintApplicationCheckListGenerator(
             applicationInfoVO.forEach { it ->
                     formatSheet(dh)
                     insertDataIntoSheet(it, dh)
-                    dh += 20
+                    dh += 10
                 }
                 println(dh)
-
 
             httpServletResponse.apply {
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -144,12 +143,11 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(7 + dh, 8 + dh, 4, 4),
             intArrayOf(7 + dh, 8 + dh, 5, 5),
             intArrayOf(7 + dh, 8 + dh, 6, 6),
-            intArrayOf(11 + dh, 17 + dh, 1, 1),
-            intArrayOf(11 + dh, 17 + dh, 2, 2),
-            intArrayOf(11 + dh, 17 + dh, 3, 3),
-            intArrayOf(11 + dh, 17 + dh, 4, 4),
-            intArrayOf(11 + dh, 17 + dh, 6, 6),
-            intArrayOf(3 + dh, 5 + dh, 1, 1)
+            intArrayOf(10 + dh, 18 + dh, 1, 1),
+            intArrayOf(10 + dh, 18 + dh, 2, 2),
+            intArrayOf(10 + dh, 18 + dh, 3, 3),
+            intArrayOf(10 + dh, 18 + dh, 4, 4),
+            intArrayOf(10 + dh, 18 + dh, 6, 6),
         )
         setBorderStyle(borderRegionsDashedRight, BorderStyle.DASHED, Direction.RIGHT)
 
@@ -240,17 +238,17 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 3, 6).setCellValue(applicationService.safeGetValue(studentNumber))
         getCell(dh + 4, 1).setCellValue(applicationService.translateIsDaejeon(applicationInfoVO.application.isDaejeon))
         getCell(dh + 4, 2).setCellValue(applicationInfoVO.application.birthDate)
-        getCell(dh + 4, 6).setCellValue(applicationInfoVO.application.applicantTel)
+        getCell(dh + 4, 6).setCellValue(applicationService.formatPhoneNumber(applicationInfoVO.application.applicantTel))
         getCell(dh + 5, 1).setCellValue(applicationService.translateApplicationRemark(applicationInfoVO.application.applicationRemark))
         getCell(dh + 5, 2).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
-        getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentTel))
+        getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationService.formatPhoneNumber(applicationInfoVO.application.parentTel)))
 
-        getCell(dh + 8, 1).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.absenceDayCount))
-        getCell(dh + 8, 2).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.latenessCount))
-        getCell(dh + 8, 3).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.earlyLeaveCount))
-        getCell(dh + 8, 4).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
-        getCell(dh + 8, 5).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.attendanceScore))
-        getCell(dh + 8, 6).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
+        getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.absenceDayCount))
+        getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.latenessCount))
+        getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.earlyLeaveCount))
+        getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.lectureAbsenceCount))
+        getCell(dh + 8, 5).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.attendanceScore))
+        getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.volunteerTime))
         getCell(dh + 8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore))
         getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
 

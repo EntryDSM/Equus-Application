@@ -26,7 +26,7 @@ class PrintApplicationCheckListUseCase(
                     val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it)
                     val graduationCase = applicationCase as? GraduationCase
                     val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
-                val school = graduation?.schoolCode?.let { schoolCode ->
+                    val school = graduation?.schoolCode?.let { schoolCode ->
                     applicationQuerySchoolPort.querySchoolBySchoolCode(schoolCode)
                 }
                     ApplicationInfoVO(

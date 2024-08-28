@@ -75,7 +75,6 @@ class PrintApplicationCheckListGenerator(
     private fun Sheet.mergeRegions(rowOffset: Int) {
         val mergedRegions = arrayOf(
             CellRangeAddress(1 + rowOffset, 1 + rowOffset, 3, 5),
-            CellRangeAddress(18 + rowOffset, 18 + rowOffset, 2, 3),
             CellRangeAddress(3 + rowOffset, 3 + rowOffset, 2, 3),
             CellRangeAddress(4 + rowOffset, 4 + rowOffset, 2, 3),
             CellRangeAddress(5 + rowOffset, 5 + rowOffset, 2, 3),
@@ -267,10 +266,13 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 11, 7).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
         getCell(dh + 12, 7).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
         getCell(dh + 13, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.extraScore))
-        getCell(dh + 18, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdGradeScore))
+        getCell(dh + 18, 2).setCellValue(applicationService.safeGetNull(applicationInfoVO.score?.thirdScore))
+        getCell(dh + 18, 3).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdGradeScore))
         getCell(dh + 18, 4).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdBeforeScore))
         getCell(dh + 18, 5).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdBeforeBeforeScore))
-        getCell(dh + 18, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalScore))
+        getCell(dh + 18, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalGradeScore))
+        getCell(dh + 19,  7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalScore))
+
         setRowHeight(dh + 2, 10)
         setRowHeight(dh + 6, 10)
         setRowHeight(dh + 9, 10)

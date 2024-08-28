@@ -3,6 +3,7 @@ package hs.kr.equus.application.global.document.pdf.data
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus.*
+import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
@@ -28,7 +29,8 @@ class PdfDataConverter(
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val getObjectPort: GetObjectPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
-    private val queryApplicationCasePort: QueryApplicationCasePort
+    private val queryApplicationCasePort: QueryApplicationCasePort,
+    private val applicationService: ApplicationService
 ) {
     fun applicationToInfo(application: Application, score: Score): PdfData {
         val values: MutableMap<String, Any> = HashMap()
@@ -255,10 +257,10 @@ class PdfDataConverter(
                     }
 
                     with(values) {
-                        put("${subjectPrefix}ThirdGradeSecondSemester", subjectGrades[0])
-                        put("${subjectPrefix}ThirdGradeFirstSemester", subjectGrades[1])
-                        put("${subjectPrefix}SecondGradeSecondSemester", subjectGrades[2])
-                        put("${subjectPrefix}SecondGradeFirstSemester", subjectGrades[3])
+                        put("${subjectPrefix}ThirdGradeSecondSemester", applicationService.safeGetValue(subjectGrades[0]))
+                        put("${subjectPrefix}ThirdGradeFirstSemester",  applicationService.safeGetValue(subjectGrades[1]))
+                        put("${subjectPrefix}SecondGradeSecondSemester",  applicationService.safeGetValue(subjectGrades[2]))
+                        put("${subjectPrefix}SecondGradeFirstSemester",  applicationService.safeGetValue(subjectGrades[3]))
                     }
                 }
             }

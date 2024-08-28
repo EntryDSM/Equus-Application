@@ -66,5 +66,16 @@ class ApplicationService {
 
     fun safeGetValue(value: Any?): String = value?.toString() ?: "X"
 
-    fun safeGetDouble(value: BigDecimal?): Double = value?.toDouble() ?: 0.0
+    fun safeGetDouble(value: Any?): Double = when (value) {
+        is Double -> value
+        is Int -> value.toDouble()
+        else -> 0.0
+    }
+
+    fun safeGetNull(value: Any?): String =
+        value?.toString() ?: ""
+
+    fun formatPhoneNumber(phoneNumber: String?): String {
+        return "${phoneNumber!!.substring(0, 3)}-${phoneNumber.substring(3, 7)}-${phoneNumber.substring(7, 11)}"
+    }
 }

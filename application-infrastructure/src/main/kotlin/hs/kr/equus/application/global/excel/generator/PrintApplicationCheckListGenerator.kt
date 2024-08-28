@@ -227,9 +227,9 @@ class PrintApplicationCheckListGenerator(
     private fun insertDataIntoSheet(applicationInfoVO: ApplicationInfoVO, dh: Int) {
         val number = applicationInfoVO.graduation?.studentNumber
         val studentNumber = if (number != null) {
-            (number.gradeNumber.toIntOrNull() ?: 0) * 10000 +
-                    (number.classNumber.toIntOrNull() ?: 0) * 100 +
-                    (number.studentNumber.toIntOrNull() ?: 0)
+            number.gradeNumber.toInt() * 10000 +
+                    number.classNumber.toInt() * 100 +
+                    number.studentNumber.toInt()
         } else {
             null
         }

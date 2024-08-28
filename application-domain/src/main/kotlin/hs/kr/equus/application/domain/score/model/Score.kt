@@ -12,6 +12,7 @@ data class Score(
     val thirdBeforeBeforeScore: BigDecimal? = null,
     val thirdBeforeScore: BigDecimal? = null,
     val thirdGradeScore: BigDecimal? = null,
+    val thirdScore: BigDecimal? = null,
     val totalGradeScore: BigDecimal? = null,
     val totalScore: BigDecimal? = null,
     val extraScore: BigDecimal? = null,
@@ -29,6 +30,7 @@ data class Score(
         return copy(
             attendanceScore = attendanceScore,
             volunteerScore = volunteerScore,
+            thirdScore = gradeScores[3],
             thirdGradeScore = gradeScores[2],
             thirdBeforeScore = gradeScores[1],
             thirdBeforeBeforeScore = gradeScores[0],

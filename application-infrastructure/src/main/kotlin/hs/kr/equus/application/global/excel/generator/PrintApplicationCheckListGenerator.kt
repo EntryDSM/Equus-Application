@@ -10,7 +10,6 @@ import org.apache.poi.ss.util.RegionUtil
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
 import java.io.IOException
-import java.net.URLEncoder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.servlet.ServletOutputStream
@@ -34,18 +33,16 @@ class PrintApplicationCheckListGenerator(
             applicationInfoVO.forEach { it ->
                     formatSheet(dh)
                     insertDataIntoSheet(it, dh)
-                    dh += 10
+                    dh += 20
                 }
                 println(dh)
 
             httpServletResponse.apply {
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                val formatFilename = "점검표"
+                val formatFilename = "attachment;filename=\"점검표"
                 val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
-                val encodedFilename = URLEncoder.encode("$formatFilename$time.xlsx", "UTF-8").replace("+", "%20")
-                val contentDisposition = "attachment; filename*=UTF-8''$encodedFilename"
-                httpServletResponse.setHeader("Content-Disposition", contentDisposition)
-
+                val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
+                httpServletResponse.setHeader("Content-Disposition", fileName)
             }
 
             outputStream = httpServletResponse.outputStream
@@ -245,10 +242,10 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 3, 6).setCellValue(applicationService.safeGetValue(studentNumber))
         getCell(dh + 4, 1).setCellValue(applicationService.translateIsDaejeon(applicationInfoVO.application.isDaejeon))
         getCell(dh + 4, 2).setCellValue(applicationInfoVO.application.birthDate)
-        getCell(dh + 4, 6).setCellValue(applicationService.formatPhoneNumber(applicationInfoVO.application.applicantTel))
+        getCell(dh + 4, 6).setCellValue(applicationInfoVO.application.applicantTel)
         getCell(dh + 5, 1).setCellValue(applicationService.translateApplicationRemark(applicationInfoVO.application.applicationRemark))
         getCell(dh + 5, 2).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
-        getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationService.formatPhoneNumber(applicationInfoVO.application.parentTel)))
+        getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentTel))
 
         getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.absenceDayCount))
         getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.latenessCount))

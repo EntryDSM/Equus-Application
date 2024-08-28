@@ -18,6 +18,7 @@ class ScoreJpaEntity(
     val thirdBeforeBeforeScore: BigDecimal?,
     val thirdBeforeScore: BigDecimal?,
     val thirdGradeScore: BigDecimal?,
+    val thirdScore: BigDecimal?,
     val totalGradeScore: BigDecimal?,
     val extraScore: Int?,
     val totalScore: BigDecimal?,

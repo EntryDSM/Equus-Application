@@ -142,11 +142,12 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(7 + dh, 8 + dh, 4, 4),
             intArrayOf(7 + dh, 8 + dh, 5, 5),
             intArrayOf(7 + dh, 8 + dh, 6, 6),
-            intArrayOf(10 + dh, 18 + dh, 1, 1),
-            intArrayOf(10 + dh, 18 + dh, 2, 2),
-            intArrayOf(10 + dh, 18 + dh, 3, 3),
-            intArrayOf(10 + dh, 18 + dh, 4, 4),
-            intArrayOf(10 + dh, 18 + dh, 6, 6),
+            intArrayOf(11 + dh, 17 + dh, 1, 1),
+            intArrayOf(11 + dh, 17 + dh, 2, 2),
+            intArrayOf(11 + dh, 17 + dh, 3, 3),
+            intArrayOf(11 + dh, 17 + dh, 4, 4),
+            intArrayOf(11 + dh, 17 + dh, 6, 6),
+            intArrayOf(3 + dh, 5 + dh, 1, 1)
         )
         setBorderStyle(borderRegionsDashedRight, BorderStyle.DASHED, Direction.RIGHT)
 

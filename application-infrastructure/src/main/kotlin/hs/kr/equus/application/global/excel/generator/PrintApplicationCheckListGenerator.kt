@@ -258,7 +258,7 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 8, 5).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.attendanceScore))
         getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.volunteerTime))
         getCell(dh + 8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore))
-        getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
+        getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.calculateSubjectScore()))
 
         val subjectGrades = applicationInfoVO.graduationCase?.gradesPerSubject()
         var rowIndex = dh + 11

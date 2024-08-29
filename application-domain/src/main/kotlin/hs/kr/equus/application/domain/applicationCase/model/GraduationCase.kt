@@ -153,7 +153,7 @@ data class GraduationCase(
         )
 
         return subjectNames.zip(subjects).associate { (name, grades) ->
-            name to grades.toCharArray().map { it.toString() }.toTypedArray()
+            name to (grades.takeIf { it.isNotEmpty() }?.toCharArray()?.map { it.toString() }?.toTypedArray() ?: arrayOf("X"))
         }
     }
 

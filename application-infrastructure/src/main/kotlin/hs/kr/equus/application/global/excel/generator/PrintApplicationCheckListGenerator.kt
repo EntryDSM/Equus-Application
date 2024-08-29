@@ -246,10 +246,10 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 3, 6).setCellValue(applicationService.safeGetValue(studentNumber))
         getCell(dh + 4, 1).setCellValue(applicationService.translateIsDaejeon(applicationInfoVO.application.isDaejeon))
         getCell(dh + 4, 2).setCellValue(applicationInfoVO.application.birthDate)
-        getCell(dh + 4, 6).setCellValue(applicationInfoVO.application.applicantTel)
+        getCell(dh + 4, 6).setCellValue(applicationService.formatPhoneNumber(applicationInfoVO.application.applicantTel))
         getCell(dh + 5, 1).setCellValue(applicationService.translateApplicationRemark(applicationInfoVO.application.applicationRemark))
         getCell(dh + 5, 2).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
-        getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentTel))
+        getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationService.formatPhoneNumber(applicationInfoVO.application.parentTel)))
 
         getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.absenceDayCount))
         getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.latenessCount))

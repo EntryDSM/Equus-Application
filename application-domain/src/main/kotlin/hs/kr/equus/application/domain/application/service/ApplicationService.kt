@@ -69,6 +69,7 @@ class ApplicationService {
     fun safeGetDouble(value: Any?): Double = when (value) {
         is Double -> value
         is Int -> value.toDouble()
+        is BigDecimal -> value.toDouble()
         else -> 0.0
     }
 

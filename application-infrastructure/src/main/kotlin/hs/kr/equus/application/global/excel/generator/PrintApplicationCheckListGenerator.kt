@@ -119,7 +119,6 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(10 + dh, 17 + dh, 1, 7),
             intArrayOf(10 + dh, 10 + dh, 1, 5),
             intArrayOf(18 + dh, 18 + dh, 1, 5),
-            intArrayOf(19 + dh, 19 + dh, 6, 7)
         )
         setBorderStyle(borderRegionsThin, BorderStyle.THIN, Direction.ALL)
 
@@ -128,6 +127,7 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(10 + dh, 10 + dh, 6, 7),
             intArrayOf(1 + dh, 1 + dh, 2, 2),
             intArrayOf(3 + dh, 3 + dh, 2, 2),
+            intArrayOf(18 + dh, 18 + dh, 6, 7),
             intArrayOf(18 + dh, 18 + dh, 6, 7)
         )
         setBorderStyle(borderRegionsThick, BorderStyle.THICK, Direction.ALL)
@@ -183,7 +183,7 @@ class PrintApplicationCheckListGenerator(
             Pair(12 + dh, 6) to "기능사",
             Pair(13 + dh, 6) to "가산점",
             Pair(19 + dh, 6) to "총점",
-            Pair(18 + dh, 6) to "성적환산점",
+            Pair(18 + dh, 6) to "환산점수",
             Pair(11 + dh, 1) to "국어",
             Pair(12 + dh, 1) to "사회",
             Pair(13 + dh, 1) to "역사",

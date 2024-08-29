@@ -119,6 +119,7 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(10 + dh, 17 + dh, 1, 7),
             intArrayOf(10 + dh, 10 + dh, 1, 5),
             intArrayOf(18 + dh, 18 + dh, 1, 5),
+            intArrayOf(19 + dh, 19 + dh, 6, 7)
         )
         setBorderStyle(borderRegionsThin, BorderStyle.THIN, Direction.ALL)
 
@@ -147,7 +148,8 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(11 + dh, 17 + dh, 3, 3),
             intArrayOf(11 + dh, 17 + dh, 4, 4),
             intArrayOf(11 + dh, 17 + dh, 6, 6),
-            intArrayOf(3 + dh, 5 + dh, 1, 1)
+            intArrayOf(3 + dh, 5 + dh, 1, 1),
+            intArrayOf(19 + dh, 19 + dh, 6, 6)
         )
         setBorderStyle(borderRegionsDashedRight, BorderStyle.DASHED, Direction.RIGHT)
 
@@ -180,7 +182,8 @@ class PrintApplicationCheckListGenerator(
             Pair(11 + dh, 6) to "대회",
             Pair(12 + dh, 6) to "기능사",
             Pair(13 + dh, 6) to "가산점",
-            Pair(18 + dh, 6) to "총점",
+            Pair(19 + dh, 6) to "총점",
+            Pair(18 + dh, 6) to "성적환산점",
             Pair(11 + dh, 1) to "국어",
             Pair(12 + dh, 1) to "사회",
             Pair(13 + dh, 1) to "역사",
@@ -237,7 +240,7 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 1, 2).setCellValue(applicationInfoVO.application.receiptCode.toString())
         getCell(dh + 1, 3).setCellValue(applicationService.safeGetValue(applicationInfoVO.school?.name))
         getCell(dh + 1, 6).setCellValue(applicationService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
-        getCell(dh + 1, 7).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.graduateDate))
+        getCell(dh + 1, 7).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.graduateDate?.year))
         getCell(dh + 3, 1).setCellValue(applicationService.translateApplicationType(applicationInfoVO.application.applicationType))
         getCell(dh + 3, 2).setCellValue(applicationInfoVO.application.applicantName)
         getCell(dh + 3, 6).setCellValue(applicationService.safeGetValue(studentNumber))

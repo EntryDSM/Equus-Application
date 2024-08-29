@@ -128,7 +128,7 @@ class PrintApplicationCheckListGenerator(
             intArrayOf(1 + dh, 1 + dh, 2, 2),
             intArrayOf(3 + dh, 3 + dh, 2, 2),
             intArrayOf(18 + dh, 18 + dh, 6, 7),
-            intArrayOf(18 + dh, 18 + dh, 6, 7)
+            intArrayOf(19 + dh, 19 + dh, 6, 7)
         )
         setBorderStyle(borderRegionsThick, BorderStyle.THICK, Direction.ALL)
 
@@ -260,9 +260,9 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore))
         getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.calculateTotalGradeScore(applicationInfoVO.application.isCommon())))
 
-        val subjectGrades = applicationInfoVO.graduationCase?.gradesPerSubject() ?: emptyMap()
+        val subjectGrades = applicationInfoVO.graduationCase?.gradesPerSubject()
         var rowIndex = dh + 11
-        subjectGrades.forEach { (subject, grades) ->
+        subjectGrades?.forEach { (subject, grades) ->
             getCell(rowIndex, 1).setCellValue(applicationService.safeGetValue(subject))
             grades.forEachIndexed { index, grade ->
                 getCell(rowIndex, index + 2).setCellValue(grade)

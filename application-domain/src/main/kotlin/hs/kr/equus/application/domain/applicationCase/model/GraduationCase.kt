@@ -102,12 +102,9 @@ data class GraduationCase(
         if (isProspectiveGraduate) { // todo 오버라이딩에 맡추기 위해 isProspectiveGraduate를 파라미터가 아닌 필드로 저장함. 후에 변경 요함
             calculatedScores[THIRD_GRADE_FIRST] = scoresPerSemester[THIRD_GRADE_FIRST] * BigDecimal(2)
         } else {
-            calculatedScores[THIRD_GRADE_FIRST] = scoresPerSemester[THIRD_GRADE_FIRST] + scoresPerSemester[3]
-        }
-
-        if (!isProspectiveGraduate) {
             calculatedScores[THIRD_GRADE_SECOND] = scoresPerSemester[THIRD_GRADE_SECOND]
         }
+
 
         return checkShortOfSemesterCount(calculatedScores)
     }

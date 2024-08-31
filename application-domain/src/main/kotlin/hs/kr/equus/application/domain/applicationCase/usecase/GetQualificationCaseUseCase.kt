@@ -24,7 +24,7 @@ class GetQualificationCaseUseCase(
 
         val qualificationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
 
-        if(qualificationCase !is QualificationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
+        if (qualificationCase !is QualificationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
 
         return GetQualificationCaseResponse(
             koreanGrade = qualificationCase.koreanGrade,

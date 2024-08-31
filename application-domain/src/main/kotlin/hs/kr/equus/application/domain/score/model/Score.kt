@@ -1,6 +1,5 @@
 package hs.kr.equus.application.domain.score.model
 
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal
@@ -42,6 +41,8 @@ data class Score(
     }
 
     fun calculateSubjectScore(): BigDecimal {
-        return thirdGradeScore!! + thirdBeforeScore!! + thirdBeforeBeforeScore!!
+        return (thirdGradeScore ?: BigDecimal.ZERO) +
+                (thirdBeforeScore ?: BigDecimal.ZERO) +
+                (thirdBeforeBeforeScore ?: BigDecimal.ZERO)
     }
 }

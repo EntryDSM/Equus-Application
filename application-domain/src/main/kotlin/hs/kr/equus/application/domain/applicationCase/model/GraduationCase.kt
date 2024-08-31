@@ -104,8 +104,6 @@ data class GraduationCase(
         } else {
             calculatedScores[THIRD_GRADE_SECOND] = scoresPerSemester[THIRD_GRADE_SECOND]
         }
-
-
         return checkShortOfSemesterCount(calculatedScores)
     }
 

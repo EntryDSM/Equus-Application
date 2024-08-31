@@ -45,4 +45,5 @@ data class Score(
                 (thirdBeforeScore ?: BigDecimal.ZERO) +
                 (thirdBeforeBeforeScore ?: BigDecimal.ZERO)
     }
+    
 }

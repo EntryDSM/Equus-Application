@@ -4,7 +4,6 @@ import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
-import hs.kr.equus.application.domain.score.spi.QueryScorePort
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 import javax.servlet.http.HttpServletResponse
 
@@ -35,6 +34,8 @@ class PrintAdmissionTicketUseCase(
                     school
                 )
             }
+
+        println(applications)
         printAdmissionTicketPort.execute(httpServletResponse, applications)
     }
 }

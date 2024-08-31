@@ -43,7 +43,8 @@ data class Score(
     fun calculateSubjectScore(): BigDecimal {
         return (thirdGradeScore ?: BigDecimal.ZERO) +
                 (thirdBeforeScore ?: BigDecimal.ZERO) +
-                (thirdBeforeBeforeScore ?: BigDecimal.ZERO)
+                (thirdBeforeBeforeScore ?: BigDecimal.ZERO) +
+                (thirdScore ?: BigDecimal.ZERO)
     }
 
 }

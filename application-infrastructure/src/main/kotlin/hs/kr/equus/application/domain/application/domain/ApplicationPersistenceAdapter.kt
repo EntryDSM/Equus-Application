@@ -100,7 +100,6 @@ class ApplicationPersistenceAdapter(
                 isOutOfHeadcount = application.isOutOfHeadcount
             )
         }
-
         return result
     }
 

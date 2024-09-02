@@ -1,7 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
-import hs.kr.equus.application.domain.application.service.CheckTelService
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInformationRequest
@@ -13,7 +12,6 @@ class UpdateInformationUseCase(
     private val securityPort: SecurityPort,
     private val queryApplicationPort: QueryApplicationPort,
     private val commandApplicationPort: CommandApplicationPort,
-    private val checkTelService: CheckTelService,
 ) {
     fun execute(request: UpdateInformationRequest) {
         val userId = securityPort.getCurrentUserId()
@@ -26,7 +24,7 @@ class UpdateInformationUseCase(
                     sex = sex,
                     birthDate = birthDate,
                     applicantName = applicantName,
-                    applicantTel = checkTelService.checkParentPutApplicantTel(userId, applicantTel),
+                    applicantTel = applicantTel,
                     parentName = parentName,
                     parentTel = parentTel,
                     parentRelation = parentRelation,

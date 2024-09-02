@@ -23,7 +23,7 @@ class UpdateApplicationTypeUseCase(
             commandApplicationPort.save(
                 application.copy(
                     applicationType = applicationType,
-                    applicationRemark = applicationRemark ?: ApplicationRemark.NONE,
+                    applicationRemark = applicationRemark,
                     isDaejeon = isDaejeon,
                     isOutOfHeadcount = isOutOfHeadcount,
                     veteransNumber = veteransNumber

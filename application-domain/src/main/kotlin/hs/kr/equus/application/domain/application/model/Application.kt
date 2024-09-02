@@ -33,7 +33,7 @@ data class Application(
     val userId: UUID,
 ) {
     companion object {
-        const val DEFAULT_TEL = "010-0000-0000"
+        const val DEFAULT_TEL = "01000000000"
         private val SOCIAL_REMARKS =
             listOf(
                 ApplicationRemark.ONE_PARENT,

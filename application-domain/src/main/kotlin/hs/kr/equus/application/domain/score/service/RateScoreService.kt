@@ -8,40 +8,32 @@ import java.math.BigDecimal
 class RateScoreService {
     fun rate(scores: List<BigDecimal>, applicationType: ApplicationType): Array<Int> {
         val ratingCounts = when(applicationType) {
-            ApplicationType.COMMON -> Array(14) { 0 }
-            else -> Array(9) { 0 }
+            ApplicationType.COMMON -> Array(8) { 0 }
+            else -> Array(7) { 0 }
         }
 
         scores.map { score ->
             if (applicationType == ApplicationType.COMMON) {
                 when {
-                    score < BigDecimal(51) -> ratingCounts[13]++
-                    score < BigDecimal(61) -> ratingCounts[12]++
-                    score < BigDecimal(71) -> ratingCounts[11]++
-                    score < BigDecimal(81) -> ratingCounts[10]++
-                    score < BigDecimal(91) -> ratingCounts[9]++
-                    score < BigDecimal(101) -> ratingCounts[8]++
-                    score < BigDecimal(111) -> ratingCounts[7]++
-                    score < BigDecimal(121) -> ratingCounts[6]++
-                    score < BigDecimal(131) -> ratingCounts[5]++
-                    score < BigDecimal(141) -> ratingCounts[4]++
-                    score < BigDecimal(151) -> ratingCounts[3]++
-                    score < BigDecimal(161) -> ratingCounts[2]++
-                    score < BigDecimal(171) -> ratingCounts[1]++
-                    score >= BigDecimal(171) -> ratingCounts[0]
+                    score < BigDecimal(72) -> ratingCounts[7]++
+                    score < BigDecimal(86) -> ratingCounts[6]++
+                    score < BigDecimal(100) -> ratingCounts[5]++
+                    score < BigDecimal(114) -> ratingCounts[4]++
+                    score < BigDecimal(128) -> ratingCounts[3]++
+                    score < BigDecimal(142) -> ratingCounts[2]++
+                    score < BigDecimal(156) -> ratingCounts[1]++
+                    score < BigDecimal(174) -> ratingCounts[0]++
                     else -> 0
                 }
             } else {
                 when {
-                    score < BigDecimal(41) -> ratingCounts[8]++
-                    score < BigDecimal(51) -> ratingCounts[7]++
-                    score < BigDecimal(61) -> ratingCounts[6]++
-                    score < BigDecimal(71) -> ratingCounts[5]++
-                    score < BigDecimal(81) -> ratingCounts[4]++
-                    score < BigDecimal(91) -> ratingCounts[3]++
-                    score < BigDecimal(101) -> ratingCounts[2]++
-                    score < BigDecimal(111) -> ratingCounts[1]++
-                    score >= BigDecimal(111) -> ratingCounts[0]++
+                    score < BigDecimal(54) -> ratingCounts[6]++
+                    score < BigDecimal(62) -> ratingCounts[5]++
+                    score < BigDecimal(78) -> ratingCounts[4]++
+                    score < BigDecimal(86) -> ratingCounts[3]++
+                    score < BigDecimal(94) -> ratingCounts[2]++
+                    score < BigDecimal(102) -> ratingCounts[1]++
+                    score < BigDecimal(120) -> ratingCounts[0]++
                     else -> 0 // 범위 넘어가는 숫자는 0 반환
                 }
             }

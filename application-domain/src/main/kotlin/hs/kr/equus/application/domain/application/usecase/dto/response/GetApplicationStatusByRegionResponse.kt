@@ -1,10 +1,6 @@
 package hs.kr.equus.application.domain.application.usecase.dto.response
 
 data class GetApplicationStatusByRegionResponse (
-    val regionList: List<RegionList>,
-)
-
-data class RegionList(
     val seoul: Int = 0,
     val gwangju: Int = 0,
     val daegu: Int = 0,
@@ -21,5 +17,5 @@ data class RegionList(
     val jeollanamDo: Int = 0,
     val jeollabukDo: Int = 0,
     val chungcheongnamDo: Int = 0,
-    val chungcheongbukDo: Int = 0
+    val chungcheongbukDo: Int = 0,
 )

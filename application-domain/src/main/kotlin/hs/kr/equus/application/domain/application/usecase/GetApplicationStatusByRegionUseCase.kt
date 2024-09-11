@@ -2,7 +2,6 @@ package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.spi.QueryApplicationInfoListByStatusIsSubmittedPort
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationStatusByRegionResponse
-import hs.kr.equus.application.domain.application.usecase.dto.response.RegionList
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 
 @ReadOnlyUseCase
@@ -11,47 +10,45 @@ class GetApplicationStatusByRegionUseCase(
 ) {
 
     private val regionListMapping = mapOf(
-        "서울" to { list: RegionList -> list.copy(seoul = list.seoul + 1) },
-        "광주" to { list: RegionList -> list.copy(gwangju = list.gwangju + 1) },
-        "대구" to { list: RegionList -> list.copy(daegu = list.daegu + 1) },
-        "대전" to { list: RegionList -> list.copy(daejeon = list.daejeon + 1) },
-        "부산" to { list: RegionList -> list.copy(busan = list.busan + 1) },
-        "세종" to { list: RegionList -> list.copy(sejong = list.sejong + 1) },
-        "울산" to { list: RegionList -> list.copy(ulsan = list.ulsan + 1) },
-        "인천" to { list: RegionList -> list.copy(incheon = list.incheon + 1) },
-        "제주" to { list: RegionList -> list.copy(jeju = list.jeju + 1) },
-        "강원특별자치도" to { list: RegionList -> list.copy(gangwonDo = list.gangwonDo + 1) },
-        "경기도" to { list: RegionList -> list.copy(gyeonggiDo = list.gyeonggiDo + 1) },
-        "경상남도" to { list: RegionList -> list.copy(gyeongsangnamDo = list.gyeongsangnamDo + 1) },
-        "경상북도" to { list: RegionList -> list.copy(gyeongsangbukDo = list.gyeongsangbukDo + 1) },
-        "전라남도" to { list: RegionList -> list.copy(jeollanamDo = list.jeollanamDo + 1) },
-        "전라북도" to { list: RegionList -> list.copy(jeollabukDo = list.jeollabukDo + 1) },
-        "충청남도" to { list: RegionList -> list.copy(chungcheongnamDo = list.chungcheongnamDo + 1) },
-        "충청북도" to { list: RegionList -> list.copy(chungcheongbukDo = list.chungcheongbukDo + 1) }
+        "서울" to { response: GetApplicationStatusByRegionResponse -> response.copy(seoul = response.seoul + 1) },
+        "광주" to { response: GetApplicationStatusByRegionResponse -> response.copy(gwangju = response.gwangju + 1) },
+        "대구" to { response: GetApplicationStatusByRegionResponse -> response.copy(daegu = response.daegu + 1) },
+        "대전" to { response: GetApplicationStatusByRegionResponse -> response.copy(daejeon = response.daejeon + 1) },
+        "부산" to { response: GetApplicationStatusByRegionResponse -> response.copy(busan = response.busan + 1) },
+        "세종" to { response: GetApplicationStatusByRegionResponse -> response.copy(sejong = response.sejong + 1) },
+        "울산" to { response: GetApplicationStatusByRegionResponse -> response.copy(ulsan = response.ulsan + 1) },
+        "인천" to { response: GetApplicationStatusByRegionResponse -> response.copy(incheon = response.incheon + 1) },
+        "제주" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeju = response.jeju + 1) },
+        "강원특별자치도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gangwonDo = response.gangwonDo + 1) },
+        "경기도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeonggiDo = response.gyeonggiDo + 1) },
+        "경상남도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangnamDo = response.gyeongsangnamDo + 1) },
+        "경상북도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangbukDo = response.gyeongsangbukDo + 1) },
+        "전라남도" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeollanamDo = response.jeollanamDo + 1) },
+        "전라북도" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeollabukDo = response.jeollabukDo + 1) },
+        "충청남도" to { response: GetApplicationStatusByRegionResponse -> response.copy(chungcheongnamDo = response.chungcheongnamDo + 1) },
+        "충청북도" to { response: GetApplicationStatusByRegionResponse -> response.copy(chungcheongbukDo = response.chungcheongbukDo + 1) }
     )
 
     fun execute(): GetApplicationStatusByRegionResponse {
         val applicationList = queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
 
-        var regionCount = RegionList()
+        var response = GetApplicationStatusByRegionResponse()
 
         applicationList.forEach { application ->
             application.streetAddress?.let { address ->
-                regionCount = incrementProvinceCount(regionCount, address)
+                response = incrementRegionCount(response, address)
             }
         }
 
-        return GetApplicationStatusByRegionResponse(
-            regionList = listOf(regionCount),
-        )
+        return response
     }
 
-    private fun incrementProvinceCount(regionList: RegionList, address: String): RegionList {
+    private fun incrementRegionCount(response: GetApplicationStatusByRegionResponse, address: String): GetApplicationStatusByRegionResponse {
         regionListMapping.forEach { (region, update) ->
             if (address.contains(region)) {
-                return update(regionList)
+                return update(response)
             }
         }
-        return regionList
+        return response
     }
 }

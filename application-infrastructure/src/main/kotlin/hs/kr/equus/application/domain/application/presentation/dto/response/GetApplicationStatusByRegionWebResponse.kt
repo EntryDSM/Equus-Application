@@ -3,9 +3,6 @@ package hs.kr.equus.application.domain.application.presentation.dto.response
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class GetApplicationStatusByRegionWebResponse(
-    val regionList: List<RegionWebList>
-)
-data class RegionWebList(
     @JsonProperty("서울")
     val seoul: Int = 0,
 

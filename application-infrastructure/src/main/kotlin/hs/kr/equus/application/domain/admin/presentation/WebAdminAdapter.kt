@@ -2,7 +2,6 @@ package hs.kr.equus.application.domain.admin.presentation
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.presentation.dto.response.GetApplicationStatusByRegionWebResponse
-import hs.kr.equus.application.domain.application.presentation.dto.response.RegionWebList
 import hs.kr.equus.application.domain.application.usecase.*
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
@@ -82,30 +81,28 @@ class WebAdminAdapter(
     @GetMapping("/excel/admission-ticket")
     fun printAdmissionTicket(httpServletResponse: HttpServletResponse) =
         printAdmissionTicketUseCase.execute(httpServletResponse)
+
     @GetMapping("/region-status")
     fun getApplicationStatusByRegion(): GetApplicationStatusByRegionWebResponse {
         val response = getApplicationStatusByRegionUseCase.execute()
-        val regionList = response.regionList.map { regionList ->
-            RegionWebList(
-                seoul = regionList.seoul,
-                gwangju = regionList.gwangju,
-                daegu = regionList.daegu,
-                daejeon = regionList.daejeon,
-                busan = regionList.busan,
-                sejong = regionList.sejong,
-                ulsan = regionList.ulsan,
-                incheon = regionList.incheon,
-                jeju = regionList.jeju,
-                gangwonDo = regionList.gangwonDo,
-                gyeonggiDo = regionList.gyeonggiDo,
-                gyeongsangnamDo = regionList.gyeongsangnamDo,
-                gyeongsangbukDo = regionList.gyeongsangbukDo,
-                jeollanamDo = regionList.jeollanamDo,
-                jeollabukDo = regionList.jeollabukDo,
-                chungcheongnamDo = regionList.chungcheongnamDo,
-                chungcheongbukDo = regionList.chungcheongbukDo
-            )
-        }
-        return GetApplicationStatusByRegionWebResponse(regionList)
+        return GetApplicationStatusByRegionWebResponse(
+            seoul = response.seoul,
+            gwangju = response.gwangju,
+            daegu = response.daegu,
+            daejeon = response.daejeon,
+            busan = response.busan,
+            sejong = response.sejong,
+            ulsan = response.ulsan,
+            incheon = response.incheon,
+            jeju = response.jeju,
+            gangwonDo = response.gangwonDo,
+            gyeonggiDo = response.gyeonggiDo,
+            gyeongsangnamDo = response.gyeongsangnamDo,
+            gyeongsangbukDo = response.gyeongsangbukDo,
+            jeollanamDo = response.jeollanamDo,
+            jeollabukDo = response.jeollabukDo,
+            chungcheongnamDo = response.chungcheongnamDo,
+            chungcheongbukDo = response.chungcheongbukDo
+        )
     }
 }

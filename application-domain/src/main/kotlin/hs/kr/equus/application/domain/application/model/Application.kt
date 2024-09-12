@@ -43,6 +43,7 @@ data class Application(
                 ApplicationRemark.LOWEST_INCOME,
                 ApplicationRemark.TEEN_HOUSEHOLDER,
                 ApplicationRemark.PROTECTED_CHILDREN,
+                ApplicationRemark.NOTHING
             )
     }
 

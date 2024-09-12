@@ -10,5 +10,5 @@ enum class ApplicationRemark {
     PRIVILEGED_ADMISSION,
     NATIONAL_MERIT,
     PROTECTED_CHILDREN,
-    NOTTING
+    NOTHING
 }

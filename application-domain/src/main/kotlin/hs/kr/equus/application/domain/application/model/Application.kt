@@ -47,11 +47,12 @@ data class Application(
             )
     }
 
-    init {
-        if (checkSocialSelectOtherRemark() || checkNotSocialSelectSocialRemark()) {
-            throw ApplicationExceptions.InvalidApplicationRemarkException()
-        }
-    }
+// 일반신청도 리마크 선택 가능
+//    init {
+//        if (checkSocialSelectOtherRemark() || checkNotSocialSelectSocialRemark()) {
+//            throw ApplicationExceptions.InvalidApplicationRemarkException()
+//        }
+//    }
 
     private fun checkSocialSelectOtherRemark(): Boolean = isSocial() && applicationRemark !in SOCIAL_REMARKS
 

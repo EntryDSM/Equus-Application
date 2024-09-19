@@ -296,7 +296,7 @@ class PdfDataConverter(
     }
 
     private fun setRecommendations(application: Application, values: MutableMap<String, Any>) {
-        values["isDaejeonAndMeister"] = markIfTrue(application.isDaejeon!! || application.isMeister())
+        values["isDaejeonAndMeister"] = markIfTrue(application.isDaejeon!! && application.isMeister())
         values["isDaejeonAndSocialMerit"] = markIfTrue(application.isDaejeon!! && application.isSocial())
         values["isNotDaejeonAndMeister"] = markIfTrue(!application.isDaejeon!! && application.isMeister())
         values["isNotDaejeonAndSocialMerit"] =

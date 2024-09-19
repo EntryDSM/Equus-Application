@@ -35,7 +35,6 @@ class PrintAdmissionTicketUseCase(
                 )
             }
 
-        println(applications)
         printAdmissionTicketPort.execute(httpServletResponse, applications)
     }
 }

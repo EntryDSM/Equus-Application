@@ -58,7 +58,7 @@ data class Application(
 
     private fun checkNotSocialSelectSocialRemark() = !isSocial() && applicationRemark in SOCIAL_REMARKS
 
-    fun isRecommendationsRequired(): Boolean = !isEducationalStatusEmpty() && !isCommonApplicationType() && !isProspectiveGraduate();
+    fun isRecommendationsRequired(): Boolean = !isEducationalStatusEmpty() && !isCommonApplicationType()
 
     fun isCommonApplicationType(): Boolean = applicationType == ApplicationType.COMMON
 

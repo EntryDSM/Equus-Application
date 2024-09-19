@@ -20,13 +20,13 @@ class GetApplicationStatusByRegionUseCase(
         "인천" to { response: GetApplicationStatusByRegionResponse -> response.copy(incheon = response.incheon + 1) },
         "제주" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeju = response.jeju + 1) },
         "강원특별자치도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gangwonDo = response.gangwonDo + 1) },
-        "경기도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeonggiDo = response.gyeonggiDo + 1) },
-        "경상남도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangnamDo = response.gyeongsangnamDo + 1) },
-        "경상북도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangbukDo = response.gyeongsangbukDo + 1) },
-        "전라남도" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeollanamDo = response.jeollanamDo + 1) },
-        "전라북도" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeollabukDo = response.jeollabukDo + 1) },
-        "충청남도" to { response: GetApplicationStatusByRegionResponse -> response.copy(chungcheongnamDo = response.chungcheongnamDo + 1) },
-        "충청북도" to { response: GetApplicationStatusByRegionResponse -> response.copy(chungcheongbukDo = response.chungcheongbukDo + 1) }
+        "경기" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeonggiDo = response.gyeonggiDo + 1) },
+        "경남" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangnamDo = response.gyeongsangnamDo + 1) },
+        "경북" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangbukDo = response.gyeongsangbukDo + 1) },
+        "전남" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeollanamDo = response.jeollanamDo + 1) },
+        "전북" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeollabukDo = response.jeollabukDo + 1) },
+        "충남" to { response: GetApplicationStatusByRegionResponse -> response.copy(chungcheongnamDo = response.chungcheongnamDo + 1) },
+        "충북" to { response: GetApplicationStatusByRegionResponse -> response.copy(chungcheongbukDo = response.chungcheongbukDo + 1) }
     )
 
     fun execute(): GetApplicationStatusByRegionResponse {

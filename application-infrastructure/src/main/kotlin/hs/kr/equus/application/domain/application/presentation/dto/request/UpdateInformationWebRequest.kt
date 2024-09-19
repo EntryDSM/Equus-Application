@@ -14,23 +14,30 @@ data class UpdateInformationWebRequest(
         message = "INVALID SEX",
     )
     val sex: Sex,
+
     @NotNull(message = "birthdate는 Null을 허용하지 않습니다.")
     val birthDate: LocalDate,
+
     @Length(max = 5, message = "TOO LONG NAME")
     val applicantName: String,
+
     @Length(max = 11) @Pattern(
         regexp = TEL_REGEXP,
         message = "INVALID TEL",
     )
     val applicantTel: String,
+
     @Length(max = 11) @Pattern(
         regexp = TEL_REGEXP,
         message = "INVALID TEL",
     )
     val parentTel: String,
+
     @Length(max = 5, message = "TOO LONG NAME")
     val parentName: String,
+
     val parentRelation: String,
+
     @NotEmpty(message = "address는 Null 또는 공백을 허용하지 않습니다.") @Length(
         max = 300,
         message = "TOO LONG ADDRESS",

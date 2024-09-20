@@ -60,8 +60,8 @@ class ApplicationService {
             ApplicationRemark.PRIVILEGED_ADMISSION -> "특례입학대상자"
             ApplicationRemark.NATIONAL_MERIT -> "국가유공자"
             ApplicationRemark.PROTECTED_CHILDREN -> "보호대상아동"
-            ApplicationRemark.NOTHING -> "일반전형"
-            null -> "일반전형"
+            ApplicationRemark.NOTHING -> "없음"
+            null -> "없음"
         }
     }
 

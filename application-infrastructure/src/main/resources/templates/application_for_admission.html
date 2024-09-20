@@ -318,8 +318,7 @@
                         >
                             보훈번호:
                             <span style="font-size: medium" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${veteransNumber}"></span>
-                            <span style="font-size: medium" th:if="${#strings.isEmpty(veteransNumber) == true}">(</span>
-                            <span style="font-size: medium; margin-left: 70px" th:if="${#strings.isEmpty(veteransNumber) == true}">)</span>
+                            <span style="font-size: medium" th:if="${#strings.isEmpty(veteransNumber) == true}">(</span> <span style="font-size: medium; margin-left: 70px" th:if="${#strings.isEmpty(veteransNumber) == true}">)</span>
                         </p>
                         <p
                                 style="
@@ -340,7 +339,7 @@
                     margin-bottom: 26px;
                   "
                         >
-                            <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${year}"></span>년 <span style="margin-right: 4px" th:text="${month}"></span>월
+                            <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${year}"></span>년 <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${month}"></span>월
                             <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${day}"></span>일
                         </p>
                         <span style="font-size: medium">교사:</span>

@@ -50,6 +50,7 @@ class PdfDataConverter(
         setAttendanceAndVolunteer(application, values)
         setExtraScore(application, values)
         setTeacherInfo(application, values)
+        setVeteransNumber(application, values)
 
         if (application.isRecommendationsRequired()) {
             setRecommendations(application, values)
@@ -69,6 +70,10 @@ class PdfDataConverter(
     private fun setEntranceYear(values: MutableMap<String, Any>) {
         val entranceYear: Int = LocalDate.now().plusYears(1).year
         values["entranceYear"] = entranceYear.toString()
+    }
+
+    private fun setVeteransNumber(application: Application, values: MutableMap<String, Any>) {
+        values["veteransNumber"] = application.veteransNumber ?: ""
     }
 
     private fun setPersonalInfo(application: Application, values: MutableMap<String, Any>) {

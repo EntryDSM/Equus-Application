@@ -316,10 +316,11 @@
                     word-spacing: 34px;
                   "
                         >
-                            보훈번호:<span style="font-size: medium">(</span>
-                            <span style="font-size: medium; margin-left: 70px">)</span>
+                            보훈번호:
+                            <span style="font-size: medium" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${veteransNumber}"></span>
+                            <span style="font-size: medium" th:if="${#strings.isEmpty(veteransNumber) == true}">(</span>
+                            <span style="font-size: medium; margin-left: 70px" th:if="${#strings.isEmpty(veteransNumber) == true}">)</span>
                         </p>
-
                         <p
                                 style="
                     font-size: larger;
@@ -339,11 +340,11 @@
                     margin-bottom: 26px;
                   "
                         >
-                            <span style="margin-right: 4px" th:text="${year}"></span>년 <span style="margin-right: 4px" th:text="${month}"></span>월
-                            <span style="margin-right: 4px" th:text="${day}"></span>일
+                            <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${year}"></span>년 <span style="margin-right: 4px" th:text="${month}"></span>월
+                            <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${day}"></span>일
                         </p>
                         <span style="font-size: medium">교사:</span>
-                        <span style="font-size: medium; margin-left: 15px" th:text="${teacherName}"></span>
+                        <span style="font-size: medium; margin-left: 15px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${teacherName}"></span>
                         <span style="margin-left: 15px; font-size: small"
                         >(서명 또는 인)</span
                         >

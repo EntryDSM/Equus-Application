@@ -316,9 +316,7 @@
                     word-spacing: 34px;
                   "
                         >
-                            보훈번호:
-                            <span style="font-size: medium" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${veteransNumber}"></span>
-                            <span style="font-size: medium" th:if="${#strings.isEmpty(veteransNumber) == true}">(</span> <span style="font-size: medium; margin-left: 70px" th:if="${#strings.isEmpty(veteransNumber) == true}">)</span>
+                            보훈번호: <span style="font-size: medium" th:if="${#strings.isEmpty(veteransNumber) == true}">(</span><span style="font-size: medium; margin-left: 70px" th:if="${#strings.isEmpty(veteransNumber) == true}">)</span><span style="font-size: medium" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${veteransNumber}"></span>
                         </p>
                         <p
                                 style="

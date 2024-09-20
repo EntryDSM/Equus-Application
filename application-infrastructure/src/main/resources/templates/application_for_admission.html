@@ -313,13 +313,11 @@
                     padding-left: 10px;
                     margin-bottom: 20px;
                     margin-top: 10px;
-                    word-spacing: 34px;
+                    word-spacing: 4px;
                   "
                         >
-                            보훈번호:<span style="font-size: medium">(</span>
-                            <span style="font-size: medium; margin-left: 70px">)</span>
+                            보훈번호 : <span style="font-size: medium" th:if="${#strings.isEmpty(veteransNumber) == true}">(</span><span style="font-size: medium; margin-left: 80px" th:if="${#strings.isEmpty(veteransNumber) == true}">)</span><span style="font-size: medium" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${veteransNumber}"></span>
                         </p>
-
                         <p
                                 style="
                     font-size: larger;
@@ -339,11 +337,11 @@
                     margin-bottom: 26px;
                   "
                         >
-                            <span style="margin-right: 4px" th:text="${year}"></span>년 <span style="margin-right: 4px" th:text="${month}"></span>월
-                            <span style="margin-right: 4px" th:text="${day}"></span>일
+                            <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${year}"></span>년 <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${month}"></span>월
+                            <span style="margin-right: 4px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${day}"></span>일
                         </p>
                         <span style="font-size: medium">교사:</span>
-                        <span style="font-size: medium; margin-left: 15px" th:text="${teacherName}"></span>
+                        <span style="font-size: medium; margin-left: 15px" th:if="${veteransNumber != null and #strings.isEmpty(veteransNumber) == false}" th:text="${teacherName}"></span>
                         <span style="margin-left: 15px; font-size: small"
                         >(서명 또는 인)</span
                         >
@@ -384,10 +382,7 @@
                         <span style="margin-right: 4px" th:text="${day}"></span>일
                     </p>
                     <p style="font-size: large; text-align: center">
-                        <span style="font-size: large" th:text="${schoolName}"></span>
-                        <span style="word-spacing: 16px; font-size: large; margin-left:16px"
-                        >중학교장 (직인)</span
-                        >
+                        <span style="font-size: large" th:text="${schoolName}"></span><span style="word-spacing: 16px; font-size: large;">장 (직인)</span>
                     </p>
                     <p
                             style="

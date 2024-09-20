@@ -72,7 +72,7 @@ data class GraduationCase(
 
     override fun calculateGradeScores(): Array<BigDecimal> {
         val gradeScores: Array<BigDecimal> = calculateScores()
-        for (semester in THIRD_2BEFORE..THIRD_GRADE_SECOND) {
+        for (semester in THIRD_GRADE_SECOND..THIRD_2BEFORE) {
             gradeScores[semester] = gradeScores[semester].setScale(3, RoundingMode.HALF_UP)
         }
         return gradeScores
@@ -95,7 +95,7 @@ data class GraduationCase(
         val scoresPerSemester = scoresPerSemester()
         val calculatedScores = arrayOf(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)
 
-        for (semester in THIRD_2BEFORE..THIRD_BEFORE) {
+        for (semester in THIRD_BEFORE..THIRD_2BEFORE) {
             calculatedScores[semester] += scoresPerSemester[semester]
         }
 
@@ -111,7 +111,7 @@ data class GraduationCase(
     private fun scoresPerSemester(): Array<BigDecimal> {
         val gradesPerSemester = gradesPerSemester()
         val scoresPerSemester = arrayOf(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO)
-        for (semester in THIRD_2BEFORE..THIRD_GRADE_SECOND) {
+        for (semester in THIRD_GRADE_SECOND..THIRD_2BEFORE) {
             scoresPerSemester[semester] = gradesToScore(gradesPerSemester[semester])
         }
 
@@ -131,7 +131,7 @@ data class GraduationCase(
             )
         val gradesPerSemester = arrayOf("", "", "", "")
         for (subjectGrades in gradesPerSubjects) {
-            for (semester in THIRD_2BEFORE..THIRD_GRADE_SECOND) {
+            for (semester in THIRD_GRADE_SECOND..THIRD_2BEFORE) {
                 gradesPerSemester[semester] = gradesPerSemester[semester].plus(subjectGrades[semester])
             }
         }
@@ -182,7 +182,7 @@ data class GraduationCase(
         if (calculatedScores[THIRD_BEFORE] == BigDecimal.ZERO &&
             calculatedScores[THIRD_2BEFORE] == BigDecimal.ZERO
         ) {
-            for (semester in THIRD_2BEFORE..THIRD_BEFORE) {
+            for (semester in THIRD_BEFORE.. THIRD_2BEFORE) {
                 calculatedScores[semester] += calculatedScores[THIRD_GRADE_FIRST] / BigDecimal(2)
             }
         } else if (calculatedScores[THIRD_2BEFORE] == BigDecimal.ZERO) {

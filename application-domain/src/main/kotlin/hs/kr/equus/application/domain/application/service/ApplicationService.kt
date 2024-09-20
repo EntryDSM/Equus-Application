@@ -28,7 +28,7 @@ class ApplicationService {
      fun translateApplicationType(type: ApplicationType?): String {
         return when(type) {
             ApplicationType.COMMON -> "일반전형"
-            ApplicationType.MEISTER -> "마이스터인재전형"
+            ApplicationType.MEISTER -> "마이스터인재"
             ApplicationType.SOCIAL -> "사회특별전형"
             else -> "X"
         }

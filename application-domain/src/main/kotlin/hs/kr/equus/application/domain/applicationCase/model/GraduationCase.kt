@@ -43,10 +43,10 @@ data class GraduationCase(
         private const val E_SCORE = 1
 
         // 학기별 인덱스
-        private const val THIRD_2BEFORE = 0 // 직전전학기
-        private const val THIRD_BEFORE = 1 // 직전학기
-        private const val THIRD_GRADE_FIRST = 2 // 3학년 1학기
-        private const val THIRD_GRADE_SECOND = 3 // 3학년 2학기
+        private const val THIRD_2BEFORE = 3 // 직전전학기
+        private const val THIRD_BEFORE = 2 // 직전학기
+        private const val THIRD_GRADE_FIRST = 1 // 3학년 1학기
+        private const val THIRD_GRADE_SECOND = 0 // 3학년 2학기
     }
 
     fun calculateAdditionalScore(isCommon: Boolean): BigDecimal {

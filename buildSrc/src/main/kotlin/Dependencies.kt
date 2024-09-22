@@ -95,4 +95,6 @@ object Dependencies {
     const val PDF_HTML = "com.itextpdf:html2pdf:${DependencyVersions.PDF_HTML}"
 
     const val THYMELEAF = "org.springframework.boot:spring-boot-starter-thymeleaf"
+
+    const val RETRY = "org.springframework.retry:spring-retry"
 }

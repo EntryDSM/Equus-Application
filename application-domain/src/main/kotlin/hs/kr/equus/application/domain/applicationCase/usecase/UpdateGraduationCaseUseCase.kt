@@ -53,6 +53,6 @@ class UpdateGraduationCaseUseCase(
             )
         }
 
-        graduationCaseEventPort.updateApplicationCase(graduationCase.receiptCode)
+        graduationCaseEventPort.updateApplicationCase(graduationCase)
     }
 }

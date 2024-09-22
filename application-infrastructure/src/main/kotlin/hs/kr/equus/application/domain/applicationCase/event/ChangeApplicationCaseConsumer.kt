@@ -8,7 +8,7 @@ import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
 
 @Component
-class ApplicationCaseChangeApplicationCaseConsumer(
+class ChangeApplicationCaseConsumer(
     private val mapper: ObjectMapper,
     private val changeApplicationCaseUseCase: ChangeApplicationCaseUseCase,
 ) {

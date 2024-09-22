@@ -8,4 +8,6 @@ interface ApplicationEventPort {
     fun updateEducationalStatus(receiptCode: Long, graduateDate: YearMonth)
 
     fun submitApplicationFinal(receiptCode: Long)
+
+    fun createApplicationScoreRollback(receiptCode: Long)
 }

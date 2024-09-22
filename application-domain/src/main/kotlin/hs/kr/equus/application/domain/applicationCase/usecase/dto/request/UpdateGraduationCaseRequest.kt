@@ -16,28 +16,4 @@ data class UpdateGraduationCaseRequest(
     val englishGrade: String,
     val techAndHomeGrade: String,
     val extraScore: ExtraScoreRequest
-) {
-    companion object {
-        fun of(graduationCase: GraduationCase): UpdateGraduationCaseRequest {
-            return UpdateGraduationCaseRequest(
-                volunteerTime = graduationCase.volunteerTime,
-                absenceDayCount = graduationCase.absenceDayCount,
-                lectureAbsenceCount = graduationCase.lectureAbsenceCount,
-                latenessCount = graduationCase.latenessCount,
-                earlyLeaveCount = graduationCase.earlyLeaveCount,
-                koreanGrade = graduationCase.koreanGrade,
-                socialGrade = graduationCase.socialGrade,
-                historyGrade = graduationCase.historyGrade,
-                mathGrade = graduationCase.mathGrade,
-                scienceGrade = graduationCase.scienceGrade,
-                englishGrade = graduationCase.englishGrade,
-                techAndHomeGrade = graduationCase.techAndHomeGrade,
-                extraScore = ExtraScoreRequest(
-                    hasCertificate = graduationCase.extraScoreItem.hasCertificate,
-                    hasCompetitionPrize = graduationCase.extraScoreItem.hasCompetitionPrize
-                )
-            )
-        }
-    }
-}
-
+)

@@ -7,5 +7,6 @@ object KafkaTopics {
     const val UPDATE_APPLICATION_CASE_ROLLBACK = "update-application-case-rollback"
     const val DELETE_USER = "delete-user"
     const val SUBMIT_APPLICATION_FINAL = "submit-application-final"
-    const val CREATE_APPLICATION_SCORE_ROLLBACK = "create-application-rollback"
+    const val CREATE_APPLICATION_SCORE_ROLLBACK = "create-application-score-rollback"
+    const val CREATE_APPLICATION_STATUS_ROLLBACK = "create-application-status-rollback"
 }

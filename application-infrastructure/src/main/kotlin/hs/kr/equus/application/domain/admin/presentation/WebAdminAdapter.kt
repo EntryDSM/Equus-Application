@@ -1,15 +1,12 @@
 package hs.kr.equus.application.domain.admin.presentation
 
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
-import hs.kr.equus.application.domain.application.usecase.GetApplicantsUseCase
-import hs.kr.equus.application.domain.application.usecase.GetApplicationCountUseCase
+import hs.kr.equus.application.domain.application.presentation.dto.response.GetApplicationStatusByRegionWebResponse
+import hs.kr.equus.application.domain.application.usecase.*
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationResponse
-import hs.kr.equus.application.domain.application.usecase.GetApplicationUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplicantsRequest
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
-import hs.kr.equus.application.domain.application.usecase.PrintApplicantCodesUseCase
-import hs.kr.equus.application.domain.application.usecase.QueryStaticsCountUseCase
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import hs.kr.equus.application.domain.score.usecase.QueryStaticsScoreUseCase
 import hs.kr.equus.application.domain.score.usecase.dto.response.GetStaticsScoreResponse
@@ -29,7 +26,11 @@ class WebAdminAdapter(
     private val getApplicantsUseCase: GetApplicantsUseCase,
     private val printApplicantCodesUseCase: PrintApplicantCodesUseCase,
     private val queryStaticsCountUseCase: QueryStaticsCountUseCase,
-    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase
+    private val queryStaticsScoreUseCase: QueryStaticsScoreUseCase,
+    private val printApplicationInfoUseCase: PrintApplicationInfoUseCase,
+    private val printApplicationCheckListUseCase: PrintApplicationCheckListUseCase,
+    private val printAdmissionTicketUseCase: PrintAdmissionTicketUseCase,
+    private val getApplicationStatusByRegionUseCase: GetApplicationStatusByRegionUseCase
 ) {
 
     @GetMapping("/statics/score")
@@ -57,15 +58,51 @@ class WebAdminAdapter(
     fun printApplicantCodes(httpServletResponse: HttpServletResponse) =
         printApplicantCodesUseCase.execute(httpServletResponse)
 
+    @GetMapping("/excel/applicants")
+    fun printApplicationInfo(httpServletResponse: HttpServletResponse) =
+        printApplicationInfoUseCase.execute(httpServletResponse)
+
+    @GetMapping("/excel/applicants/check-list")
+    fun printApplicationCheckList(httpServletResponse: HttpServletResponse) =
+        printApplicationCheckListUseCase.execute(httpServletResponse)
+
     @GetMapping("/applicants")
     fun getApplicants(
-        @RequestParam(name = "offset", defaultValue = "10")
+        @RequestParam(name = "pageSize", defaultValue = "10")
         pageSize: Long,
-        @RequestParam(name = "pageSize", defaultValue = "0")
+        @RequestParam(name = "offset", defaultValue = "0")
         offset: Long,
         @ModelAttribute
         getApplicantsRequest: GetApplicantsRequest
     ): GetApplicantsResponse {
         return getApplicantsUseCase.execute(pageSize, offset, getApplicantsRequest)
+    }
+
+    @GetMapping("/excel/admission-ticket")
+    fun printAdmissionTicket(httpServletResponse: HttpServletResponse) =
+        printAdmissionTicketUseCase.execute(httpServletResponse)
+
+    @GetMapping("/region-status")
+    fun getApplicationStatusByRegion(): GetApplicationStatusByRegionWebResponse {
+        val response = getApplicationStatusByRegionUseCase.execute()
+        return GetApplicationStatusByRegionWebResponse(
+            seoul = response.seoul,
+            gwangju = response.gwangju,
+            daegu = response.daegu,
+            daejeon = response.daejeon,
+            busan = response.busan,
+            sejong = response.sejong,
+            ulsan = response.ulsan,
+            incheon = response.incheon,
+            jeju = response.jeju,
+            gangwonDo = response.gangwonDo,
+            gyeonggiDo = response.gyeonggiDo,
+            gyeongsangnamDo = response.gyeongsangnamDo,
+            gyeongsangbukDo = response.gyeongsangbukDo,
+            jeollanamDo = response.jeollanamDo,
+            jeollabukDo = response.jeollabukDo,
+            chungcheongnamDo = response.chungcheongnamDo,
+            chungcheongbukDo = response.chungcheongbukDo
+        )
     }
 }

@@ -1,10 +1,7 @@
 package hs.kr.equus.application.domain.application.model
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
-import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
-import hs.kr.equus.application.domain.application.model.types.ApplicationType
-import hs.kr.equus.application.domain.application.model.types.EducationalStatus
-import hs.kr.equus.application.domain.application.model.types.Sex
+import hs.kr.equus.application.domain.application.model.types.*
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.time.LocalDate
 import java.util.*
@@ -24,17 +21,19 @@ data class Application(
     val applicantTel: String? = null,
     val parentName: String? = null,
     val parentTel: String? = null,
+    val parentRelation: String? = null,
     val streetAddress: String? = null,
     val postalCode: String? = null,
     val detailAddress: String? = null,
     val applicationType: ApplicationType? = null,
     val applicationRemark: ApplicationRemark? = null,
+    val veteransNumber: Int? = null,
     val studyPlan: String? = null,
     val selfIntroduce: String? = null,
     val userId: UUID,
 ) {
     companion object {
-        const val DEFAULT_TEL = "010-0000-0000"
+        const val DEFAULT_TEL = "01000000000"
         private val SOCIAL_REMARKS =
             listOf(
                 ApplicationRemark.ONE_PARENT,
@@ -44,20 +43,22 @@ data class Application(
                 ApplicationRemark.LOWEST_INCOME,
                 ApplicationRemark.TEEN_HOUSEHOLDER,
                 ApplicationRemark.PROTECTED_CHILDREN,
+                ApplicationRemark.NOTHING
             )
     }
 
-    init {
-        if (checkSocialSelectOtherRemark() || checkNotSocialSelectSocialRemark()) {
-            throw ApplicationExceptions.InvalidApplicationRemarkException()
-        }
-    }
+// 일반신청도 리마크 선택 가능
+//    init {
+//        if (checkSocialSelectOtherRemark() || checkNotSocialSelectSocialRemark()) {
+//            throw ApplicationExceptions.InvalidApplicationRemarkException()
+//        }
+//    }
 
     private fun checkSocialSelectOtherRemark(): Boolean = isSocial() && applicationRemark !in SOCIAL_REMARKS
 
     private fun checkNotSocialSelectSocialRemark() = !isSocial() && applicationRemark in SOCIAL_REMARKS
 
-    fun isRecommendationsRequired(): Boolean = !isEducationalStatusEmpty() && !isCommonApplicationType() && !isProspectiveGraduate();
+    fun isRecommendationsRequired(): Boolean = !isEducationalStatusEmpty() && !isCommonApplicationType()
 
     fun isCommonApplicationType(): Boolean = applicationType == ApplicationType.COMMON
 

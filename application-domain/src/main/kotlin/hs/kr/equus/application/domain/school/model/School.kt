@@ -9,7 +9,8 @@ data class School(
     val name: String,
     val tel: String,
     val type: String,
-    val address: String
+    val address: String,
+    val regionName: String
 ) {
     init {
         check(type == "중학교") {

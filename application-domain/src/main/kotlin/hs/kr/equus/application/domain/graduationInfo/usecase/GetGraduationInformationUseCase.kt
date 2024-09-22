@@ -49,7 +49,8 @@ class GetGraduationInformationUseCase(
             schoolCode = school?.code,
             schoolTel = school?.tel,
             schoolName = school?.name,
-            teacherName = graduation.teacherName
+            teacherName = graduation.teacherName,
+            teacherTel = graduation.teacherTel
         )
     }
 }

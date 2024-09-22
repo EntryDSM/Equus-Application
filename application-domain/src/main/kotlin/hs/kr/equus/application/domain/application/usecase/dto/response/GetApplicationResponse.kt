@@ -18,7 +18,8 @@ data class ApplicationCommonInformationResponse(
     val schoolName: String?,
     val telephoneNumber: String,
     val schoolTel: String?,
-    val parentTel: String?
+    val parentTel: String?,
+    val parentRelation: String?
 )
 
 data class ApplicationStatusResponse(
@@ -45,6 +46,6 @@ data class ApplicationEvaluationResponse(
     val earlyLeaveCount: Int?,
     val latenessCount: Int?,
     val averageScore: BigDecimal?,
-    val selfIntroduce: String,
-    val studyPlan: String
+    val selfIntroduce: String? = null,
+    val studyPlan: String? = null
 )

@@ -82,6 +82,7 @@ class WebApplicationAdapter(
                     applicationRemark = applicationRemark,
                     isDaejeon = isDaejeon,
                     isOutOfHeadcount = isOutOfHeadcount,
+                    veteransNumber = veteransNumber
                 )
             },
         )
@@ -120,6 +121,7 @@ class WebApplicationAdapter(
                     streetAddress = streetAddress,
                     postalCode = postalCode,
                     detailAddress = detailAddress,
+                    parentRelation = parentRelation
                 )
             },
         )

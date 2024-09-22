@@ -11,7 +11,6 @@ import hs.kr.equus.application.global.security.spi.SecurityPort
 @ReadOnlyUseCase
 class GetApplicationTypeUseCase(
     private val queryApplicationPort: QueryApplicationPort,
-    private val applicationQueryUserPort: ApplicationQueryUserPort,
     private val securityPort: SecurityPort,
     private val applicationQueryGraduationInfoPort: ApplicationQueryGraduationInfoPort
 ) {
@@ -28,7 +27,8 @@ class GetApplicationTypeUseCase(
             isDaejeon = application.isDaejeon,
             applicationRemark = application.applicationRemark,
             isOutOfHeadCount = application.isOutOfHeadcount,
-            graduatedDate = graduationInfo?.graduateDate
+            graduatedDate = graduationInfo?.graduateDate,
+            veteransNumber = application.veteransNumber
         )
     }
 }

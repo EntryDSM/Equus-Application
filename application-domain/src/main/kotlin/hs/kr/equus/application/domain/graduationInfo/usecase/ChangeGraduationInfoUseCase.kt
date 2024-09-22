@@ -1,7 +1,9 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.applicationCase.service.ApplicationCaseService
 import hs.kr.equus.application.domain.graduationInfo.factory.GraduationInfoFactory
+import hs.kr.equus.application.domain.graduationInfo.service.GraduationInfoService
 
 import hs.kr.equus.application.domain.graduationInfo.spi.CommandGraduationInfoPort
 import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQueryApplicationPort
@@ -15,22 +17,27 @@ class ChangeGraduationInfoUseCase(
     private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
     private val commandGraduationInfoPort: CommandGraduationInfoPort,
-    private val graduationInfoFactory: GraduationInfoFactory
+    private val graduationInfoFactory: GraduationInfoFactory,
+    private val graduationInfoService: GraduationInfoService
 ) {
     fun execute(receiptCode: Long, graduateDate: YearMonth) {
         val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
+        val existingInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
 
-        queryGraduationInfoPort.queryGraduationInfoByApplication(application)?.let {
-            commandGraduationInfoPort.delete(it)
-        }
-
-        val graduationInfo = graduationInfoFactory.createGraduationInfo(
+        val newGraduationInfo = graduationInfoFactory.createGraduationInfo(
             receiptCode = receiptCode,
             educationalStatus = application.educationalStatus,
-            graduateDate = graduateDate,
+            graduateDate = graduateDate
         )
-        commandGraduationInfoPort.save(graduationInfo)
+
+        when {
+            existingInfo == null -> commandGraduationInfoPort.save(newGraduationInfo)
+            graduationInfoService.hasEducationalStatusMismatch(application, existingInfo) -> {
+                commandGraduationInfoPort.delete(existingInfo)
+                commandGraduationInfoPort.save(newGraduationInfo)
+            }
+        }
     }
 }

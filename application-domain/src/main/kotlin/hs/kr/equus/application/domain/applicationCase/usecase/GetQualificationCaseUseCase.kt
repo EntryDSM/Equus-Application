@@ -24,10 +24,15 @@ class GetQualificationCaseUseCase(
 
         val qualificationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
 
-        if(qualificationCase !is QualificationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
+        if (qualificationCase !is QualificationCase) throw ApplicationCaseExceptions.EducationalStatusUnmatchedException()
 
         return GetQualificationCaseResponse(
-            qualificationCase.averageScore,
+            koreanGrade = qualificationCase.koreanGrade,
+            socialGrade = qualificationCase.socialGrade,
+            mathGrade = qualificationCase.mathGrade,
+            scienceGrade = qualificationCase.scienceGrade,
+            englishGrade = qualificationCase.englishGrade,
+            optGrade = qualificationCase.optGrade,
             extraScore = qualificationCase.extraScoreItem.run {
                 GetExtraScoreResponse(
                     hasCertificate = hasCertificate,

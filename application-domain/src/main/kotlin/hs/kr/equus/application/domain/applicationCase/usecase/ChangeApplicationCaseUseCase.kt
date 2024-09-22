@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.applicationCase.usecase
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.applicationCase.factory.ApplicationCaseFactory
+import hs.kr.equus.application.domain.applicationCase.service.ApplicationCaseService
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.CommandApplicationCasePort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
@@ -14,20 +15,25 @@ class ChangeApplicationCaseUseCase(
     private val queryApplicationCaseQueryApplicationPort: ApplicationCaseQueryApplicationPort,
     private val commandApplicationCasePort: CommandApplicationCasePort,
     private val applicationCaseFactory: ApplicationCaseFactory,
+    private val applicationCaseService: ApplicationCaseService
 ) {
     fun execute(receiptCode: Long) {
         val application = queryApplicationCaseQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        queryApplicationCasePort.queryApplicationCaseByApplication(application)?.let {
-            commandApplicationCasePort.delete(it)
-        }
+        val existingCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
 
-        val applicationCase = applicationCaseFactory.createApplicationCase(
+        val newApplicationCase = applicationCaseFactory.createApplicationCase(
             receiptCode,
             application.educationalStatus
         )
 
-        commandApplicationCasePort.save(applicationCase)
+        when {
+            existingCase == null -> commandApplicationCasePort.save(newApplicationCase)
+            applicationCaseService.hasEducationalStatusMismatch(application, existingCase) -> {
+                commandApplicationCasePort.delete(existingCase)
+                commandApplicationCasePort.save(newApplicationCase)
+            }
+        }
     }
 }

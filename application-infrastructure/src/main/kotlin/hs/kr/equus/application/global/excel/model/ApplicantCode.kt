@@ -1,4 +1,4 @@
-package hs.kr.equus.application.global.excel
+package hs.kr.equus.application.global.excel.model
 
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet

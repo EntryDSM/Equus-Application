@@ -1,6 +1,7 @@
 package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.spi.CommandApplicationPort
 import hs.kr.equus.application.domain.application.spi.QueryApplicationPort
 import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateApplicationTypeRequest
@@ -25,6 +26,7 @@ class UpdateApplicationTypeUseCase(
                     applicationRemark = applicationRemark,
                     isDaejeon = isDaejeon,
                     isOutOfHeadcount = isOutOfHeadcount,
+                    veteransNumber = veteransNumber
                 ),
             )
         }

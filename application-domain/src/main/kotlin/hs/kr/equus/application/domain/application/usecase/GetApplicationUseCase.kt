@@ -58,9 +58,12 @@ class GetApplicationUseCase(
         val graduationInfo = applicationQueryGraduationInfoPort.queryGraduationInfoByApplication(application)
             ?: throw GraduationInfoExceptions.GraduationNotFoundException()
 
-        val school = (graduationInfo as? Graduation)?.let {
-            applicationQuerySchoolPort.querySchoolBySchoolCode(it.schoolCode!!)
-                ?: throw SchoolExceptions.SchoolNotFoundException()
+        val school = if (graduationInfo is Graduation) {
+            graduationInfo.schoolCode?.let {
+                applicationQuerySchoolPort.querySchoolBySchoolCode(it)
+            }
+        } else {
+            null
         }
 
         val user = applicationQueryUserPort.queryUserByUserId(application.userId)
@@ -70,9 +73,11 @@ class GetApplicationUseCase(
             schoolName = school?.name,
             telephoneNumber = user.phoneNumber,
             parentTel = application.parentTel,
-            schoolTel = school?.tel
+            schoolTel = school?.tel,
+            parentRelation = application.parentRelation
         )
     }
+
 
     private fun getMoreInformationResponse(
         application: Application,
@@ -127,7 +132,7 @@ class GetApplicationUseCase(
                     lectureAbsenceCount = null,
                     earlyLeaveCount = null,
                     latenessCount = null,
-                    averageScore = averageScore,
+                    averageScore = applicationCase.calculateAverageScore(),
                     selfIntroduce = application.selfIntroduce!!,
                     studyPlan = application.studyPlan!!
                 )

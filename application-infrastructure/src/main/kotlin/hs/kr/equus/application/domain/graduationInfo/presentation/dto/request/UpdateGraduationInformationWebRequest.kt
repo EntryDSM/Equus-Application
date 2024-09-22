@@ -33,7 +33,10 @@ data class UpdateGraduationInformationWebRequest(
     val schoolCode: String,
 
     @NotBlank(message = "teacher_name Null, 공백, 띄어쓰기를 허용하지 않습니다.")
-    val teacherName: String
+    val teacherName: String,
+
+    @NotBlank(message  = "teacher_tel Null, 공백, 띄어쓰기를 허용하지 않습니다.")
+    val teacherTel: String
 ) {
     companion object {
         const val NUMERIC_REGEXP = "^\\d{1,5}"

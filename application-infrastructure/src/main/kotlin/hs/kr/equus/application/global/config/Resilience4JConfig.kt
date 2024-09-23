@@ -10,7 +10,6 @@ import org.springframework.cloud.client.circuitbreaker.Customizer
 import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import java.net.ConnectException
-
 import java.time.Duration
 import java.util.concurrent.TimeoutException
 
@@ -20,20 +19,21 @@ class Resilience4JConfig {
     fun globalCustomConfiguration(): Customizer<Resilience4JCircuitBreakerFactory> {
         val circuitBreakerConfig = CircuitBreakerConfig.custom()
             .slidingWindowType(CircuitBreakerConfig.SlidingWindowType.COUNT_BASED)
-            .slowCallRateThreshold(1f)
-            .slowCallDurationThreshold(Duration.ofMillis(2000))
-            .failureRateThreshold(1f)
-            .minimumNumberOfCalls(100)
-            .slidingWindowSize(1)
-            .permittedNumberOfCallsInHalfOpenState(100)
-            .maxWaitDurationInHalfOpenState(Duration.ofMillis(1000))
-            .waitDurationInOpenState(Duration.ofMillis(3000))
+            .slidingWindowSize(50)
+            .failureRateThreshold(50f)
+            .slowCallRateThreshold(50f)
+            .slowCallDurationThreshold(Duration.ofSeconds(2))
+            .minimumNumberOfCalls(20)
+            .permittedNumberOfCallsInHalfOpenState(10)
+            .maxWaitDurationInHalfOpenState(Duration.ofSeconds(5))
+            .waitDurationInOpenState(Duration.ofSeconds(10))
             .automaticTransitionFromOpenToHalfOpenEnabled(false)
             .recordExceptions(
                 ConnectException::class.java,
                 RetryableException::class.java,
                 TimeoutException::class.java,
-                FeignExceptions.FeignServerErrorException::class.java
+                FeignExceptions.FeignServerErrorException::class.java,
+                RuntimeException::class.java
             )
             .build()
 

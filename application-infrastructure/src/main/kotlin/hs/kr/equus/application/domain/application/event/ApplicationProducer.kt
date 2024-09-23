@@ -6,7 +6,6 @@ import hs.kr.equus.application.domain.application.event.dto.UpdateEducationStatu
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 import java.time.YearMonth
 
 @Component
@@ -21,6 +20,13 @@ class ApplicationProducer(
         createApplicationTemplate.send(
             KafkaTopics.CREATE_APPLICATION,
             receiptCode,
+        )
+    }
+
+    override fun updateEducationalStatusRollback(receiptCode: Long, graduateDate: YearMonth) {
+        updateEducationalStatusTemplate.send(
+            KafkaTopics.UPDATE_EDUCATIONAL_STATUS_ROLLBACK,
+            UpdateEducationStatusEvent(receiptCode, graduateDate),
         )
     }
 

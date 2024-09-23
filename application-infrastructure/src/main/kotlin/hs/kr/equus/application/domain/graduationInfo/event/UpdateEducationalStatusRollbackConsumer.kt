@@ -18,7 +18,7 @@ class UpdateEducationalStatusRollbackConsumer(
     fun changeGraduationInfo(dto: UpdateEducationStatusEvent) {
         dto.apply {
             changeGraduationInfoUseCase.execute(
-                receiptCode = receiptCode,
+                application = application,
                 graduateDate = graduateDate
             )
         }

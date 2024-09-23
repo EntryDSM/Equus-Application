@@ -27,6 +27,6 @@ class UpdateEducationalStatusUseCase(
             ),
         )
 
-        applicationEventPort.updateEducationalStatus(application.receiptCode, request.graduateDate)
+        applicationEventPort.updateEducationalStatus(application, request.graduateDate)
     }
 }

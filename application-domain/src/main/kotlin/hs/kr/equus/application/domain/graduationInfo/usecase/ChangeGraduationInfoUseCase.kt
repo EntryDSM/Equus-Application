@@ -1,6 +1,7 @@
 package hs.kr.equus.application.domain.graduationInfo.usecase
 
 import hs.kr.equus.application.domain.application.exception.ApplicationExceptions
+import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.applicationCase.service.ApplicationCaseService
 import hs.kr.equus.application.domain.graduationInfo.factory.GraduationInfoFactory
 import hs.kr.equus.application.domain.graduationInfo.service.GraduationInfoService
@@ -20,14 +21,14 @@ class ChangeGraduationInfoUseCase(
     private val graduationInfoFactory: GraduationInfoFactory,
     private val graduationInfoService: GraduationInfoService
 ) {
-    fun execute(receiptCode: Long, graduateDate: YearMonth) {
-        val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
+    fun execute(application: Application, graduateDate: YearMonth) {
+        val applications = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(application.receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val existingInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
 
         val newGraduationInfo = graduationInfoFactory.createGraduationInfo(
-            receiptCode = receiptCode,
+            receiptCode = application.receiptCode,
             educationalStatus = application.educationalStatus,
             graduateDate = graduateDate
         )

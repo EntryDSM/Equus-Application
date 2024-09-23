@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.application.event
 import com.fasterxml.jackson.databind.ObjectMapper
 import hs.kr.equus.application.domain.application.event.spi.ApplicationEventPort
 import hs.kr.equus.application.domain.application.event.dto.UpdateEducationStatusEvent
+import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
@@ -23,17 +24,17 @@ class ApplicationProducer(
         )
     }
 
-    override fun updateEducationalStatusRollback(receiptCode: Long, graduateDate: YearMonth) {
+    override fun updateEducationalStatusRollback(application: Application, graduateDate: YearMonth) {
         updateEducationalStatusTemplate.send(
             KafkaTopics.UPDATE_EDUCATIONAL_STATUS_ROLLBACK,
-            UpdateEducationStatusEvent(receiptCode, graduateDate),
+            UpdateEducationStatusEvent(application, graduateDate),
         )
     }
 
-    override fun updateEducationalStatus(receiptCode: Long, graduateDate: YearMonth) {
+    override fun updateEducationalStatus(application: Application, graduateDate: YearMonth) {
         updateEducationalStatusTemplate.send(
             KafkaTopics.UPDATE_EDUCATIONAL_STATUS,
-            UpdateEducationStatusEvent(receiptCode, graduateDate),
+            UpdateEducationStatusEvent(application, graduateDate),
         )
     }
 

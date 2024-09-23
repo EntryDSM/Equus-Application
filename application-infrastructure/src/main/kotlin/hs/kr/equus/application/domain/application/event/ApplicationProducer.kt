@@ -24,17 +24,17 @@ class ApplicationProducer(
         )
     }
 
-    override fun updateEducationalStatusRollback(application: Application, graduateDate: YearMonth) {
+    override fun updateEducationalStatusApplicationCaseRollback(receiptCode: Long, graduateDate: YearMonth) {
         updateEducationalStatusTemplate.send(
-            KafkaTopics.UPDATE_EDUCATIONAL_STATUS_ROLLBACK,
-            UpdateEducationStatusEvent(application, graduateDate),
+            KafkaTopics.UPDATE_EDUCATIONAL_CASE_ROLLBACK,
+            UpdateEducationStatusEvent(receiptCode, graduateDate),
         )
     }
 
-    override fun updateEducationalStatus(application: Application, graduateDate: YearMonth) {
+    override fun updateEducationalStatus(receiptCode: Long, graduateDate: YearMonth) {
         updateEducationalStatusTemplate.send(
             KafkaTopics.UPDATE_EDUCATIONAL_STATUS,
-            UpdateEducationStatusEvent(application, graduateDate),
+            UpdateEducationStatusEvent(receiptCode, graduateDate),
         )
     }
 

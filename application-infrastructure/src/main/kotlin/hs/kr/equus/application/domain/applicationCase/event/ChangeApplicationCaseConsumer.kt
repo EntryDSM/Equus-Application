@@ -35,6 +35,6 @@ class ChangeApplicationCaseConsumer(
 
     @Recover
     fun recover(exception: Exception, dto: UpdateEducationStatusEvent) {
-        applicationPort.updateEducationalStatusRollback(dto.receiptCode, dto.graduateDate)
+        applicationPort.updateEducationalStatusApplicationCaseRollback(dto.receiptCode, dto.graduateDate)
     }
 }

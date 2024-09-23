@@ -20,7 +20,7 @@ class GraduationInfoConsumer(
     fun changeGraduationInfo(dto: UpdateEducationStatusEvent) {
         dto.apply {
             changeGraduationInfoUseCase.execute(
-                application = application,
+                receiptCode = receiptCode,
                 graduateDate = graduateDate
             )
         }

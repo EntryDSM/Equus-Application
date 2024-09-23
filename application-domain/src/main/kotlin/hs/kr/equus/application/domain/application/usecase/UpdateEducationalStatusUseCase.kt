@@ -21,12 +21,12 @@ class UpdateEducationalStatusUseCase(
             queryApplicationPort.queryApplicationByUserId(userId)
                 ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
+        applicationEventPort.updateEducationalStatus(application, request.graduateDate)
+
         commandApplicationPort.save(
             application.copy(
                 educationalStatus = request.educationalStatus,
             ),
         )
-
-        applicationEventPort.updateEducationalStatus(application, request.graduateDate)
     }
 }

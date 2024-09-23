@@ -21,8 +21,8 @@ class ChangeGraduationInfoUseCase(
     private val graduationInfoFactory: GraduationInfoFactory,
     private val graduationInfoService: GraduationInfoService
 ) {
-    fun execute(application: Application, graduateDate: YearMonth) {
-        val applications = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(application.receiptCode)
+    fun execute(receiptCode: Long, graduateDate: YearMonth) {
+        val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(dto.receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
         val existingInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)

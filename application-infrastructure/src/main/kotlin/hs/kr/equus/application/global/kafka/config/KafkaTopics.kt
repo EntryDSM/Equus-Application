@@ -9,4 +9,5 @@ object KafkaTopics {
     const val SUBMIT_APPLICATION_FINAL = "submit-application-final"
     const val CREATE_APPLICATION_SCORE_ROLLBACK = "create-application-score-rollback"
     const val CREATE_APPLICATION_STATUS_ROLLBACK = "create-application-status-rollback"
+    const val UPDATE_EDUCATIONAL_STATUS_ROLLBACK = "update-educational-status-rollback"
 }

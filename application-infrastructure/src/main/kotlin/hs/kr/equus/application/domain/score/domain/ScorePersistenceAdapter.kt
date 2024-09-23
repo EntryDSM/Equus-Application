@@ -27,6 +27,10 @@ class ScorePersistenceAdapter(
         ).let(scoreMapper::toDomainNotNull)
     }
 
+    override fun delete(score: Score) {
+        scoreJpaRepository.delete(scoreMapper.toEntity(score))
+    }
+
     override fun queryScoreByReceiptCode(receiptCode: Long): Score? {
         return scoreJpaRepository.findByReceiptCode(receiptCode)
             .let(scoreMapper::toDomain)

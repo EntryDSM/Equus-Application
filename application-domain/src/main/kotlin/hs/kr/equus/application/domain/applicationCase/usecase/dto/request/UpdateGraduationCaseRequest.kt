@@ -1,5 +1,7 @@
 package hs.kr.equus.application.domain.applicationCase.usecase.dto.request
 
+import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+
 data class UpdateGraduationCaseRequest(
     val volunteerTime: Int,
     val absenceDayCount: Int,
@@ -15,4 +17,3 @@ data class UpdateGraduationCaseRequest(
     val techAndHomeGrade: String,
     val extraScore: ExtraScoreRequest
 )
-

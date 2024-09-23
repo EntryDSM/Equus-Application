@@ -32,6 +32,10 @@ class ApplicationPersistenceAdapter(
         ).let(applicationMapper::toDomainNotNull)
     }
 
+    override fun delete(application: Application) {
+        applicationJpaRepository.delete(applicationMapper.toEntity(application))
+    }
+
     override fun queryApplicationByUserId(userId: UUID): Application? {
         return applicationJpaRepository.findByUserId(userId)
             .let(applicationMapper::toDomain)

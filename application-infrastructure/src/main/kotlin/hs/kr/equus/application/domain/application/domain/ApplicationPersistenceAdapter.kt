@@ -8,6 +8,7 @@ import hs.kr.equus.application.domain.application.model.Applicant
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.ApplicationPort
+import hs.kr.equus.application.domain.application.spi.dto.PagedResult
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetStaticsCountResponse
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCodeVO
@@ -65,7 +66,7 @@ class ApplicationPersistenceAdapter(
         isSubmitted: Boolean?,
         pageSize: Long,
         offset: Long
-    ): List<Applicant> {
+    ): PagedResult<Applicant> {
         val statusMap: Map<Long, StatusInfoElement> =
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
@@ -80,18 +81,21 @@ class ApplicationPersistenceAdapter(
                 isOutOfHeadcount?.let { applicationJpaEntity.isOutOfHeadcount.eq(it) },
                 applicationJpaEntity.applicationType.`in`(getApplicationTypes(isCommon, isMeister, isSocial))
             )
-            .orderBy(applicationJpaEntity.receiptCode.asc());
+            .orderBy(applicationJpaEntity.receiptCode.asc())
 
-        val applications = query.limit(pageSize).offset(offset).fetch()
+        val applications = query.limit(pageSize + 1).offset(offset).fetch()
 
-        // isSubmitted 가 null 이 아닌 경우에만 filter 를 거침
-        val applicants = isSubmitted?.let { submitted ->
-            applications.filter { application ->
+        val hasNextPage = applications.size > pageSize
+
+        val pagedApplications = if (hasNextPage) applications.subList(0, pageSize.toInt()) else applications
+
+        val filteredApplicants = isSubmitted?.let { submitted ->
+            pagedApplications.filter { application ->
                 statusMap[application.receiptCode]?.isSubmitted == submitted
             }
-        } ?: applications
+        } ?: pagedApplications
 
-        val result = applicants.map { application ->
+        val applicants = filteredApplicants.map { application ->
             val status = statusMap[application.receiptCode] ?: throw StatusExceptions.StatusNotFoundException()
             Applicant(
                 receiptCode = application.receiptCode,
@@ -104,7 +108,8 @@ class ApplicationPersistenceAdapter(
                 isOutOfHeadcount = application.isOutOfHeadcount
             )
         }
-        return result
+
+        return PagedResult(items = applicants, hasNextPage = hasNextPage)
     }
 
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {

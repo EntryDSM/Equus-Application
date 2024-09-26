@@ -1,7 +1,8 @@
 package hs.kr.equus.application.domain.application.usecase.dto.response
 
 data class GetApplicantsResponse(
-    val applicants: List<ApplicantDto>
+    val applicants: List<ApplicantDto>,
+    val hasNextPage: Boolean
 )
 
 data class ApplicantDto(

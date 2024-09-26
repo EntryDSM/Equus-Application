@@ -11,7 +11,7 @@ class GetApplicantsUseCase(
     private val queryApplicationPort: QueryApplicationPort
 ) {
     fun execute(pageSize: Long, offset: Long, getApplicantsRequest: GetApplicantsRequest): GetApplicantsResponse{
-        val applicants = getApplicantsRequest.run {
+        val pagedApplicants = getApplicantsRequest.run {
             queryApplicationPort.queryAllApplicantsByFilter(
                 schoolName = schoolName!!,
                 name = name!!,
@@ -26,7 +26,7 @@ class GetApplicantsUseCase(
             )
         }
 
-        val applicantDtoList = applicants.map {
+        val applicantDtoList = pagedApplicants.items.map {
             ApplicantDto(
                 receiptCode = it.receiptCode,
                 name = it.name,
@@ -39,6 +39,6 @@ class GetApplicantsUseCase(
             )
         }
 
-        return GetApplicantsResponse(applicantDtoList)
+        return GetApplicantsResponse(applicantDtoList, pagedApplicants.hasNextPage)
     }
 }

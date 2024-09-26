@@ -13,7 +13,7 @@ import org.springframework.retry.annotation.Retryable
 import org.springframework.stereotype.Component
 
 @Component
-class ScoreUpdateApplicationCaseConsumer(
+class ScoreUpdateGraduationCaseConsumer(
     private val mapper: ObjectMapper,
     private val updateScoreUseCase: UpdateScoreUseCase,
     private val applicationCaseEventPort: ApplicationCaseEventPort

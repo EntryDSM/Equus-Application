@@ -112,7 +112,7 @@ class ApplicationPersistenceAdapter(
             )
         }
 
-        val hasNextPage = filteredApplicants.size > offset + pageSize
+        val hasNextPage = filteredApplicants.size > pageSize
 
         return PagedResult(items = applicants, hasNextPage = hasNextPage, totalSize = totalSize)
     }

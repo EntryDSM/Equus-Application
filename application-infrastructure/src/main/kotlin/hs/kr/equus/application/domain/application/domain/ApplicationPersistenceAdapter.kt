@@ -119,6 +119,7 @@ class ApplicationPersistenceAdapter(
         if (isCommon == true) applicationTypes.add(ApplicationType.COMMON)
         if (isMeister == true) applicationTypes.add(ApplicationType.MEISTER)
         if (isSocial == true) applicationTypes.add(ApplicationType.SOCIAL)
+        
         return applicationTypes
     }
 

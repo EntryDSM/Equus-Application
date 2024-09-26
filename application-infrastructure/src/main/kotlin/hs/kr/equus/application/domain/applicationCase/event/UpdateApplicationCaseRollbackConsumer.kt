@@ -13,7 +13,7 @@ class UpdateApplicationCaseRollbackConsumer(
     private val commandApplicationCasePort: CommandApplicationCasePort
 ) {
     @KafkaListener(
-        topics = [KafkaTopics.UPDATE_EDUCATIONAL_STATUS],
+        topics = [KafkaTopics.UPDATE_APPLICATION_CASE_ROLLBACK],
         groupId = "rollback-application-case",
         containerFactory = "kafkaListenerContainerFactory",
     )

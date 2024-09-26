@@ -3,6 +3,8 @@ package hs.kr.equus.application.global.excel.generator
 import hs.kr.equus.application.domain.application.spi.PrintApplicationInfoPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.application.service.ApplicationService
+import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import org.apache.poi.ss.usermodel.Row
@@ -53,12 +55,14 @@ class PrintApplicationInfoGenerator(
         row.createCell(7).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.applicantTel))
         row.createCell(8).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
         row.createCell(9).setCellValue(applicationService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
-        row.createCell(10).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.graduateDate))
+        row.createCell(10).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationInfo?.graduateDate))
         row.createCell(11).setCellValue(applicationService.safeGetValue(applicationInfoVO.school?.name))
-        row.createCell(12).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.studentNumber?.classNumber))
+        val graduation = applicationInfoVO.graduationInfo as? Graduation
+        row.createCell(12).setCellValue(applicationService.safeGetValue(graduation?.studentNumber?.classNumber))
         row.createCell(13).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentName))
         row.createCell(14).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentTel))
-        val subject = applicationInfoVO.graduationCase?.gradesPerSubject()
+        val graduationCase = applicationInfoVO.applicationCase as? GraduationCase
+        val subject = graduationCase?.gradesPerSubject()
         row.createCell(15).setCellValue(applicationService.safeGetValue(subject?.get("국어")?.get(0)))
         row.createCell(16).setCellValue(applicationService.safeGetValue(subject?.get("사회")?.get(0)))
         row.createCell(17).setCellValue(applicationService.safeGetValue(subject?.get("역사")?.get(0)))
@@ -91,15 +95,15 @@ class PrintApplicationInfoGenerator(
         row.createCell(44).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.thirdBeforeScore))
         row.createCell(45).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.thirdBeforeBeforeScore))
         row.createCell(46).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.totalGradeScore))
-        row.createCell(47).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.volunteerTime))
+        row.createCell(47).setCellValue(applicationService.safeGetValue(graduationCase?.volunteerTime))
         row.createCell(48).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.volunteerScore))
-        row.createCell(49).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.absenceDayCount))
-        row.createCell(50).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.latenessCount))
-        row.createCell(51).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.earlyLeaveCount))
-        row.createCell(52).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationCase?.lectureAbsenceCount))
+        row.createCell(49).setCellValue(applicationService.safeGetValue(graduationCase?.absenceDayCount))
+        row.createCell(50).setCellValue(applicationService.safeGetValue(graduationCase?.latenessCount))
+        row.createCell(51).setCellValue(applicationService.safeGetValue(graduationCase?.earlyLeaveCount))
+        row.createCell(52).setCellValue(applicationService.safeGetValue(graduationCase?.lectureAbsenceCount))
         row.createCell(53).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.attendanceScore))
-        row.createCell(54).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
-        row.createCell(55).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
+        row.createCell(54).setCellValue(applicationService.translateBoolean(applicationInfoVO.applicationCase?.extraScoreItem?.hasCompetitionPrize))
+        row.createCell(55).setCellValue(applicationService.translateBoolean(applicationInfoVO.applicationCase?.extraScoreItem?.hasCertificate))
         row.createCell(56).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.extraScore).toString())
         row.createCell(57).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalScore).toString())
     }

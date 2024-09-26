@@ -73,6 +73,7 @@ class ApplicationPersistenceAdapter(
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
 
+        // Initial query without pagination
         val query = jpaQueryFactory
             .selectFrom(applicationJpaEntity)
             .leftJoin(qualificationJpaEntity).on(applicationJpaEntity.receiptCode.eq(qualificationJpaEntity.receiptCode))
@@ -85,19 +86,20 @@ class ApplicationPersistenceAdapter(
             )
             .orderBy(applicationJpaEntity.receiptCode.asc())
 
-        val applications = query.limit(pageSize + 1).offset(offset).fetch()
-
-        val hasNextPage = applications.size > pageSize
-
-        val pagedApplications = if (hasNextPage) applications.subList(0, pageSize.toInt()) else applications
+        val applicationList = query.fetch()
 
         val filteredApplicants = isSubmitted?.let { submitted ->
-            pagedApplications.filter { application ->
+            applicationList.filter { application ->
                 statusMap[application.receiptCode]?.isSubmitted == submitted
             }
-        } ?: pagedApplications
+        } ?: applicationList
 
-        val applicants = filteredApplicants.map { application ->
+        val safePageSize = if (pageSize > 0) pageSize else 1
+        val totalSize = ceil(filteredApplicants.size.toDouble() / safePageSize ).toInt()
+
+        val pagedApplicationList = filteredApplicants.drop(offset.toInt()).take(pageSize.toInt())
+
+        val applicants = pagedApplicationList.map { application ->
             val status = statusMap[application.receiptCode] ?: throw StatusExceptions.StatusNotFoundException()
             Applicant(
                 receiptCode = application.receiptCode,
@@ -110,10 +112,13 @@ class ApplicationPersistenceAdapter(
                 isOutOfHeadcount = application.isOutOfHeadcount
             )
         }
-        val totalPage = ceil(applicants.size.toDouble() / pageSize).toLong()
 
-        return PagedResult(items = applicants, hasNextPage = hasNextPage, totalPage.toInt())
+        val hasNextPage = filteredApplicants.size > offset + pageSize
+
+        return PagedResult(items = applicants, hasNextPage = hasNextPage, totalSize = totalSize)
     }
+
+
 
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {
         val applicationTypes = mutableListOf<ApplicationType>()

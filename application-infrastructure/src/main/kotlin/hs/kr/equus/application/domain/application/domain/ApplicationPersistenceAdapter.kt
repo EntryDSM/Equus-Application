@@ -109,9 +109,9 @@ class ApplicationPersistenceAdapter(
                 isOutOfHeadcount = application.isOutOfHeadcount
             )
         }
-        val totalPages = ceil(applicants.count().toDouble() / pageSize).toLong()
+        val totalPage = ceil(applicants.size.toDouble() / pageSize).toLong()
 
-        return PagedResult(items = applicants, hasNextPage = hasNextPage, totalPages.toInt())
+        return PagedResult(items = applicants, hasNextPage = hasNextPage, totalPage.toInt())
     }
 
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {
@@ -119,6 +119,7 @@ class ApplicationPersistenceAdapter(
         if (isCommon == true) applicationTypes.add(ApplicationType.COMMON)
         if (isMeister == true) applicationTypes.add(ApplicationType.MEISTER)
         if (isSocial == true) applicationTypes.add(ApplicationType.SOCIAL)
+        
         return applicationTypes
     }
 

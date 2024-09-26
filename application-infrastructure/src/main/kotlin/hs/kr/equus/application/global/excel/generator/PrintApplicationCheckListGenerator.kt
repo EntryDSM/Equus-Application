@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.application.spi.PrintApplicationCheckListPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
@@ -255,12 +256,23 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationService.formatPhoneNumber(applicationInfoVO.application.parentTel)))
 
         val graduationCase = applicationInfoVO.applicationCase as? GraduationCase
-        getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(graduationCase?.absenceDayCount).toString())
-        getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(graduationCase?.latenessCount).toString())
-        getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(graduationCase?.earlyLeaveCount).toString())
-        getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(graduationCase?.lectureAbsenceCount).toString())
+        when(val case = applicationInfoVO.applicationCase) {
+            is GraduationCase -> {
+                getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(case.absenceDayCount).toString())
+                getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(case.latenessCount).toString())
+                getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(case.earlyLeaveCount).toString())
+                getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(case.lectureAbsenceCount).toString())
+                getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(case.volunteerTime).toString())
+            }
+            else -> {
+                getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(null).toString())
+            }
+        }
         getCell(dh + 8, 5).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.attendanceScore).toString())
-        getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(graduationCase?.volunteerTime).toString())
         getCell(dh + 8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore).toString())
         getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.calculateSubjectScore()).toString())
 

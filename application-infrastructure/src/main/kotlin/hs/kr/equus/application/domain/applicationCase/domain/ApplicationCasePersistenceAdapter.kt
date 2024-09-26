@@ -66,4 +66,8 @@ class ApplicationCasePersistenceAdapter(
             }
         }
     }
+
+    override fun queryApplicationCaseByReceiptCode(receiptCode: Long): ApplicationCase? {
+        return applicationcaserepo
+    }
 }

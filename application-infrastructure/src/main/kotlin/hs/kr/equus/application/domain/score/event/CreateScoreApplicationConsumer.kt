@@ -1,6 +1,7 @@
 package hs.kr.equus.application.domain.score.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import hs.kr.equus.application.domain.application.event.dto.CreateApplicationEvent
 import hs.kr.equus.application.domain.application.event.spi.ApplicationEventPort
 import hs.kr.equus.application.domain.score.usecase.CreateScoreUseCase
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
@@ -27,13 +28,13 @@ class CreateScoreApplicationConsumer (
         containerFactory = "kafkaListenerContainerFactory",
     )
     fun createScore(message: String) {
-        val receiptCode = mapper.readValue(message, Long::class.java)
-        createScoreUseCase.execute(receiptCode)
+        val createApplicationEvent = mapper.readValue(message, CreateApplicationEvent::class.java)
+        createScoreUseCase.execute(createApplicationEvent.receiptCode)
     }
 
     @Recover
     fun recover(exception: Exception, message: String) {
-        val receiptCode = mapper.readValue(message, Long::class.java)
-        applicationEventPort.createApplicationScoreRollback(receiptCode)
+        val createApplicationEvent = mapper.readValue(message, CreateApplicationEvent::class.java)
+        applicationEventPort.createApplicationScoreRollback(createApplicationEvent.receiptCode)
     }
 }

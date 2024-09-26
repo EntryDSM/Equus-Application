@@ -1,3 +1,8 @@
 package hs.kr.equus.application.domain.application.event.dto
 
-data class CreateApplicationEvent()
+import java.util.UUID
+
+data class CreateApplicationEvent(
+    val receiptCode: Long,
+    val userId: UUID
+)

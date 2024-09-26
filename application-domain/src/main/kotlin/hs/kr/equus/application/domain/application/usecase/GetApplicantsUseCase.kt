@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplica
 import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicantDto
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
+import kotlin.math.ceil
 
 @ReadOnlyUseCase
 class GetApplicantsUseCase(
@@ -39,6 +40,6 @@ class GetApplicantsUseCase(
             )
         }
 
-        return GetApplicantsResponse(applicantDtoList, pagedApplicants.hasNextPage)
+        return GetApplicantsResponse(applicantDtoList, pagedApplicants.hasNextPage, pagedApplicants.totalSize )
     }
 }

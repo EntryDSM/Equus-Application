@@ -19,6 +19,7 @@ import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
 import java.util.*
+import kotlin.math.ceil
 
 @Component
 class ApplicationPersistenceAdapter(
@@ -108,8 +109,9 @@ class ApplicationPersistenceAdapter(
                 isOutOfHeadcount = application.isOutOfHeadcount
             )
         }
+        val totalPages = ceil(applicants.count().toDouble() / pageSize).toLong()
 
-        return PagedResult(items = applicants, hasNextPage = hasNextPage)
+        return PagedResult(items = applicants, hasNextPage = hasNextPage, totalPages.toInt())
     }
 
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {

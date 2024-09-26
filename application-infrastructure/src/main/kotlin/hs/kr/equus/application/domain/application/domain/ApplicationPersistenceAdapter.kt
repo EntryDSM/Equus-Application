@@ -94,7 +94,8 @@ class ApplicationPersistenceAdapter(
             }
         } ?: applicationList
 
-        val totalSize = ceil(filteredApplicants.size.toDouble() / pageSize).toInt()
+        val safePageSize = if (pageSize > 0) pageSize else 1
+        val totalSize = ceil(filteredApplicants.size.toDouble() / safePageSize ).toInt()
 
         val pagedApplicationList = filteredApplicants.drop(offset.toInt()).take(pageSize.toInt())
 
@@ -112,7 +113,7 @@ class ApplicationPersistenceAdapter(
             )
         }
 
-        val hasNextPage = filteredApplicants.size > pageSize
+        val hasNextPage = filteredApplicants.size > offset + pageSize
 
         return PagedResult(items = applicants, hasNextPage = hasNextPage, totalSize = totalSize)
     }

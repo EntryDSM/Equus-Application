@@ -30,6 +30,5 @@ class DeleteScoreConsumer(
             logger.error("delete-score-consumer group 에서 점수를 삭제하던 중 오류가 발생하였습니다. $message", e)
             // TODO :: 재시도 로직 작성
         }
-
     }
 }

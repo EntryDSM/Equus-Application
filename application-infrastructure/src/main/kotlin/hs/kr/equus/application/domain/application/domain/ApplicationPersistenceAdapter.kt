@@ -73,7 +73,6 @@ class ApplicationPersistenceAdapter(
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
 
-        // Initial query without pagination
         val query = jpaQueryFactory
             .selectFrom(applicationJpaEntity)
             .leftJoin(qualificationJpaEntity).on(applicationJpaEntity.receiptCode.eq(qualificationJpaEntity.receiptCode))
@@ -94,7 +93,8 @@ class ApplicationPersistenceAdapter(
             }
         } ?: applicationList
 
-        val totalSize = ceil(filteredApplicants.size.toDouble() / pageSize).toInt()
+        val safePageSize = if (pageSize > 0) pageSize else 1
+        val totalSize = ceil(filteredApplicants.size.toDouble() / safePageSize ).toInt()
 
         val pagedApplicationList = filteredApplicants.drop(offset.toInt()).take(pageSize.toInt())
 

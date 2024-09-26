@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.application.spi
 import hs.kr.equus.application.domain.application.model.Applicant
 import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationType
+import hs.kr.equus.application.domain.application.spi.dto.PagedResult
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import java.util.*
 
@@ -29,5 +30,5 @@ interface QueryApplicationPort {
         isSubmitted: Boolean?,
         pageSize: Long,
         offset: Long
-    ): List<Applicant>
+    ): PagedResult<Applicant>
 }

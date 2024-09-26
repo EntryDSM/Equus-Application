@@ -45,6 +45,6 @@ class UpdateQualificationCaseUseCase(
             ),
         )
 
-        qualificationEventPort.updateApplicationCase(qualificationCase)
+        qualificationEventPort.updateQualificationCase(qualificationCase)
     }
 }

@@ -5,13 +5,14 @@ import hs.kr.equus.application.domain.application.usecase.dto.request.GetApplica
 import hs.kr.equus.application.domain.application.usecase.dto.response.ApplicantDto
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicantsResponse
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
+import kotlin.math.ceil
 
 @ReadOnlyUseCase
 class GetApplicantsUseCase(
     private val queryApplicationPort: QueryApplicationPort
 ) {
     fun execute(pageSize: Long, offset: Long, getApplicantsRequest: GetApplicantsRequest): GetApplicantsResponse{
-        val applicants = getApplicantsRequest.run {
+        val pagedApplicants = getApplicantsRequest.run {
             queryApplicationPort.queryAllApplicantsByFilter(
                 schoolName = schoolName!!,
                 name = name!!,
@@ -26,7 +27,7 @@ class GetApplicantsUseCase(
             )
         }
 
-        val applicantDtoList = applicants.map {
+        val applicantDtoList = pagedApplicants.items.map {
             ApplicantDto(
                 receiptCode = it.receiptCode,
                 name = it.name,
@@ -39,6 +40,6 @@ class GetApplicantsUseCase(
             )
         }
 
-        return GetApplicantsResponse(applicantDtoList)
+        return GetApplicantsResponse(applicantDtoList, pagedApplicants.hasNextPage, pagedApplicants.totalSize )
     }
 }

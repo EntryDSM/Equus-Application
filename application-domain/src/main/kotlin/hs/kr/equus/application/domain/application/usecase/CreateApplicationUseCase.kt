@@ -28,7 +28,7 @@ class CreateApplicationUseCase(
         val receiptCode =
             commandApplicationPort.save(createWithUserInfo(user)).receiptCode
 
-        applicationEventPort.create(receiptCode)
+        applicationEventPort.create(receiptCode, userId)
     }
 
     fun createWithUserInfo(user: User): Application {

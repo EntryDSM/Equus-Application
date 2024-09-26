@@ -6,4 +6,6 @@ interface CommandApplicationPort {
     fun save(application: Application): Application
 
     fun delete(application: Application)
+
+    fun deleteByReceiptCode(receiptCode: Long)
 }

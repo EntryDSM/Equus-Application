@@ -18,6 +18,7 @@ import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 import kotlin.math.ceil
 
@@ -160,6 +161,11 @@ class ApplicationPersistenceAdapter(
             .fetch()
             .map { applicationMapper.toDomain(it)!! }
 
+    }
+
+    @Transactional
+    override fun deleteByReceiptCode(receiptCode: Long) {
+        applicationJpaRepository.deleteById(receiptCode)
     }
 
     override fun queryApplicantCodesByIsFirstRoundPass(): List<ApplicationCodeVO> {

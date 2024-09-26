@@ -25,8 +25,6 @@ class SecurityConfig(
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         http.authorizeRequests()
-            .antMatchers("/**")
-            .permitAll()
             .antMatchers("/admin/**")
             .hasRole(UserRole.ADMIN.name)
             .antMatchers("/schools")
@@ -34,7 +32,7 @@ class SecurityConfig(
             .antMatchers("/score/**")
             .hasRole(UserRole.USER.name)
             .anyRequest()
-            .authenticated()
+            .permitAll()
 
         http
             .apply(FilterConfig(objectMapper))

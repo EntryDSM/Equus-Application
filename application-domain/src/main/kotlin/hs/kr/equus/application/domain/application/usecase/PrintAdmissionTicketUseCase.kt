@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.domain.graduationInfo.model.Qualification
@@ -45,7 +46,7 @@ class PrintAdmissionTicketUseCase(
                     is Qualification -> {
                         val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it)
                             ?: throw ApplicationCaseExceptions.ApplicationCaseNotFoundException()
-                        val graduationCase = applicationCase as GraduationCase
+                        val graduationCase = applicationCase as QualificationCase
                         val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
                         ApplicationInfoVO(
                             application!!,

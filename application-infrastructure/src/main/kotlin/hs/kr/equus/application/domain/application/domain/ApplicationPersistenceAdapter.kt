@@ -73,7 +73,6 @@ class ApplicationPersistenceAdapter(
             statusClient.getStatusList()
                 .associateBy(StatusInfoElement::receiptCode)
 
-        // Initial query without pagination
         val query = jpaQueryFactory
             .selectFrom(applicationJpaEntity)
             .leftJoin(qualificationJpaEntity).on(applicationJpaEntity.receiptCode.eq(qualificationJpaEntity.receiptCode))

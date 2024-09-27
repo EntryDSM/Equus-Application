@@ -3,6 +3,9 @@ package hs.kr.equus.application.global.excel.generator
 import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.application.spi.PrintApplicationCheckListPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
+import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
+import hs.kr.equus.application.domain.graduationInfo.model.Graduation
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
@@ -229,7 +232,8 @@ class PrintApplicationCheckListGenerator(
 
 
     private fun insertDataIntoSheet(applicationInfoVO: ApplicationInfoVO, dh: Int) {
-        val number = applicationInfoVO.graduation?.studentNumber
+        val graduation = applicationInfoVO.graduationInfo as? Graduation
+        val number = graduation?.studentNumber
         val studentNumber = if (number != null) {
             number.gradeNumber.toInt() * 10000 +
                     number.classNumber.toInt() * 100 +
@@ -240,7 +244,7 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 1, 2).setCellValue(applicationInfoVO.application.receiptCode.toString())
         getCell(dh + 1, 3).setCellValue(applicationService.safeGetValue(applicationInfoVO.school?.name))
         getCell(dh + 1, 6).setCellValue(applicationService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
-        getCell(dh + 1, 7).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduation?.graduateDate?.year))
+        getCell(dh + 1, 7).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationInfo?.graduateDate?.year))
         getCell(dh + 4, 1).setCellValue(applicationService.translateApplicationType(applicationInfoVO.application.applicationType))
         getCell(dh + 3, 2).setCellValue(applicationInfoVO.application.applicantName)
         getCell(dh + 3, 6).setCellValue(applicationService.safeGetValue(studentNumber))
@@ -251,16 +255,28 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 5, 2).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
         getCell(dh + 5, 6).setCellValue(applicationService.safeGetValue(applicationService.formatPhoneNumber(applicationInfoVO.application.parentTel)))
 
-        getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.absenceDayCount).toString())
-        getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.latenessCount).toString())
-        getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.earlyLeaveCount).toString())
-        getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.lectureAbsenceCount).toString())
+        val graduationCase = applicationInfoVO.applicationCase as? GraduationCase
+        when(val case = applicationInfoVO.applicationCase) {
+            is GraduationCase -> {
+                getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(case.absenceDayCount).toString())
+                getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(case.latenessCount).toString())
+                getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(case.earlyLeaveCount).toString())
+                getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(case.lectureAbsenceCount).toString())
+                getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(case.volunteerTime).toString())
+            }
+            else -> {
+                getCell(dh + 8, 1).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 2).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 3).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 4).setCellValue(applicationService.safeGetDouble(null).toString())
+                getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(null).toString())
+            }
+        }
         getCell(dh + 8, 5).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.attendanceScore).toString())
-        getCell(dh + 8, 6).setCellValue(applicationService.safeGetDouble(applicationInfoVO.graduationCase?.volunteerTime).toString())
         getCell(dh + 8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore).toString())
         getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.calculateSubjectScore()).toString())
 
-        val subjectGrades = applicationInfoVO.graduationCase?.gradesPerSubject()
+        val subjectGrades = graduationCase?.gradesPerSubject()
         var rowIndex = dh + 11
         subjectGrades?.forEach { (subject, grades) ->
             getCell(rowIndex, 1).setCellValue(applicationService.safeGetValue(subject))
@@ -270,8 +286,8 @@ class PrintApplicationCheckListGenerator(
             rowIndex++
         }
 
-        getCell(dh + 11, 7).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCompetitionPrize))
-        getCell(dh + 12, 7).setCellValue(applicationService.translateBoolean(applicationInfoVO.graduationCase?.extraScoreItem?.hasCertificate))
+        getCell(dh + 11, 7).setCellValue(applicationService.translateBoolean(applicationInfoVO.applicationCase?.extraScoreItem?.hasCompetitionPrize))
+        getCell(dh + 12, 7).setCellValue(applicationService.translateBoolean(applicationInfoVO.applicationCase?.extraScoreItem?.hasCertificate))
         getCell(dh + 13, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.extraScore).toString())
         getCell(dh + 18, 2).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdScore).toString())
         getCell(dh + 18, 3).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.thirdGradeScore).toString())

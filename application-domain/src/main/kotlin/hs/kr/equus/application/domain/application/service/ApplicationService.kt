@@ -57,7 +57,7 @@ class ApplicationService {
             ApplicationRemark.BASIC_LIVING -> "기초생활수급자"
             ApplicationRemark.LOWEST_INCOME -> "차상위계층"
             ApplicationRemark.TEEN_HOUSEHOLDER -> "소년소녀가장"
-            ApplicationRemark.PRIVILEGED_ADMISSION -> "특례입학대상자"
+            ApplicationRemark.PRIVILEGED_ADMISSION -> "특례입학대상"
             ApplicationRemark.NATIONAL_MERIT -> "국가유공자"
             ApplicationRemark.PROTECTED_CHILDREN -> "보호대상아동"
             ApplicationRemark.NOTHING -> "없음"
@@ -76,7 +76,7 @@ class ApplicationService {
     }
 
     fun formatPhoneNumber(phoneNumber: String?): String {
-        return "${phoneNumber!!.substring(0, 3)}-${phoneNumber.substring(3, 7)}-${phoneNumber.substring(7, 11)}"
+        return "${phoneNumber!!.substring(0, 3)}-${phoneNumber.substring(3, 7)}-${phoneNumber.substring(7)}"
     }
 
 }

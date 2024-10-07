@@ -18,32 +18,27 @@ class PrintApplicationCheckListUseCase(
     private val applicationQuerySchoolPort: ApplicationQuerySchoolPort
 ) {
     fun execute(httpServletResponse: HttpServletResponse) {
-        val applicationList = queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
-
-        val schoolCodeList = applicationList.mapNotNull {
-            val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(it) as? Graduation
-            graduationInfo?.schoolCode
-        }.distinct()
-
-        val schoolMap = schoolCodeList.associateWith {
-            applicationQuerySchoolPort.querySchoolBySchoolCode(it)
-        }
-
-        val applicationInfoVOList = applicationList.map { it ->
-            val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(it) as? Graduation
-            val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it) as? GraduationCase
-            val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
-            val school = graduationInfo?.schoolCode?.let { schoolMap[it] }
-
-            ApplicationInfoVO(
-                application!!,
-                graduationInfo,
-                applicationCase,
-                queryScorePort.queryScoreByReceiptCode(application.receiptCode),
-                school
-            )
-        }
+        val applicationInfoVOList =
+            queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
+                .map { it ->
+                    val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(it)
+                    val graduation = graduationInfo as? Graduation
+                    val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it)
+                    val graduationCase = applicationCase as? GraduationCase
+                    val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
+                    val school = graduation?.schoolCode?.let { schoolCode ->
+                        applicationQuerySchoolPort.querySchoolBySchoolCode(schoolCode)
+                    }
+                    ApplicationInfoVO(
+                        application!!,
+                        graduation,
+                        graduationCase,
+                        queryScorePort.queryScoreByReceiptCode(application.receiptCode),
+                        school
+                    )
+                }
 
         printApplicationCheckListPort.printApplicationCheckList(applicationInfoVOList, httpServletResponse)
+
     }
 }

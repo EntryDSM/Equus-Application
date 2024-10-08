@@ -66,4 +66,14 @@ class ApplicationCasePersistenceAdapter(
             }
         }
     }
+
+    override fun queryAllGraduationCase(receiptCodeList: List<Long>): List<GraduationCase> {
+        return graduationCaseJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { graduationCaseMapper.toDomain(it)!! }
+    }
+
+    override fun queryAllQualificationCase(receiptCodeList: List<Long>): List<QualificationCase> {
+        return qualificationCaseJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { qualificationCaseMapper.toDomain(it)!! }
+    }
 }

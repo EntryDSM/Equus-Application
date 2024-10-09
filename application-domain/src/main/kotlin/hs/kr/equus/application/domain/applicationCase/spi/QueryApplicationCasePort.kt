@@ -8,9 +8,4 @@ import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 interface QueryApplicationCasePort {
     fun queryApplicationCaseByApplication(application: Application): ApplicationCase?
     fun isExistsApplicationCaseByApplication(application: Application): Boolean
-
-    fun queryAllGraduationCase(receiptCodeList: List<Long>): List<GraduationCase>
-
-    fun queryAllQualificationCase(receiptCodeList: List<Long>): List<QualificationCase>
-
 }

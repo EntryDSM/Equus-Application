@@ -276,6 +276,17 @@ class PrintApplicationCheckListGenerator(
         getCell(dh + 8, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.volunteerScore).toString())
         getCell(dh + 10, 7).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.calculateSubjectScore()).toString())
 
+        if (applicationInfoVO.applicationCase is QualificationCase) {
+            val qualificationCase = applicationInfoVO.applicationCase as QualificationCase
+            getCell(dh + 11, 3).setCellValue(qualificationCase.koreanGrade.toString())
+            getCell(dh + 12, 3).setCellValue(qualificationCase.socialGrade.toString())
+            getCell(dh + 13, 3).setCellValue("X")
+            getCell(dh + 14, 3).setCellValue(qualificationCase.mathGrade.toString())
+            getCell(dh + 15, 3).setCellValue(qualificationCase.scienceGrade.toString())
+            getCell(dh + 16, 3).setCellValue(qualificationCase.optGrade.toString())
+            getCell(dh + 17, 3).setCellValue(qualificationCase.englishGrade.toString())
+        }
+
         val subjectGrades = graduationCase?.gradesPerSubject()
         var rowIndex = dh + 11
         subjectGrades?.forEach { (subject, grades) ->

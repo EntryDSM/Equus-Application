@@ -71,7 +71,7 @@ class ApplicationService {
         is Double -> value
         is Int -> value.toDouble()
         is BigDecimal -> value.toDouble()
-        null -> ""
+        null -> 0.0
         else -> 0.0
     }
 

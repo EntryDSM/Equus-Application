@@ -22,7 +22,7 @@ class ChangeApplicationCaseUseCase(
         val application = queryApplicationCaseQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        if(queryApplicationCasePort.isExistsApplicationCaseByApplication(application)) {
+        if(!queryApplicationCasePort.isExistsApplicationCaseByApplication(application)) {
             commandApplicationCasePort.save(
                 applicationCaseFactory.createApplicationCase(
                     receiptCode,

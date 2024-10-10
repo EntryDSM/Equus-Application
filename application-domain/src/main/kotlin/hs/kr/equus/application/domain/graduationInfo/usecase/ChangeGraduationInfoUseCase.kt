@@ -17,17 +17,20 @@ class ChangeGraduationInfoUseCase(
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
     private val commandGraduationInfoPort: CommandGraduationInfoPort,
     private val graduationInfoFactory: GraduationInfoFactory,
+    private val queryGraduationInfoPort: QueryGraduationInfoPort
 ) {
     fun execute(receiptCode: Long, graduateDate: YearMonth) {
         val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        commandGraduationInfoPort.save(
-            graduationInfoFactory.createGraduationInfo(
-                receiptCode = receiptCode,
-                educationalStatus = application.educationalStatus,
-                graduateDate = graduateDate
+        if(!queryGraduationInfoPort.isExistsGraduationInfoByApplication(application)) {
+            commandGraduationInfoPort.save(
+                graduationInfoFactory.createGraduationInfo(
+                    receiptCode = receiptCode,
+                    educationalStatus = application.educationalStatus,
+                    graduateDate = graduateDate
+                )
             )
-        )
+        }
     }
 }

@@ -16,16 +16,19 @@ class ChangeApplicationCaseUseCase(
     private val queryApplicationCaseQueryApplicationPort: ApplicationCaseQueryApplicationPort,
     private val commandApplicationCasePort: CommandApplicationCasePort,
     private val applicationCaseFactory: ApplicationCaseFactory,
+    private val queryApplicationCasePort: QueryApplicationCasePort
 ) {
     fun execute(receiptCode: Long) {
         val application = queryApplicationCaseQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        commandApplicationCasePort.save(
-            applicationCaseFactory.createApplicationCase(
-                receiptCode,
-                application.educationalStatus
+        if(queryApplicationCasePort.isExistsApplicationCaseByApplication(application)) {
+            commandApplicationCasePort.save(
+                applicationCaseFactory.createApplicationCase(
+                    receiptCode,
+                    application.educationalStatus
+                )
             )
-        )
+        }
     }
 }

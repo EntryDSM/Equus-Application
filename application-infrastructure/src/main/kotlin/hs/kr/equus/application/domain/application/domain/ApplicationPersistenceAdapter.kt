@@ -218,4 +218,9 @@ class ApplicationPersistenceAdapter(
                 count = count
         )
     }
+
+    override fun queryAllByReceiptCode(receiptCodeList: List<Long>): List<Application?> {
+        return applicationJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { applicationMapper.toDomain(it) }
+    }
 }

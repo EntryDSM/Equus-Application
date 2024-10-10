@@ -22,11 +22,14 @@ class PrintApplicationCheckListUseCase(
             queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
         val receiptCodeList = applicationInfoVOList.map { it.receiptCode }
         val applicationCaseMap = queryApplicationCasePort.queryAllApplicationCaseByReceiptCode(receiptCodeList)
-            .associateBy { it!!.receiptCode }
+            .filterNotNull()
+            .associateBy { it.receiptCode }
         val graduationInfoMap = queryGraduationInfoPort.queryAllGraduationByReceiptCode(receiptCodeList)
-            .associateBy { it!!.receiptCode }
+            .filterNotNull()
+            .associateBy { it.receiptCode }
         val applicationMap = queryApplicationPort.queryAllByReceiptCode(receiptCodeList)
-            .associateBy { it!!.receiptCode }
+            .filterNotNull()
+            .associateBy { it.receiptCode }
         val schoolMap = graduationInfoMap.values
             .filterIsInstance<Graduation>() // Graduation 타입만 필터링
             .associate {
@@ -42,18 +45,16 @@ class PrintApplicationCheckListUseCase(
             val graduationInfo = graduationInfoMap[it.receiptCode]
             val graduation = graduationInfo as? Graduation
             val applicationCase = applicationCaseMap[it.receiptCode]
-            val graduationCase = applicationCase as? GraduationCase
-            val school = graduation!!.schoolCode!!.let { schoolMap[it] }
+            val school = graduation?.schoolCode.let { schoolMap[it] }
             val score = scoreList[it.receiptCode]
             ApplicationInfoVO(
                 application,
                 graduation,
-                graduationCase,
+                applicationCase,
                 score,
                 school
             )
         }
         printApplicationCheckListPort.printApplicationCheckList(list, httpServletResponse)
-
     }
 }

@@ -31,8 +31,12 @@ class ChangeApplicationCaseUseCase(
         )
 
         when {
-            existingCase == null -> commandApplicationCasePort.save(newApplicationCase)
+            existingCase == null -> {
+                print("1번-----------------")
+                commandApplicationCasePort.save(newApplicationCase)
+            }
             applicationCaseService.hasEducationalStatusMismatch(application, existingCase) -> {
+                print("2번-----------------")
                 commandApplicationCasePort.delete(existingCase)
                 commandApplicationCasePort.save(newApplicationCase)
             }

@@ -31,10 +31,10 @@ data class Score(
         return copy(
             attendanceScore = attendanceScore,
             volunteerScore = volunteerScore,
-            thirdScore = gradeScores[3],
-            thirdGradeScore = gradeScores[2],
-            thirdBeforeScore = gradeScores[1],
-            thirdBeforeBeforeScore = gradeScores[0],
+            thirdScore = gradeScores[0],
+            thirdGradeScore = gradeScores[1],
+            thirdBeforeScore = gradeScores[2],
+            thirdBeforeBeforeScore = gradeScores[3],
             totalGradeScore = totalGradeScore,
             totalScore  = totalGradeScore.add(BigDecimal(attendanceScore)).add(volunteerScore).add(extraScore).setScale(3, RoundingMode.HALF_UP),
             extraScore = extraScore

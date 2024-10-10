@@ -44,8 +44,7 @@ class GetQualificationCaseUseCaseTest {
     )
 
     private val qualificationCaseStub = QualificationCase(
-        receiptCode = receiptCode,
-        averageScore = BigDecimal(90)
+        receiptCode = receiptCode
     )
 
     @BeforeEach
@@ -70,7 +69,7 @@ class GetQualificationCaseUseCaseTest {
             .willReturn(qualificationCaseStub)
 
         //when & then
-        assertEquals(BigDecimal(90), getQualificationCaseUseCase.execute().averageScore)
+        assertEquals(BigDecimal(90), getQualificationCaseUseCase.execute())
     }
 
     @Test

@@ -15,13 +15,13 @@ class GraduationCaseTest {
             lectureAbsenceCount = 0,
             latenessCount = 0,
             earlyLeaveCount = 0,
-            koreanGrade = "ABCD",
-            socialGrade = "ABCD",
-            historyGrade = "ABCD",
-            mathGrade = "ABCD",
-            scienceGrade = "ABCD",
-            englishGrade = "ABCD",
-            techAndHomeGrade = "ABCD",
+            koreanGrade = "XAAB",
+            socialGrade = "XBXX",
+            historyGrade = "XDAC",
+            mathGrade = "XBBB",
+            scienceGrade = "XCAB",
+            englishGrade = "XBBB",
+            techAndHomeGrade = "XAAA",
             isProspectiveGraduate = true,
             receiptCode = 1,
         )
@@ -32,13 +32,13 @@ class GraduationCaseTest {
         // given
         val graduationCase =
             graduationCaseStub.copy(
-                absenceDayCount = 4,
-                lectureAbsenceCount = 4,
-                latenessCount = 4,
-                earlyLeaveCount = 4,
+                absenceDayCount = 0,
+                lectureAbsenceCount = 0,
+                latenessCount = 0,
+                earlyLeaveCount = 0,
             )
         // when & then
-        assertEquals(7, graduationCase.calculateAttendanceScore())
+        assertEquals(15, graduationCase.calculateAttendanceScore())
     }
 
     @Test
@@ -46,10 +46,10 @@ class GraduationCaseTest {
         // given
         val graduationCase =
             graduationCaseStub.copy(
-                volunteerTime = 13,
+                volunteerTime = 15,
             )
         // when & then
-        assertEquals(BigDecimal(13), graduationCase.calculateVolunteerScore())
+        assertEquals(BigDecimal(15), graduationCase.calculateVolunteerScore())
     }
 
     @Test
@@ -57,20 +57,21 @@ class GraduationCaseTest {
         // given
         val graduationCase =
             graduationCaseStub.copy(
-                isProspectiveGraduate = false,
+                isProspectiveGraduate = true,
             )
 
         val expectedGradeScores =
             arrayOf(
-                BigDecimal("20.000"),
+                BigDecimal("0.000"),
+                BigDecimal("30.857"),
+                BigDecimal("18.667"),
                 BigDecimal("16.000"),
-                BigDecimal("20.000"),
             )
         // when
         val gradeScores = graduationCase.calculateGradeScores()
 
         // then
-        for (i in 0..2) {
+        for (i in 0..3) {
             assertEquals(expectedGradeScores[i], gradeScores[i])
         }
     }

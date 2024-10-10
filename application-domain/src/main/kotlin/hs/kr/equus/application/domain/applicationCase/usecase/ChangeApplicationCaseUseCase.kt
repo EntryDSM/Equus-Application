@@ -23,6 +23,8 @@ class ChangeApplicationCaseUseCase(
 
         val existingCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
 
+        print("existingCase : " + existingCase.toString())
+
         val newApplicationCase = applicationCaseFactory.createApplicationCase(
             receiptCode,
             application.educationalStatus

@@ -14,30 +14,23 @@ import java.time.YearMonth
 
 @UseCase
 class ChangeGraduationInfoUseCase(
-    private val queryGraduationInfoPort: QueryGraduationInfoPort,
     private val graduationInfoQueryApplicationPort: GraduationInfoQueryApplicationPort,
     private val commandGraduationInfoPort: CommandGraduationInfoPort,
     private val graduationInfoFactory: GraduationInfoFactory,
-    private val graduationInfoService: GraduationInfoService
+    private val queryGraduationInfoPort: QueryGraduationInfoPort
 ) {
     fun execute(receiptCode: Long, graduateDate: YearMonth) {
         val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        val existingInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
-
-        val newGraduationInfo = graduationInfoFactory.createGraduationInfo(
-            receiptCode = receiptCode,
-            educationalStatus = application.educationalStatus,
-            graduateDate = graduateDate
-        )
-
-        when {
-            existingInfo == null -> commandGraduationInfoPort.save(newGraduationInfo)
-            graduationInfoService.hasEducationalStatusMismatch(application, existingInfo) -> {
-                commandGraduationInfoPort.delete(existingInfo)
-                commandGraduationInfoPort.save(newGraduationInfo)
-            }
+        if(!queryGraduationInfoPort.isExistsGraduationInfoByApplication(application)) {
+            commandGraduationInfoPort.save(
+                graduationInfoFactory.createGraduationInfo(
+                    receiptCode = receiptCode,
+                    educationalStatus = application.educationalStatus,
+                    graduateDate = graduateDate
+                )
+            )
         }
     }
 }

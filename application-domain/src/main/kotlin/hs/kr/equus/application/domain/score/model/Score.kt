@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.score.model
 import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
 import hs.kr.equus.application.global.annotation.Aggregate
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 @Aggregate
 data class Score(
@@ -35,7 +36,7 @@ data class Score(
             thirdBeforeScore = gradeScores[1],
             thirdBeforeBeforeScore = gradeScores[0],
             totalGradeScore = totalGradeScore,
-            totalScore = totalGradeScore + BigDecimal(attendanceScore) + volunteerScore + extraScore,
+            totalScore  = totalGradeScore.add(BigDecimal(attendanceScore)).add(volunteerScore).add(extraScore).setScale(3, RoundingMode.HALF_UP),
             extraScore = extraScore
         )
     }

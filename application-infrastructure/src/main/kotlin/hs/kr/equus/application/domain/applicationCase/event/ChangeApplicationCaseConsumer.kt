@@ -2,7 +2,7 @@ package hs.kr.equus.application.domain.applicationCase.event
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import hs.kr.equus.application.domain.applicationCase.usecase.ChangeApplicationCaseUseCase
-import hs.kr.equus.application.domain.application.event.dto.UpdateEducationStatusEvent
+import hs.kr.equus.application.domain.application.event.dto.UpdateEducationalStatusEvent
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Component
@@ -17,7 +17,7 @@ class ChangeApplicationCaseConsumer(
         groupId = "change-application-case",
         containerFactory = "kafkaListenerContainerFactory",
     )
-    fun changeApplicationCase(dto: UpdateEducationStatusEvent) {
+    fun changeApplicationCase(dto: UpdateEducationalStatusEvent) {
         changeApplicationCaseUseCase.execute(dto.receiptCode)
     }
 }

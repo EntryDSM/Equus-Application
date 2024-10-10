@@ -3,11 +3,11 @@ package hs.kr.equus.application.domain.application.event
 import com.fasterxml.jackson.databind.ObjectMapper
 import hs.kr.equus.application.domain.application.event.dto.CreateApplicationEvent
 import hs.kr.equus.application.domain.application.event.spi.ApplicationEventPort
-import hs.kr.equus.application.domain.application.event.dto.UpdateEducationStatusEvent
+import hs.kr.equus.application.domain.application.event.dto.UpdateEducationalStatusEvent
+import hs.kr.equus.application.domain.application.model.types.EducationalStatus
 import hs.kr.equus.application.global.kafka.config.KafkaTopics
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 import java.time.YearMonth
 import java.util.*
 
@@ -33,7 +33,7 @@ class ApplicationProducer(
     override fun updateEducationalStatus(receiptCode: Long, graduateDate: YearMonth) {
         updateEducationalStatusTemplate.send(
             KafkaTopics.UPDATE_EDUCATIONAL_STATUS,
-            UpdateEducationStatusEvent(receiptCode, graduateDate),
+            UpdateEducationalStatusEvent(receiptCode, graduateDate),
         )
     }
 

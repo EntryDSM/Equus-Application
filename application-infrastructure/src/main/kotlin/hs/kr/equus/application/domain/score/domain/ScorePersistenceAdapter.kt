@@ -71,4 +71,9 @@ class ScorePersistenceAdapter(
             .where(scoreJpaEntity.receiptCode.eq(receiptCode))
             .fetchOne()
     }
+
+    override fun queryAllByReceiptCode(receiptCodeList: List<Long>): List<Score?> {
+        return scoreJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { scoreMapper.toDomain(it) }
+    }
 }

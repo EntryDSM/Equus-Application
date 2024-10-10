@@ -66,4 +66,20 @@ class ApplicationCasePersistenceAdapter(
             }
         }
     }
+
+    override fun queryAllApplicationCaseByReceiptCode(receiptCodeList: List<Long>): List<ApplicationCase?> {
+        val graduationCaseList = graduationCaseJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { graduationCaseMapper.toDomain(it) }
+            .associateBy { it?.receiptCode }
+
+        val qualificationCaseList = qualificationCaseJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { qualificationCaseMapper.toDomain(it) }
+            .associateBy { it?.receiptCode }
+
+        return receiptCodeList.map { receiptCode ->
+            graduationCaseList[receiptCode] ?: qualificationCaseList[receiptCode]
+        }
+    }
+
+
 }

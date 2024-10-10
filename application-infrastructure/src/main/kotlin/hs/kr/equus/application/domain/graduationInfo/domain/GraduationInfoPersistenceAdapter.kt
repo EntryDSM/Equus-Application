@@ -66,4 +66,19 @@ class GraduationInfoPersistenceAdapter(
             }
         }
     }
+
+    override fun queryAllGraduationByReceiptCode(receiptCodeList: List<Long>): List<GraduationInfo?> {
+        val graduations = graduationJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { graduationMapper.toDomain(it) }
+            .associateBy { it?.receiptCode }
+
+        val qualifications = qualificationJpaRepository.findAllByReceiptCodeIn(receiptCodeList)
+            .map { qualificationMapper.toDomain(it) }
+            .associateBy { it?.receiptCode }
+
+        return receiptCodeList.map { receiptCode ->
+            graduations[receiptCode] ?: qualifications[receiptCode]
+        }
+    }
+
 }

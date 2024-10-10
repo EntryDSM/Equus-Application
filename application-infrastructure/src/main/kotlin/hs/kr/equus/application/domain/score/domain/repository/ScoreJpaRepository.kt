@@ -6,4 +6,6 @@ import org.springframework.data.repository.CrudRepository
 interface ScoreJpaRepository : CrudRepository<ScoreJpaEntity, Long> {
 
     fun findByReceiptCode(receiptCode: Long): ScoreJpaEntity?
+
+    fun findAllByReceiptCodeIn(receiptCode: List<Long>): List<ScoreJpaEntity?>
 }

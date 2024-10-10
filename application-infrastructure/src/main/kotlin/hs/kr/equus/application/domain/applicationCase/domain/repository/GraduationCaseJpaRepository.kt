@@ -7,5 +7,5 @@ interface GraduationCaseJpaRepository : CrudRepository<GraduationCaseJpaEntity, 
     fun existsByReceiptCode(receiptCode: Long): Boolean
     fun findByReceiptCode(receiptCode: Long): GraduationCaseJpaEntity?
 
-    fun findAllByReceiptCodeIn(receiptCode: List<Long>): List<GraduationCaseJpaEntity>
+    fun findAllByReceiptCodeIn(receiptCode: List<Long>): List<GraduationCaseJpaEntity?>
 }

@@ -12,4 +12,6 @@ interface ApplicationJpaRepository : CrudRepository<ApplicationJpaEntity, Long> 
     fun findReceiptCodeByUserId(userId: UUID): Long?
 
     fun findByReceiptCode(receiptCode: Long): ApplicationJpaEntity?
+
+    fun findAllByReceiptCodeIn(receiptCodeList: List<Long>): List<ApplicationJpaEntity?>
 }

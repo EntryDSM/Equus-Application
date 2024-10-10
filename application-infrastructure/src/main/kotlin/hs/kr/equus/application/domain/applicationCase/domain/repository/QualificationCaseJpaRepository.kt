@@ -8,5 +8,5 @@ interface QualificationCaseJpaRepository : CrudRepository<QualificationCaseJpaEn
     fun existsByReceiptCode(receiptCode: Long): Boolean
     fun findByReceiptCode(receiptCode: Long): QualificationCaseJpaEntity?
 
-    fun findAllByReceiptCodeIn(receiptCode: List<Long>): List<QualificationCaseJpaEntity>
+    fun findAllByReceiptCodeIn(receiptCode: List<Long>): List<QualificationCaseJpaEntity?>
 }

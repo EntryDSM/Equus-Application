@@ -6,6 +6,7 @@ import hs.kr.equus.application.domain.application.model.types.ApplicationType
 import hs.kr.equus.application.domain.application.spi.dto.PagedResult
 import hs.kr.equus.application.domain.application.usecase.dto.response.GetApplicationCountResponse
 import java.util.*
+import kotlin.collections.List
 
 interface QueryApplicationPort {
     fun queryApplicationByUserId(userId: UUID): Application?
@@ -18,6 +19,8 @@ interface QueryApplicationPort {
     ): GetApplicationCountResponse
 
     fun queryApplicationByReceiptCode(receiptCode: Long): Application?
+
+    fun queryAllByReceiptCode(receiptCodeList: List<Long>): List<Application?>
 
     fun queryAllApplicantsByFilter(
         schoolName: String,

@@ -73,7 +73,7 @@ data class GraduationCase(
     override fun calculateGradeScores(): Array<BigDecimal> {
         val gradeScores: Array<BigDecimal> = calculateScores()
         for (semester in THIRD_GRADE_SECOND..THIRD_2BEFORE) {
-            gradeScores[semester] = gradeScores[semester].setScale(3, RoundingMode.HALF_UP)
+            gradeScores[semester] = gradeScores[semester].setScale(4, RoundingMode.HALF_UP)
         }
         return gradeScores
     }
@@ -88,7 +88,7 @@ data class GraduationCase(
             totalGradeScore *= COMMON_GRADE_RATE
         }
 
-        return totalGradeScore.setScale(3, RoundingMode.HALF_UP)
+        return totalGradeScore.setScale(4, RoundingMode.HALF_UP)
     }
 
     private fun calculateScores(): Array<BigDecimal> {

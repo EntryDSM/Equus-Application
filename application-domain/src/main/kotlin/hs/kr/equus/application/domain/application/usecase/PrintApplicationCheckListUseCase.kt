@@ -20,15 +20,15 @@ class PrintApplicationCheckListUseCase(
     fun execute(httpServletResponse: HttpServletResponse) {
         val applicationInfoVOList =
             queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
-            .map { it ->
+                .map { it ->
                     val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(it)
                     val graduation = graduationInfo as? Graduation
                     val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it)
                     val graduationCase = applicationCase as? GraduationCase
                     val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
                     val school = graduation?.schoolCode?.let { schoolCode ->
-                    applicationQuerySchoolPort.querySchoolBySchoolCode(schoolCode)
-                }
+                        applicationQuerySchoolPort.querySchoolBySchoolCode(schoolCode)
+                    }
                     ApplicationInfoVO(
                         application!!,
                         graduation,
@@ -36,7 +36,7 @@ class PrintApplicationCheckListUseCase(
                         queryScorePort.queryScoreByReceiptCode(application.receiptCode),
                         school
                     )
-            }
+                }
 
         printApplicationCheckListPort.printApplicationCheckList(applicationInfoVOList, httpServletResponse)
 

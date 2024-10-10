@@ -3,6 +3,7 @@ package hs.kr.equus.application.domain.graduationInfo.presentation.dto.request
 import org.hibernate.validator.constraints.Length
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Pattern
+import javax.validation.constraints.Size
 
 data class UpdateGraduationInformationWebRequest(
     @Length(
@@ -32,7 +33,8 @@ data class UpdateGraduationInformationWebRequest(
     @NotBlank(message = "school_code는 Null, 공백, 띄어쓰기를 허용하지 않습니다.")
     val schoolCode: String,
 
-    @NotBlank(message = "teacher_name Null, 공백, 띄어쓰기를 허용하지 않습니다.")
+    @NotBlank(message = "teacher_name Null, 공백, 띄어쓰기를 허용하지 않습니다.",)
+    @Size(max = 4)
     val teacherName: String,
 
     @NotBlank(message  = "teacher_tel Null, 공백, 띄어쓰기를 허용하지 않습니다.")

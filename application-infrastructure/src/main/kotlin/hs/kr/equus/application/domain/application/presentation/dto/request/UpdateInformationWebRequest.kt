@@ -6,6 +6,7 @@ import java.time.LocalDate
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
+import javax.validation.constraints.Size
 
 data class UpdateInformationWebRequest(
     @NotNull(message = "sex는 null일 수 없습니다.")
@@ -27,7 +28,7 @@ data class UpdateInformationWebRequest(
     )
     val applicantTel: String,
 
-    @Length(max = 11) @Pattern(
+    @Size(min = 11, max = 11) @Pattern(
         regexp = TEL_REGEXP,
         message = "INVALID TEL",
     )

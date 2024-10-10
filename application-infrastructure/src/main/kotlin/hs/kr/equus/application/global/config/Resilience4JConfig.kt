@@ -22,7 +22,7 @@ class Resilience4JConfig {
             .slidingWindowSize(50)
             .failureRateThreshold(50f)
             .slowCallRateThreshold(50f)
-            .slowCallDurationThreshold(Duration.ofSeconds(2))
+            .slowCallDurationThreshold(Duration.ofSeconds(10))
             .minimumNumberOfCalls(20)
             .permittedNumberOfCallsInHalfOpenState(10)
             .maxWaitDurationInHalfOpenState(Duration.ofSeconds(5))
@@ -38,7 +38,7 @@ class Resilience4JConfig {
             .build()
 
         val timeLimiterConfig = TimeLimiterConfig.custom()
-            .timeoutDuration(Duration.ofSeconds(3))
+            .timeoutDuration(Duration.ofSeconds(5))
             .build()
 
         return Customizer { factory: Resilience4JCircuitBreakerFactory ->

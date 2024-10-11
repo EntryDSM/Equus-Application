@@ -245,7 +245,7 @@ class PdfDataConverter(
         val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
         if (applicationCase is QualificationCase) {
             with(values) {
-                put("isQualification", applicationCase)
+                put("applicationCase", "선택과목")
                 put("koreanThirdGradeFirstSemester", applicationCase.koreanGrade)
                 put("socialThirdGradeFirstSemester", applicationCase.socialGrade)
                 put("mathThirdGradeFirstSemester", applicationCase.mathGrade)
@@ -272,7 +272,7 @@ class PdfDataConverter(
                     }
 
                     with(values) {
-                        put("isQualification", applicationCase)
+                        put("applicationCase", "기술∙가정")
                         put("${subjectPrefix}ThirdGradeSecondSemester", applicationService.safeGetValue(subjectGrades[0]))
                         put("${subjectPrefix}ThirdGradeFirstSemester",  applicationService.safeGetValue(subjectGrades[1]))
                         put("${subjectPrefix}SecondGradeSecondSemester",  applicationService.safeGetValue(subjectGrades[2]))

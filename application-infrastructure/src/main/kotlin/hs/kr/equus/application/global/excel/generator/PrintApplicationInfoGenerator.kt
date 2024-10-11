@@ -106,5 +106,8 @@ class PrintApplicationInfoGenerator(
         row.createCell(55).setCellValue(applicationService.translateBoolean(applicationInfoVO.applicationCase?.extraScoreItem?.hasCertificate))
         row.createCell(56).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.extraScore).toString())
         row.createCell(57).setCellValue(applicationService.safeGetDouble(applicationInfoVO.score?.totalScore).toString())
+        applicationInfoVO.applicationCase?.let {
+            row.createCell(58).setCellValue(applicationService.safeGetValue(applicationInfoVO.score?.calculateByIsCommon(it, true)))
+        }
     }
 }

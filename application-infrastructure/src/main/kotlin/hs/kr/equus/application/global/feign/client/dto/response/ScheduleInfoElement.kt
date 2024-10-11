@@ -4,6 +4,6 @@ import hs.kr.equus.application.domain.schedule.enums.ScheduleType
 import java.time.LocalDateTime
 
 data class ScheduleInfoElement (
-    val scheduleType: ScheduleType,
+    val type: ScheduleType,
     val date: LocalDateTime
 )

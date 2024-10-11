@@ -7,6 +7,7 @@ import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
+import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.applicationCase.model.vo.ExtraScoreItem
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
 import hs.kr.equus.application.domain.file.spi.GetObjectPort
@@ -242,8 +243,17 @@ class PdfDataConverter(
 
     private fun setAllSubjectScores(application: Application, values: MutableMap<String, Any>) {
         val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
-
-        if (applicationCase is GraduationCase) {
+        if (applicationCase is QualificationCase) {
+            with(values) {
+                put("isQualification", applicationCase)
+                put("koreanThirdGradeFirstSemester", applicationCase.koreanGrade)
+                put("socialThirdGradeFirstSemester", applicationCase.socialGrade)
+                put("mathThirdGradeFirstSemester", applicationCase.mathGrade)
+                put("scienceThirdGradeFirstSemester", applicationCase.scienceGrade)
+                put("englishThirdGradeFirstSemester", applicationCase.englishGrade)
+                put("techAndHomeThirdGradeSecondSemester", applicationCase.optGrade)
+            }
+        } else if(applicationCase is GraduationCase) {
             val grades = applicationCase.gradesPerSubject()
             val subjects = listOf("국어", "사회", "역사", "수학", "과학", "영어", "기술가정")
 
@@ -262,6 +272,7 @@ class PdfDataConverter(
                     }
 
                     with(values) {
+                        put("isQualification", applicationCase)
                         put("${subjectPrefix}ThirdGradeSecondSemester", applicationService.safeGetValue(subjectGrades[0]))
                         put("${subjectPrefix}ThirdGradeFirstSemester",  applicationService.safeGetValue(subjectGrades[1]))
                         put("${subjectPrefix}SecondGradeSecondSemester",  applicationService.safeGetValue(subjectGrades[2]))

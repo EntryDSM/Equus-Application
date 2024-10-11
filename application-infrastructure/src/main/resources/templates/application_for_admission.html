@@ -231,8 +231,7 @@
                     <th colspan="2" style="height: 29px; width: 28%">가산점</th>
                 </tr>
                 <tr>
-                    <th style="width: 11%; height: 29px"
-                        th:text="${isQualification == 'QualificationCase' ? '선택과목' : (isQualification == 'GraduationCase' ? '기술∙가정' : '')}"></th>
+                    <th style="width: 11%; height: 29px" th:text="${applicationCase}"></th>
                     <td style="width: 15.25%; height: 29px" th:text="${techAndHomeThirdGradeSecondSemester}"></td>
                     <td style="width: 15.25%; height: 29px" th:text="${techAndHomeThirdGradeFirstSemester}"></td>
                     <td style="width: 15.25%; height: 29px" th:text="${techAndHomeSecondGradeSecondSemester}"></td>

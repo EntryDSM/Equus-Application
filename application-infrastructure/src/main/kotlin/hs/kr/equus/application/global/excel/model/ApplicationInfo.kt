@@ -87,6 +87,7 @@ class ApplicationInfo {
         row.createCell(55).setCellValue("자격증")
         row.createCell(56).setCellValue("가산점")
         row.createCell(57).setCellValue("1차전형 총점")
+        row.createCell(58).setCellValue("일반전형(170)")
     }
 
 }

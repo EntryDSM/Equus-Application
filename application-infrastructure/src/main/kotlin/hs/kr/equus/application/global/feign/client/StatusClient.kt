@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
 
-@FeignClient(name = "StatusClient", url = "\${url.status}")
+@FeignClient(name = "StatusClient", url = "\${url.status}", fallback = StatusFallback::class)
 interface StatusClient {
     @GetMapping("/internal/status/list")
     fun getStatusList(): List<StatusInfoElement>

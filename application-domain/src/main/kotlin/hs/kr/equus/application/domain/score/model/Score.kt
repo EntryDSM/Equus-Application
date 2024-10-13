@@ -41,13 +41,24 @@ data class Score(
         )
     }
 
-    fun calculateByIsCommon(applicationCase: ApplicationCase, isCommon: Boolean): BigDecimal {
+    fun calculateByIsCommonAndExtraScore(
+        applicationCase: ApplicationCase,
+        isCommon: Boolean,
+        calculateCompetitionScore: Boolean,
+        calculateCertificateScore: Boolean
+    ): BigDecimal {
         val attendanceScore = applicationCase.calculateAttendanceScore()
         val volunteerScore = applicationCase.calculateVolunteerScore()
         val totalGradeScore = applicationCase.calculateTotalGradeScore(isCommon)
-        return totalGradeScore.add(BigDecimal(attendanceScore)).add(volunteerScore)
-    }
+        val certificateScore = if(calculateCertificateScore) applicationCase.calculateCertificateScore() else BigDecimal(0)
+        val competitionScore = if(calculateCompetitionScore) applicationCase.calculateCompetitionScore() else BigDecimal(0)
 
+        return totalGradeScore
+            .add(BigDecimal(attendanceScore))
+            .add(volunteerScore)
+            .add(certificateScore)
+            .add(competitionScore)
+    }
     fun calculateSubjectScore(): BigDecimal {
         return (thirdGradeScore ?: BigDecimal.ZERO) +
                 (thirdBeforeScore ?: BigDecimal.ZERO) +

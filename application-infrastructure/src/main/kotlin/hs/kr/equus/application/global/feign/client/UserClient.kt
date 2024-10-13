@@ -35,16 +35,14 @@ class UserFallBack(
                 isParent = it.isParent,
                 phoneNumber = it.phoneNumber,
                 name = it.name,
-                role = UserRole.valueOf(it.role),
-                receiptCode = it.receiptCode
+                role = UserRole.valueOf(it.role)
             )
         } ?: UserInfoElement(
             id = userId,
             phoneNumber = "01000000000",
             name = "홍길동",
             isParent = false,
-            role = UserRole.USER,
-            receiptCode = 0
+            role = UserRole.USER
         )
     }
 }

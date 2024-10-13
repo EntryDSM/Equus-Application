@@ -18,7 +18,7 @@ interface UserClient {
     @GetMapping("/user/{userId}")
     fun getUserInfoByUserId(
         @PathVariable("userId") userId: UUID,
-    ): UserInfoElement?
+    ): UserInfoElement
 
 }
 
@@ -27,7 +27,7 @@ class UserFallBack(
     @Lazy private val userPort: UserPort
 ) : UserClient {
 
-    override fun getUserInfoByUserId(userId: UUID): UserInfoElement? {
+    override fun getUserInfoByUserId(userId: UUID): UserInfoElement {
         val user = userPort.queryUserByUserIdInCache(userId)
         return user?.let {
             UserInfoElement(
@@ -35,14 +35,16 @@ class UserFallBack(
                 isParent = it.isParent,
                 phoneNumber = it.phoneNumber,
                 name = it.name,
-                role = UserRole.valueOf(it.role)
+                role = UserRole.valueOf(it.role),
+                receiptCode = it.receiptCode
             )
         } ?: UserInfoElement(
             id = userId,
-            phoneNumber = "",
-            name = "",
+            phoneNumber = "01000000000",
+            name = "홍길동",
             isParent = false,
-            role = UserRole.USER
+            role = UserRole.USER,
+            receiptCode = 0
         )
     }
 }

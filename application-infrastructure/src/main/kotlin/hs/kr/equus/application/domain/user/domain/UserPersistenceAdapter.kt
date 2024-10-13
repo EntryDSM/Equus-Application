@@ -13,13 +13,13 @@ class UserPersistenceAdapter(
     private val userClient: UserClient,
     private val userCacheRepository: UserCacheRepository
 ) : UserPort {
-    override fun queryUserByUserId(userId: UUID): User? {
-        return userClient.getUserInfoByUserId(userId)?.let {
+    override fun queryUserByUserId(userId: UUID): User {
+        return userClient.getUserInfoByUserId(userId).run {
             User(
-                id = it.id,
-                phoneNumber = it.phoneNumber,
-                name = it.name,
-                isParent = it.isParent,
+                id = id,
+                phoneNumber = phoneNumber,
+                name = name,
+                isParent = isParent,
             )
         }
     }

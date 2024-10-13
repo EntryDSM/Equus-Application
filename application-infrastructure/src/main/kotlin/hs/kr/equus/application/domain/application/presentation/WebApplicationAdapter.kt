@@ -1,28 +1,13 @@
 package hs.kr.equus.application.domain.application.presentation
 
-import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateApplicationTypeWebRequest
-import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateEducationalStatusWebRequest
-import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateInformationWebRequest
-import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateIntroduceWebRequest
-import hs.kr.equus.application.domain.application.presentation.dto.request.UpdateStudyPlanWebRequest
+import hs.kr.equus.application.domain.application.presentation.dto.request.*
 import hs.kr.equus.application.domain.application.usecase.*
-import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateApplicationTypeRequest
-import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateEducationalStatusRequest
-import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateInformationRequest
-import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateIntroduceRequest
-import hs.kr.equus.application.domain.application.usecase.dto.request.UpdateStudyPlanRequest
+import hs.kr.equus.application.domain.application.usecase.dto.request.*
 import hs.kr.equus.application.domain.application.usecase.dto.response.*
 import hs.kr.equus.application.domain.file.presentation.converter.ImageFileConverter
 import hs.kr.equus.application.domain.file.presentation.dto.response.UploadImageWebResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestPart
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-
 import javax.validation.Valid
 
 @RestController

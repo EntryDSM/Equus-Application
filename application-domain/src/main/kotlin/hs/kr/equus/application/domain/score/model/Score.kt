@@ -31,16 +31,34 @@ data class Score(
         return copy(
             attendanceScore = attendanceScore,
             volunteerScore = volunteerScore,
-            thirdScore = gradeScores[3],
-            thirdGradeScore = gradeScores[2],
-            thirdBeforeScore = gradeScores[1],
-            thirdBeforeBeforeScore = gradeScores[0],
+            thirdScore = gradeScores[0],
+            thirdGradeScore = gradeScores[1],
+            thirdBeforeScore = gradeScores[2],
+            thirdBeforeBeforeScore = gradeScores[3],
             totalGradeScore = totalGradeScore,
             totalScore  = totalGradeScore.add(BigDecimal(attendanceScore)).add(volunteerScore).add(extraScore).setScale(3, RoundingMode.HALF_UP),
             extraScore = extraScore
         )
     }
 
+    fun calculateByIsCommonAndExtraScore(
+        applicationCase: ApplicationCase,
+        isCommon: Boolean,
+        calculateCompetitionScore: Boolean,
+        calculateCertificateScore: Boolean
+    ): BigDecimal {
+        val attendanceScore = applicationCase.calculateAttendanceScore()
+        val volunteerScore = applicationCase.calculateVolunteerScore()
+        val totalGradeScore = applicationCase.calculateTotalGradeScore(isCommon)
+        val certificateScore = if(calculateCertificateScore) applicationCase.calculateCertificateScore() else BigDecimal(0)
+        val competitionScore = if(calculateCompetitionScore) applicationCase.calculateCompetitionScore() else BigDecimal(0)
+
+        return totalGradeScore
+            .add(BigDecimal(attendanceScore))
+            .add(volunteerScore)
+            .add(certificateScore)
+            .add(competitionScore)
+    }
     fun calculateSubjectScore(): BigDecimal {
         return (thirdGradeScore ?: BigDecimal.ZERO) +
                 (thirdBeforeScore ?: BigDecimal.ZERO) +

@@ -13,7 +13,7 @@ class SchedulePersistenceAdapterApplication(
     override fun queryByScheduleType(scheduleType: ScheduleType): Schedule? {
         return scheduleClient.queryScheduleByType(scheduleType.name)?.let {
             Schedule(
-                scheduleType = it.scheduleType,
+                scheduleType = it.type,
                 date = it.date
             )
         }

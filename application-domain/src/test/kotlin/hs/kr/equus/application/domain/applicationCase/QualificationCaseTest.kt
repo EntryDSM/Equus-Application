@@ -10,15 +10,20 @@ import java.math.BigDecimal
 class QualificationCaseTest {
     private val qualificationCaseStub: QualificationCase by lazy {
         QualificationCase(
-            averageScore = BigDecimal.valueOf(100),
             receiptCode = 1,
+            koreanGrade = BigDecimal(90.0),
+            socialGrade = BigDecimal(90.0),
+            mathGrade = BigDecimal(90.0),
+            scienceGrade = BigDecimal(90.0),
+            englishGrade = BigDecimal(90.0),
+            optGrade = BigDecimal(90.0)
         )
     }
 
     @Test
     fun `출석점수 계산`() {
         // given
-        val expectedScore = 15
+        val expectedScore = 0
 
         // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateAttendanceScore())
@@ -27,7 +32,7 @@ class QualificationCaseTest {
     @Test
     fun `봉사점수 계산`() {
         // given
-        val expectedScore = BigDecimal("15.000")
+        val expectedScore = BigDecimal("0")
 
         // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateVolunteerScore())
@@ -65,7 +70,7 @@ class QualificationCaseTest {
     @Test
     fun `특별전형 교과총점수 계산`() {
         // given
-        val expectedScore = BigDecimal("80.000")
+        val expectedScore = BigDecimal("66.000")
 
         // when & then
         assertEquals(expectedScore, qualificationCaseStub.calculateTotalGradeScore(false))

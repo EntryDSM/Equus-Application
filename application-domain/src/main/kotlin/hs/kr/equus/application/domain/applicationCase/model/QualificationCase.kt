@@ -44,7 +44,7 @@ data class QualificationCase(
                     scienceGrade +
                     koreanGrade
 
-        return totalPoints.divide(BigDecimal(6), 4, RoundingMode.HALF_UP)
+        return totalPoints.divide(BigDecimal(6), 3, RoundingMode.HALF_UP)
     }
 
     // 과목 등급점수 평균 구하기
@@ -57,7 +57,7 @@ data class QualificationCase(
             getScorePoint(englishGrade),
             getScorePoint(optGrade)
         ).sum()
-        return BigDecimal(totalPoints).divide(BigDecimal(6), 4, RoundingMode.HALF_UP)
+        return BigDecimal(totalPoints).divide(BigDecimal(6), 3, RoundingMode.HALF_UP)
     }
 
     // 검정고시에서는 X
@@ -90,9 +90,17 @@ data class QualificationCase(
                 else -> BigDecimal.ZERO
             }
         return if (isCommon) {
-            (averageScore * BigDecimal(34) + competitionPrize).setScale(4, RoundingMode.HALF_UP)
+            (averageScore * BigDecimal(34) + competitionPrize).setScale(3, RoundingMode.HALF_UP)
         } else {
-            (averageScore * BigDecimal(22) + competitionPrize + certificate).setScale(4, RoundingMode.HALF_UP)
+            (averageScore * BigDecimal(22) + competitionPrize + certificate).setScale(3, RoundingMode.HALF_UP)
         }
+    }
+
+    override fun calculateCertificateScore(): BigDecimal {
+        return if (extraScoreItem.hasCertificate) BigDecimal(6) else BigDecimal.ZERO
+    }
+
+    override fun calculateCompetitionScore(): BigDecimal {
+        return if (extraScoreItem.hasCompetitionPrize) BigDecimal(3) else BigDecimal.ZERO
     }
 }

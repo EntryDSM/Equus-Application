@@ -8,6 +8,7 @@ import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.applicationCase.spi.ApplicationCaseQueryApplicationPort
 import hs.kr.equus.application.domain.applicationCase.spi.CommandApplicationCasePort
 import hs.kr.equus.application.domain.applicationCase.spi.QueryApplicationCasePort
+import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.ExtraScoreRequest
 import hs.kr.equus.application.domain.applicationCase.usecase.dto.request.UpdateQualificationCaseRequest
 import hs.kr.equus.application.global.annotation.EquusTest
 import hs.kr.equus.application.global.security.spi.SecurityPort
@@ -45,7 +46,10 @@ class UpdateQualificationCaseUseCaseTest {
 
     private val requestStub: UpdateQualificationCaseRequest by lazy {
         UpdateQualificationCaseRequest(
-            averageScore = BigDecimal(70)
+            extraScore = ExtraScoreRequest(
+                hasCertificate = true,
+                hasCompetitionPrize = true
+            )
         )
     }
 

@@ -20,4 +20,8 @@ sealed class ApplicationCase(
     abstract fun calculateGradeScores(): Array<BigDecimal>
 
     abstract fun calculateTotalGradeScore(isCommon: Boolean): BigDecimal
+
+    abstract fun calculateCertificateScore(): BigDecimal
+
+    abstract fun calculateCompetitionScore(): BigDecimal
 }

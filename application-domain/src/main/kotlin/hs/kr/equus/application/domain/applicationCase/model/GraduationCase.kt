@@ -49,12 +49,6 @@ data class GraduationCase(
         private const val THIRD_GRADE_SECOND = 0 // 3학년 2학기
     }
 
-    fun calculateAdditionalScore(isCommon: Boolean): BigDecimal {
-        val competitionPrize = if (extraScoreItem.hasCompetitionPrize) BigDecimal(3) else BigDecimal.ZERO
-        val certificate = if (extraScoreItem.hasCertificate) BigDecimal(6) else BigDecimal.ZERO
-        return if (isCommon) certificate else competitionPrize + certificate
-    }
-
     override fun calculateVolunteerScore(): BigDecimal {
         return if (volunteerTime >= MAX_VOLUNTEER_TIME) {
             BigDecimal(MAX_VOLUNTEER_SCORE)
@@ -73,7 +67,7 @@ data class GraduationCase(
     override fun calculateGradeScores(): Array<BigDecimal> {
         val gradeScores: Array<BigDecimal> = calculateScores()
         for (semester in THIRD_GRADE_SECOND..THIRD_2BEFORE) {
-            gradeScores[semester] = gradeScores[semester].setScale(4, RoundingMode.HALF_UP)
+            gradeScores[semester] = gradeScores[semester].setScale(3, RoundingMode.HALF_UP)
         }
         return gradeScores
     }
@@ -88,7 +82,15 @@ data class GraduationCase(
             totalGradeScore *= COMMON_GRADE_RATE
         }
 
-        return totalGradeScore.setScale(4, RoundingMode.HALF_UP)
+        return totalGradeScore.setScale(3, RoundingMode.HALF_UP)
+    }
+
+    override fun calculateCertificateScore(): BigDecimal {
+        return if (extraScoreItem.hasCertificate) BigDecimal(6) else BigDecimal.ZERO
+    }
+
+    override fun calculateCompetitionScore(): BigDecimal {
+        return if (extraScoreItem.hasCompetitionPrize) BigDecimal(3) else BigDecimal.ZERO
     }
 
     private fun calculateScores(): Array<BigDecimal> {

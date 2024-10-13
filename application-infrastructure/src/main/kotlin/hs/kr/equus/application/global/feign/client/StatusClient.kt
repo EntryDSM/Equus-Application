@@ -3,12 +3,13 @@ package hs.kr.equus.application.global.feign.client
 import hs.kr.equus.application.domain.status.spi.StatusPort
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.cloud.openfeign.FeignClient
+import org.springframework.context.annotation.Lazy
 import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 
 
-@FeignClient(name = "StatusClient", url = "\${url.status}")
+@FeignClient(name = "StatusClient", url = "\${url.status}", fallback = StatusFallback::class)
 interface StatusClient {
     @GetMapping("/internal/status/list")
     fun getStatusList(): List<StatusInfoElement>
@@ -19,7 +20,7 @@ interface StatusClient {
 
 @Component
 class StatusFallback(
-    private val statusPort: StatusPort
+    @Lazy private val statusPort: StatusPort
 ) : StatusClient {
     override fun getStatusList(): List<StatusInfoElement> {
         return ArrayList()

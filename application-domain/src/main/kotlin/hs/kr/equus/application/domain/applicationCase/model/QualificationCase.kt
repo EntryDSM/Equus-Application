@@ -95,4 +95,12 @@ data class QualificationCase(
             (averageScore * BigDecimal(22) + competitionPrize + certificate).setScale(3, RoundingMode.HALF_UP)
         }
     }
+
+    override fun calculateCertificateScore(): BigDecimal {
+        return if (extraScoreItem.hasCertificate) BigDecimal(6) else BigDecimal.ZERO
+    }
+
+    override fun calculateCompetitionScore(): BigDecimal {
+        return if (extraScoreItem.hasCompetitionPrize) BigDecimal(3) else BigDecimal.ZERO
+    }
 }

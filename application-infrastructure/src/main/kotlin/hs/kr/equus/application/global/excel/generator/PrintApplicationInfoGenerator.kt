@@ -5,6 +5,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfo
 import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
+import hs.kr.equus.application.domain.graduationInfo.spi.GraduationInfoQuerySchoolPort
 import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import hs.kr.equus.application.global.excel.model.ApplicationInfo
 import org.apache.poi.ss.usermodel.Row
@@ -16,7 +17,8 @@ import javax.servlet.http.HttpServletResponse
 
 @Component
 class PrintApplicationInfoGenerator(
-    private val applicationService: ApplicationService
+    private val applicationService: ApplicationService,
+    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort
 ) : PrintApplicationInfoPort {
     override fun execute(
         httpServletResponse: HttpServletResponse,
@@ -51,13 +53,19 @@ class PrintApplicationInfoGenerator(
         row.createCell(3).setCellValue(applicationService.translateApplicationRemark(applicationInfoVO.application.applicationRemark))
         row.createCell(4).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.applicantName))
         row.createCell(5).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.birthDate))
-        row.createCell(6).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.detailAddress))
+        row.createCell(6).setCellValue(applicationInfoVO.application.streetAddress+applicationInfoVO.application.detailAddress)
         row.createCell(7).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.applicantTel))
         row.createCell(8).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
         row.createCell(9).setCellValue(applicationService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
         row.createCell(10).setCellValue(applicationService.safeGetValue(applicationInfoVO.graduationInfo?.graduateDate))
-        row.createCell(11).setCellValue(applicationService.safeGetValue(applicationInfoVO.school?.name))
         val graduation = applicationInfoVO.graduationInfo as? Graduation
+        if (applicationInfoVO.graduationInfo is Graduation) {
+            row.createCell(11).setCellValue(applicationService.safeGetValue(
+                graduationInfoQuerySchoolPort.querySchoolBySchoolCode(graduation!!.schoolCode!!)!!.name
+            ))
+        } else {
+            row.createCell(11).setCellValue("X")
+        }
         row.createCell(12).setCellValue(applicationService.safeGetValue(graduation?.studentNumber?.classNumber))
         row.createCell(13).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentName))
         row.createCell(14).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.parentTel))

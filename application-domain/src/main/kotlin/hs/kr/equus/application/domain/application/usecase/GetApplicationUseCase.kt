@@ -69,7 +69,7 @@ class GetApplicationUseCase(
         val user = applicationQueryUserPort.queryUserByUserId(application.userId)
 
         return ApplicationCommonInformationResponse(
-            name = user.name,
+            name = application.applicantName!!,
             schoolName = school?.name,
             telephoneNumber = user.phoneNumber,
             parentTel = application.parentTel,

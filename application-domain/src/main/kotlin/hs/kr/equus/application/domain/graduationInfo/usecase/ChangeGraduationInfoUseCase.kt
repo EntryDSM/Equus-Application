@@ -23,7 +23,9 @@ class ChangeGraduationInfoUseCase(
         val application = graduationInfoQueryApplicationPort.queryApplicationByReceiptCode(receiptCode)
             ?: throw ApplicationExceptions.ApplicationNotFoundException()
 
-        if(!queryGraduationInfoPort.isExistsGraduationInfoByApplication(application)) {
+        val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)?.let {
+            commandGraduationInfoPort.save(it.changeGraduateDate(graduateDate))
+        } ?:
             commandGraduationInfoPort.save(
                 graduationInfoFactory.createGraduationInfo(
                     receiptCode = receiptCode,
@@ -31,6 +33,5 @@ class ChangeGraduationInfoUseCase(
                     graduateDate = graduateDate
                 )
             )
-        }
     }
 }

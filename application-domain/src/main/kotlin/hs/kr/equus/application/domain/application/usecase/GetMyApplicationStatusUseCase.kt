@@ -25,8 +25,8 @@ class GetMyApplicationStatusUseCase(
 
         return GetApplicationStatusResponse(
             receiptCode = application.receiptCode,
-            phoneNumber = application.applicantTel!!,
-            name = application.applicantName!!,
+            phoneNumber = application.applicantTel,
+            name = application.applicantName,
             isSubmitted = status.isSubmitted,
             isPrintedArrived = status.isPrintsArrived,
             selfIntroduce = application.selfIntroduce,

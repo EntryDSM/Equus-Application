@@ -11,4 +11,7 @@ sealed class GraduationInfo(
     open val receiptCode: Long,
 ) {
     abstract fun hasEmptyInfo(): Boolean
+
+    // GraduateDate 변경 함수
+    abstract fun changeGraduateDate(graduateDate: YearMonth): GraduationInfo
 }

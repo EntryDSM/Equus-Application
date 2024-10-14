@@ -8,6 +8,8 @@ dependencies {
 
     // bytebuddy
     implementation(Dependencies.BYTEBUDDY)
+
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 allOpen {

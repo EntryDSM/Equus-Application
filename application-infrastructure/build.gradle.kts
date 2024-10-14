@@ -87,7 +87,6 @@ dependencies {
     implementation (Dependencies.THYMELEAF)
 
     implementation(Dependencies.RETRY)
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 kapt {

@@ -53,7 +53,7 @@ class PrintApplicationInfoGenerator(
         row.createCell(3).setCellValue(applicationService.translateApplicationRemark(applicationInfoVO.application.applicationRemark))
         row.createCell(4).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.applicantName))
         row.createCell(5).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.birthDate))
-        row.createCell(6).setCellValue(applicationInfoVO.application.streetAddress+applicationInfoVO.application.detailAddress)
+        row.createCell(6).setCellValue("${applicationInfoVO.application.streetAddress} ${applicationInfoVO.application.detailAddress}")
         row.createCell(7).setCellValue(applicationService.safeGetValue(applicationInfoVO.application.applicantTel))
         row.createCell(8).setCellValue(applicationService.translateSex(applicationInfoVO.application.sex))
         row.createCell(9).setCellValue(applicationService.translateEducationalStatus(applicationInfoVO.application.educationalStatus))
@@ -61,7 +61,7 @@ class PrintApplicationInfoGenerator(
         val graduation = applicationInfoVO.graduationInfo as? Graduation
         if (applicationInfoVO.graduationInfo is Graduation) {
             row.createCell(11).setCellValue(applicationService.safeGetValue(
-                graduationInfoQuerySchoolPort.querySchoolBySchoolCode(graduation!!.schoolCode!!)!!.name
+                graduationInfoQuerySchoolPort.querySchoolBySchoolCode(graduation?.schoolCode!!)!!.name
             ))
         } else {
             row.createCell(11).setCellValue("X")

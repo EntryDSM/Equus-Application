@@ -15,4 +15,8 @@ data class Qualification(
     id = id,
 ) {
     override fun hasEmptyInfo(): Boolean = graduateDate == null
+
+    override fun changeGraduateDate(graduateDate: YearMonth): GraduationInfo {
+        return this.copy(graduateDate = graduateDate)
+    }
 }

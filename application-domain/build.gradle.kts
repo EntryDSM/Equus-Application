@@ -2,6 +2,10 @@ plugins {
     kotlin("plugin.allopen") version PluginVersions.ALLOPEN_VERSION
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     // spring transaction
     implementation(Dependencies.SPRING_TRANSACTION)

@@ -26,9 +26,6 @@ subprojects {
         // test
         testImplementation(Dependencies.SPRING_TEST)
         testImplementation(Dependencies.MOCKITO_KOTLIN)
-
-        implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
-
     }
 }
 

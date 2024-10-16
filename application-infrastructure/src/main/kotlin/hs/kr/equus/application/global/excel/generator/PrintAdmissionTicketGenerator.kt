@@ -1,5 +1,6 @@
 package hs.kr.equus.application.global.excel.generator
 
+import com.github.benmanes.caffeine.cache.Caffeine
 import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.application.spi.PrintAdmissionTicketPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
@@ -18,12 +19,10 @@ import org.springframework.stereotype.Component
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.servlet.http.HttpServletResponse
-
-// Import necessary for multithreading
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import javax.servlet.http.HttpServletResponse
 
 @Component
 class PrintAdmissionTicketGenerator(
@@ -34,6 +33,8 @@ class PrintAdmissionTicketGenerator(
     companion object {
         const val EXCEL_PATH = "/excel/excel-form.xlsx"
     }
+
+    private val imageCache = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).maximumSize(1000).build<Long, ByteArray>()
 
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
         val sourceWorkbook = loadSourceWorkbook()
@@ -46,14 +47,14 @@ class PrintAdmissionTicketGenerator(
 
         targetSheet.setDefaultColumnWidth(13)
 
-        val imageBytesMap = ConcurrentHashMap<Long, ByteArray>()
         val executorService = Executors.newFixedThreadPool(30)
 
         applications.forEach { applicationInfoVo ->
             executorService.submit {
                 val application = applicationInfoVo.application
-                val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
-                imageBytesMap[application.receiptCode!!] = imageBytes
+                imageCache.get(application.receiptCode!!) {
+                    getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+                }
             }
         }
 
@@ -66,7 +67,10 @@ class PrintAdmissionTicketGenerator(
             fillApplicationData(sourceSheet, 0, applicationInfoVo, sourceWorkbook)
             copyRows(sourceSheet, targetSheet, 0, 16, currentRowIndex, styleMap)
 
-            val imageBytes = imageBytesMap[application.receiptCode!!] ?: getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+            val imageBytes = imageCache.get(application.receiptCode!!) {
+                getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+            } ?: getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+
             copyImage(imageBytes, targetSheet, currentRowIndex)
             currentRowIndex += 20
         }

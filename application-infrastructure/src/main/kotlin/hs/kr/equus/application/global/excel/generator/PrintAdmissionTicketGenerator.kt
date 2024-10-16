@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
@@ -34,7 +33,11 @@ class PrintAdmissionTicketGenerator(
         const val EXCEL_PATH = "/excel/excel-form.xlsx"
     }
 
-    private val imageCache = Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).maximumSize(1000).build<Long, ByteArray>()
+    private val imageCache =
+        Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).maximumSize(1000).build<Long, ByteArray>()
+
+    private lateinit var drawing: XSSFDrawing
+
 
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
         val sourceWorkbook = loadSourceWorkbook()
@@ -42,6 +45,8 @@ class PrintAdmissionTicketGenerator(
 
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
+
+        drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
 
         val styleMap = createStyleMap(sourceWorkbook, targetWorkbook)
 
@@ -172,7 +177,6 @@ class PrintAdmissionTicketGenerator(
     private fun copyImage(imageBytes: ByteArray, targetSheet: Sheet, targetRowIndex: Int) {
         val workbook = targetSheet.workbook
         val pictureId = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_PNG)
-        val drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
         val anchor = XSSFClientAnchor()
 
         anchor.setCol1(0)

@@ -30,7 +30,8 @@ class GetApplicationStatusByRegionUseCase(
     )
 
     fun execute(): GetApplicationStatusByRegionResponse {
-        val applicationList = queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
+        val applicationList =
+            queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
 
         var response = GetApplicationStatusByRegionResponse()
 
@@ -43,12 +44,18 @@ class GetApplicationStatusByRegionUseCase(
         return response
     }
 
-    private fun incrementRegionCount(response: GetApplicationStatusByRegionResponse, address: String): GetApplicationStatusByRegionResponse {
+    private fun incrementRegionCount(
+        response: GetApplicationStatusByRegionResponse,
+        address: String
+    ): GetApplicationStatusByRegionResponse {
+        var updatedResponse = response
+        val applicantRegion = address.split(" ")[0]
+
         regionListMapping.forEach { (region, update) ->
-            if (address.contains(region)) {
-                return update(response)
+            if (applicantRegion == region) {
+                updatedResponse = update(updatedResponse)
             }
         }
-        return response
+        return updatedResponse
     }
 }

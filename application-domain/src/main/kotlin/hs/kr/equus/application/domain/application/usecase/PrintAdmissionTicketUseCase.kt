@@ -23,43 +23,41 @@ class PrintAdmissionTicketUseCase(
 ){
     fun execute(httpServletResponse: HttpServletResponse) {
         val applications = queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true)
-            .map { it ->
-                val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(it)
-                    ?: throw GraduationInfoExceptions.GraduationNotFoundException()
-                val result = when (graduationInfo) {
-                    is Graduation -> {
-                        val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it)
-                            ?: throw ApplicationCaseExceptions.ApplicationCaseNotFoundException()
-                        val graduationCase = applicationCase as GraduationCase
-                        val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
-                        val school =
-                            applicationQuerySchoolPort.querySchoolBySchoolCode(graduationInfo.schoolCode.toString())
-                        ApplicationInfoVO(
-                            application!!,
-                            graduationInfo,
-                            graduationCase,
-                            queryScorePort.queryScoreByReceiptCode(application.receiptCode),
-                            school
-                        )
-                    }
-
-                    is Qualification -> {
-                        val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(it)
-                            ?: throw ApplicationCaseExceptions.ApplicationCaseNotFoundException()
-                        val graduationCase = applicationCase as QualificationCase
-                        val application = queryApplicationPort.queryApplicationByReceiptCode(it.receiptCode)
-                        ApplicationInfoVO(
-                            application!!,
-                            graduationInfo,
-                            graduationCase,
-                            queryScorePort.queryScoreByReceiptCode(application.receiptCode),
-                            null
-                        )
-                    }
-                }
-                result
+        val receiptCodeList = applications.map { it.receiptCode }
+        val graduationInfoMap = queryGraduationInfoPort.queryAllGraduationByReceiptCode(receiptCodeList)
+            .filterNotNull()
+            .associateBy { it.receiptCode }
+        val applicationCaseMap = queryApplicationCasePort.queryAllApplicationCaseByReceiptCode(receiptCodeList)
+            .filterNotNull()
+            .associateBy { it.receiptCode }
+        val applicationMap = queryApplicationPort.queryAllByReceiptCode(receiptCodeList)
+            .filterNotNull()
+            .associateBy { it.receiptCode }
+        val schoolMap = graduationInfoMap.values
+            .filterIsInstance<Graduation>()
+            .associate {
+                val schoolCode = it.schoolCode
+                val school = applicationQuerySchoolPort.querySchoolBySchoolCode(schoolCode!!)
+                schoolCode to school
             }
-
-        printAdmissionTicketPort.execute(httpServletResponse, applications)
+        val scoreList = queryScorePort.queryAllByReceiptCode(receiptCodeList)
+            .filterNotNull()
+            .associateBy { it.receiptCode }
+        val result = applications.map {
+            val application = applicationMap[it.receiptCode]
+            val graduationInfo = graduationInfoMap[it.receiptCode]
+            val graduation = graduationInfo as? Graduation
+            val applicationCase = applicationCaseMap[it.receiptCode]
+            val school = graduation?.schoolCode.let { schoolMap[it] }
+            val score = scoreList[it.receiptCode]
+            ApplicationInfoVO(
+                application!!,
+                graduation,
+                applicationCase,
+                score,
+                school
+            )
+        }
+        printAdmissionTicketPort.execute(httpServletResponse, result)
     }
 }

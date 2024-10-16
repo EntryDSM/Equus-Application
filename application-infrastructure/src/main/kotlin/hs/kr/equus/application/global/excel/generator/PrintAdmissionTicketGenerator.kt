@@ -19,6 +19,10 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.servlet.http.HttpServletResponse
 
+// Import necessary for multithreading
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 @Component
 class PrintAdmissionTicketGenerator(
@@ -41,11 +45,28 @@ class PrintAdmissionTicketGenerator(
 
         targetSheet.setDefaultColumnWidth(13)
 
+        val imageBytesMap = ConcurrentHashMap<Long, ByteArray>()
+        val executorService = Executors.newFixedThreadPool(30)
+
+        applications.forEach { applicationInfoVo ->
+            executorService.submit {
+                val application = applicationInfoVo.application
+                val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+                imageBytesMap[application.receiptCode!!] = imageBytes
+            }
+        }
+
+        executorService.shutdown()
+        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
+
         var currentRowIndex = 0
-        applications.forEach { application ->
-            fillApplicationData(sourceSheet, 0, application, sourceWorkbook)
+        applications.forEach { applicationInfoVo ->
+            val application = applicationInfoVo.application
+            fillApplicationData(sourceSheet, 0, applicationInfoVo, sourceWorkbook)
             copyRows(sourceSheet, targetSheet, 0, 16, currentRowIndex, styleMap)
-            copyImage(sourceSheet, targetSheet, application, currentRowIndex)
+
+            val imageBytes = imageBytesMap[application.receiptCode!!] ?: getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+            copyImage(imageBytes, targetSheet, currentRowIndex)
             currentRowIndex += 20
         }
 
@@ -100,7 +121,6 @@ class PrintAdmissionTicketGenerator(
             copyCell(oldCell, newCell, styleMap)
         }
 
-        // Copy merged regions that belong to the copied row
         for (i in 0 until sourceSheet.numMergedRegions) {
             val mergedRegion = sourceSheet.getMergedRegion(i)
             if (mergedRegion.firstRow == sourceRow.rowNum) {
@@ -144,15 +164,12 @@ class PrintAdmissionTicketGenerator(
         setValue(sheet, "E14", application.receiptCode.toString())
     }
 
-    private fun copyImage(sourceSheet: Sheet, targetSheet: Sheet, applicationInfoVo: ApplicationInfoVO, targetRowIndex: Int) {
-        val application = applicationInfoVo.application
-        val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+    private fun copyImage(imageBytes: ByteArray, targetSheet: Sheet, targetRowIndex: Int) {
         val workbook = targetSheet.workbook
         val pictureId = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_PNG)
         val drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
         val anchor = XSSFClientAnchor()
 
-        // 이미지 위치 및 크기 설정 (필요에 따라 조정)
         anchor.setCol1(0)
         anchor.row1 = targetRowIndex + 3
         anchor.setCol2(2)

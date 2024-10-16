@@ -10,8 +10,6 @@ import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellReference
-import org.apache.poi.xssf.streaming.SXSSFDrawing
-import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor
 import org.apache.poi.xssf.usermodel.XSSFDrawing
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -37,17 +35,29 @@ class PrintAdmissionTicketGenerator(
     private val imageCache =
         Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).maximumSize(1000).build<Long, ByteArray>()
 
-    private lateinit var drawing: SXSSFDrawing
+    private lateinit var drawing: XSSFDrawing
 
 
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
+        val targetWorkbook = generate(applications)
+        try {
+            setResponseHeaders()
+            targetWorkbook.write(httpServletResponse.outputStream)
+        } catch (e: IOException) {
+            throw ExcelExceptions.ExcelIOException().initCause(e)
+        } finally {
+            targetWorkbook.close()
+        }
+    }
+
+    fun generate(applications: List<ApplicationInfoVO>): Workbook {
         val sourceWorkbook = loadSourceWorkbook()
-        val targetWorkbook = SXSSFWorkbook()
+        val targetWorkbook = XSSFWorkbook()
 
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
 
-        drawing = targetSheet.createDrawingPatriarch() as SXSSFDrawing
+        drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
 
         val styleMap = createStyleMap(sourceWorkbook, targetWorkbook)
 
@@ -81,23 +91,17 @@ class PrintAdmissionTicketGenerator(
             currentRowIndex += 20
         }
 
-        try {
-            setResponseHeaders()
-            targetWorkbook.write(httpServletResponse.outputStream)
-        } catch (e: IOException) {
-            throw ExcelExceptions.ExcelIOException().initCause(e)
-        } finally {
-            sourceWorkbook.close()
-            targetWorkbook.close()
-        }
+        sourceWorkbook.close()
+
+        return targetWorkbook
     }
 
-    private fun loadSourceWorkbook(): Workbook {
+    fun loadSourceWorkbook(): Workbook {
         val resource = ClassPathResource(EXCEL_PATH)
-        return resource.inputStream.use { SXSSFWorkbook(XSSFWorkbook(it)) }
+        return resource.inputStream.use { XSSFWorkbook(it) }
     }
 
-    private fun createStyleMap(sourceWorkbook: Workbook, targetWorkbook: Workbook): Map<CellStyle, CellStyle> {
+    fun createStyleMap(sourceWorkbook: Workbook, targetWorkbook: Workbook): Map<CellStyle, CellStyle> {
         return sourceWorkbook.numCellStyles.let { styleCount ->
             (0 until styleCount).associate { i ->
                 val sourceStyle = sourceWorkbook.getCellStyleAt(i)
@@ -108,7 +112,7 @@ class PrintAdmissionTicketGenerator(
         }
     }
 
-    private fun copyRows(sourceSheet: Sheet, targetSheet: Sheet, sourceStartRow: Int, sourceEndRow: Int, targetStartRow: Int, styleMap: Map<CellStyle, CellStyle>) {
+    fun copyRows(sourceSheet: Sheet, targetSheet: Sheet, sourceStartRow: Int, sourceEndRow: Int, targetStartRow: Int, styleMap: Map<CellStyle, CellStyle>) {
         for (i in sourceStartRow..sourceEndRow) {
             val sourceRow = sourceSheet.getRow(i)
             val targetRow = targetSheet.createRow(targetStartRow + i - sourceStartRow)
@@ -118,7 +122,7 @@ class PrintAdmissionTicketGenerator(
         }
     }
 
-    private fun copyRow(sourceSheet: Sheet, targetSheet: Sheet, sourceRow: Row, targetRow: Row, styleMap: Map<CellStyle, CellStyle>) {
+    fun copyRow(sourceSheet: Sheet, targetSheet: Sheet, sourceRow: Row, targetRow: Row, styleMap: Map<CellStyle, CellStyle>) {
         targetRow.height = sourceRow.height
 
         for (i in 0 until sourceRow.lastCellNum) {
@@ -146,7 +150,7 @@ class PrintAdmissionTicketGenerator(
         }
     }
 
-    private fun copyCell(oldCell: Cell, newCell: Cell, styleMap: Map<CellStyle, CellStyle>) {
+    fun copyCell(oldCell: Cell, newCell: Cell, styleMap: Map<CellStyle, CellStyle>) {
         val newStyle = styleMap[oldCell.cellStyle]
         if (newStyle != null) {
             newCell.cellStyle = newStyle
@@ -163,7 +167,7 @@ class PrintAdmissionTicketGenerator(
         }
     }
 
-    private fun fillApplicationData(sheet: Sheet, startRowIndex: Int, applicationInfoVo: ApplicationInfoVO, workbook: Workbook) {
+    fun fillApplicationData(sheet: Sheet, startRowIndex: Int, applicationInfoVo: ApplicationInfoVO, workbook: Workbook) {
         val application = applicationInfoVo.application
         val school = applicationInfoVo.school
 
@@ -175,7 +179,7 @@ class PrintAdmissionTicketGenerator(
         setValue(sheet, "E14", application.receiptCode.toString())
     }
 
-    private fun copyImage(imageBytes: ByteArray, targetSheet: Sheet, targetRowIndex: Int) {
+    fun copyImage(imageBytes: ByteArray, targetSheet: Sheet, targetRowIndex: Int) {
         val workbook = targetSheet.workbook
         val pictureId = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_PNG)
         val anchor = XSSFClientAnchor()
@@ -188,7 +192,7 @@ class PrintAdmissionTicketGenerator(
         drawing.createPicture(anchor, pictureId)
     }
 
-    private fun setValue(sheet: Sheet, position: String, value: String) {
+    fun setValue(sheet: Sheet, position: String, value: String) {
         val ref = CellReference(position)
         val r = sheet.getRow(ref.row)
         if (r != null) {
@@ -197,7 +201,7 @@ class PrintAdmissionTicketGenerator(
         }
     }
 
-    private fun setResponseHeaders() {
+    fun setResponseHeaders() {
         httpServletResponse.contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         val formatFilename = "attachment;filename=\"수험표"
         val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
@@ -205,7 +209,7 @@ class PrintAdmissionTicketGenerator(
         httpServletResponse.setHeader("Content-Disposition", fileName)
     }
 
-    private fun insertImageToCell(sheet: Sheet, rowIndex: Int, colIndex: Int, imageData: ByteArray) {
+    fun insertImageToCell(sheet: Sheet, rowIndex: Int, colIndex: Int, imageData: ByteArray) {
         val patriarch = sheet.createDrawingPatriarch()
         val anchor = patriarch.createAnchor(0, 0, 0, 0, colIndex, rowIndex, colIndex + 1, rowIndex + 1)
 
@@ -213,7 +217,7 @@ class PrintAdmissionTicketGenerator(
         picture.resize()
     }
 
-    private fun loadPictureData(workbook: Workbook, imageData: ByteArray): Int {
+    fun loadPictureData(workbook: Workbook, imageData: ByteArray): Int {
         return workbook.addPicture(imageData, Workbook.PICTURE_TYPE_JPEG)
     }
 }

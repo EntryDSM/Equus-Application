@@ -4,6 +4,7 @@ plugins {
     kotlin("plugin.spring") version PluginVersions.SPRING_PLUGIN_VERSION
     kotlin("plugin.jpa") version PluginVersions.JPA_PLUGIN_VERSION
     application
+    id("me.champeau.jmh") version "0.7.2"
 }
 
 dependencyManagement {
@@ -90,6 +91,21 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("com.github.ben-manes.caffeine:caffeine")
+
+    jmh ("org.openjdk.jmh:jmh-core:1.36")
+    jmh ("org.openjdk.jmh:jmh-generator-annprocess:1.36")
+
+    testImplementation("org.mockito:mockito-inline:2.13.0")
+}
+
+tasks.withType<Jar> {
+    isZip64 = true
+}
+
+jmh {
+    fork = 1
+    iterations = 10
+    warmupIterations = 1
 }
 
 kapt {

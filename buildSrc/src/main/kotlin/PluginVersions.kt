@@ -7,5 +7,5 @@ object PluginVersions {
     const val KAPT_VERSION = "1.7.10"
     const val KLINT_VERSION = "11.5.1"
     const val ALLOPEN_VERSION = "1.6.21"
-    const val MOCKITO_KOTLIN_VERSION = "4.0.0"
+    const val MOCKITO_KOTLIN_VERSION = "5.0.0"
 }

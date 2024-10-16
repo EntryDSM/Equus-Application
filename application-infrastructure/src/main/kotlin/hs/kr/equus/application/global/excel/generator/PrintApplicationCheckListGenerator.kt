@@ -10,6 +10,7 @@ import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.RegionUtil
+import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.stereotype.Component
 import java.io.IOException
@@ -23,7 +24,7 @@ class PrintApplicationCheckListGenerator(
     private val applicationService: ApplicationService
 ) : PrintApplicationCheckListPort {
 
-    private val workbook: Workbook = XSSFWorkbook()
+    private val workbook: Workbook = SXSSFWorkbook()
     private val sheet: Sheet = workbook.createSheet("application Check List")
 
     override fun printApplicationCheckList(

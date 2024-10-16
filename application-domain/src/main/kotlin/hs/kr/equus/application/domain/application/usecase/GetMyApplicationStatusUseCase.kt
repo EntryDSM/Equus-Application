@@ -28,7 +28,8 @@ class GetMyApplicationStatusUseCase(
         val user = applicationQueryUserPort.queryUserByUserId(userId)
 
         val phoneNumber = if (user.isParent) application.parentTel else application.applicantTel
-        val name = if (user.isParent) application.parentName else application.applicantName
+        val name = if ( user.isParent && application.applicantName == null)
+            application.parentName else application.applicantName
 
         return GetApplicationStatusResponse(
             receiptCode = application.receiptCode,

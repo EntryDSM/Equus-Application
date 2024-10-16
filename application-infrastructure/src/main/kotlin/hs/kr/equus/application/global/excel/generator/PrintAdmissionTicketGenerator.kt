@@ -10,6 +10,7 @@ import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellReference
+import org.apache.poi.xssf.streaming.SXSSFDrawing
 import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor
 import org.apache.poi.xssf.usermodel.XSSFDrawing
@@ -36,7 +37,7 @@ class PrintAdmissionTicketGenerator(
     private val imageCache =
         Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).maximumSize(1000).build<Long, ByteArray>()
 
-    private lateinit var drawing: XSSFDrawing
+    private lateinit var drawing: SXSSFDrawing
 
 
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
@@ -46,7 +47,7 @@ class PrintAdmissionTicketGenerator(
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
 
-        drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
+        drawing = targetSheet.createDrawingPatriarch() as SXSSFDrawing
 
         val styleMap = createStyleMap(sourceWorkbook, targetWorkbook)
 

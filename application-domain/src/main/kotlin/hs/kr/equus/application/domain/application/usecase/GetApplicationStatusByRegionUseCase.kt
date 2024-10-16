@@ -49,10 +49,10 @@ class GetApplicationStatusByRegionUseCase(
         address: String
     ): GetApplicationStatusByRegionResponse {
         var updatedResponse = response
-        val addressPart = address.split(" ")
+        val addressPart = address.split(" ")[0]
 
         regionListMapping.forEach { (region, update) ->
-            if (addressPart[0] == region) {
+            if (addressPart == region) {
                 updatedResponse = update(updatedResponse)
             }
         }

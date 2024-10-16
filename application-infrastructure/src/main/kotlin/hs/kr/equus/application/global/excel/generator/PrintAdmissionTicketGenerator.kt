@@ -1,5 +1,6 @@
 package hs.kr.equus.application.global.excel.generator
 
+import com.github.benmanes.caffeine.cache.Caffeine
 import hs.kr.equus.application.domain.application.service.ApplicationService
 import hs.kr.equus.application.domain.application.spi.PrintAdmissionTicketPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
@@ -9,6 +10,8 @@ import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellReference
+import org.apache.poi.xssf.streaming.SXSSFDrawing
+import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor
 import org.apache.poi.xssf.usermodel.XSSFDrawing
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -17,12 +20,9 @@ import org.springframework.stereotype.Component
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.servlet.http.HttpServletResponse
-
-// Import necessary for multithreading
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import javax.servlet.http.HttpServletResponse
 
 @Component
 class PrintAdmissionTicketGenerator(
@@ -34,25 +34,33 @@ class PrintAdmissionTicketGenerator(
         const val EXCEL_PATH = "/excel/excel-form.xlsx"
     }
 
+    private val imageCache =
+        Caffeine.newBuilder().expireAfterAccess(1, TimeUnit.HOURS).maximumSize(1000).build<Long, ByteArray>()
+
+    private lateinit var drawing: SXSSFDrawing
+
+
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
         val sourceWorkbook = loadSourceWorkbook()
-        val targetWorkbook = XSSFWorkbook()
+        val targetWorkbook = SXSSFWorkbook()
 
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
+
+        drawing = targetSheet.createDrawingPatriarch() as SXSSFDrawing
 
         val styleMap = createStyleMap(sourceWorkbook, targetWorkbook)
 
         targetSheet.setDefaultColumnWidth(13)
 
-        val imageBytesMap = ConcurrentHashMap<Long, ByteArray>()
         val executorService = Executors.newFixedThreadPool(30)
 
         applications.forEach { applicationInfoVo ->
             executorService.submit {
                 val application = applicationInfoVo.application
-                val imageBytes: ByteArray = getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
-                imageBytesMap[application.receiptCode!!] = imageBytes
+                imageCache.get(application.receiptCode!!) {
+                    getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+                }
             }
         }
 
@@ -65,7 +73,10 @@ class PrintAdmissionTicketGenerator(
             fillApplicationData(sourceSheet, 0, applicationInfoVo, sourceWorkbook)
             copyRows(sourceSheet, targetSheet, 0, 16, currentRowIndex, styleMap)
 
-            val imageBytes = imageBytesMap[application.receiptCode!!] ?: getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+            val imageBytes = imageCache.get(application.receiptCode!!) {
+                getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+            } ?: getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
+
             copyImage(imageBytes, targetSheet, currentRowIndex)
             currentRowIndex += 20
         }
@@ -83,7 +94,7 @@ class PrintAdmissionTicketGenerator(
 
     private fun loadSourceWorkbook(): Workbook {
         val resource = ClassPathResource(EXCEL_PATH)
-        return resource.inputStream.use { XSSFWorkbook(it) }
+        return resource.inputStream.use { SXSSFWorkbook(XSSFWorkbook(it)) }
     }
 
     private fun createStyleMap(sourceWorkbook: Workbook, targetWorkbook: Workbook): Map<CellStyle, CellStyle> {
@@ -167,7 +178,6 @@ class PrintAdmissionTicketGenerator(
     private fun copyImage(imageBytes: ByteArray, targetSheet: Sheet, targetRowIndex: Int) {
         val workbook = targetSheet.workbook
         val pictureId = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_PNG)
-        val drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
         val anchor = XSSFClientAnchor()
 
         anchor.setCol1(0)

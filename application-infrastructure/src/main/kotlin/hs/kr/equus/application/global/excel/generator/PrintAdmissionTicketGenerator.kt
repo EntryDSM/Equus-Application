@@ -84,7 +84,7 @@ class PrintAdmissionTicketGenerator(
 
     private fun loadSourceWorkbook(): Workbook {
         val resource = ClassPathResource(EXCEL_PATH)
-        return resource.inputStream.use { XSSFWorkbook(it) }
+        return resource.inputStream.use { SXSSFWorkbook(XSSFWorkbook(it)) }
     }
 
     private fun createStyleMap(sourceWorkbook: Workbook, targetWorkbook: Workbook): Map<CellStyle, CellStyle> {

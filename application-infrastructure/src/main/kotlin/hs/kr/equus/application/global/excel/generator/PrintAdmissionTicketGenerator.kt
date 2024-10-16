@@ -46,7 +46,7 @@ class PrintAdmissionTicketGenerator(
         targetSheet.setDefaultColumnWidth(13)
 
         val imageBytesMap = ConcurrentHashMap<Long, ByteArray>()
-        val executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
+        val executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2)
 
         applications.forEach { applicationInfoVo ->
             executorService.submit {

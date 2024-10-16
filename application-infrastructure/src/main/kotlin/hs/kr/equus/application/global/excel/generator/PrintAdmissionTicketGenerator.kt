@@ -9,6 +9,7 @@ import hs.kr.equus.application.global.excel.exception.ExcelExceptions
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.ss.util.CellReference
+import org.apache.poi.xssf.streaming.SXSSFWorkbook
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor
 import org.apache.poi.xssf.usermodel.XSSFDrawing
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
@@ -36,7 +37,7 @@ class PrintAdmissionTicketGenerator(
 
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
         val sourceWorkbook = loadSourceWorkbook()
-        val targetWorkbook = XSSFWorkbook()
+        val targetWorkbook = SXSSFWorkbook()
 
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")

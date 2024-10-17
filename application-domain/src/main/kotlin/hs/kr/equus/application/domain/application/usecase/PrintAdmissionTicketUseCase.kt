@@ -2,12 +2,7 @@ package hs.kr.equus.application.domain.application.usecase
 
 import hs.kr.equus.application.domain.application.spi.*
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
-import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
-import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
-import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
-import hs.kr.equus.application.domain.graduationInfo.exception.GraduationInfoExceptions
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
-import hs.kr.equus.application.domain.graduationInfo.model.Qualification
 import hs.kr.equus.application.global.annotation.ReadOnlyUseCase
 import javax.servlet.http.HttpServletResponse
 
@@ -46,13 +41,12 @@ class PrintAdmissionTicketUseCase(
         val result = applications.map {
             val application = applicationMap[it.receiptCode]
             val graduationInfo = graduationInfoMap[it.receiptCode]
-            val graduation = graduationInfo as? Graduation
             val applicationCase = applicationCaseMap[it.receiptCode]
-            val school = graduation?.schoolCode.let { schoolMap[it] }
+            val school = (graduationInfo as? Graduation)?.schoolCode.let { schoolMap[it] }
             val score = scoreList[it.receiptCode]
             ApplicationInfoVO(
                 application!!,
-                graduation,
+                graduationInfo,
                 applicationCase,
                 score,
                 school

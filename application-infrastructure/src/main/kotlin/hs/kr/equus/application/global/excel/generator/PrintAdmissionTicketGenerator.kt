@@ -15,10 +15,11 @@ import org.apache.poi.xssf.usermodel.XSSFDrawing
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
+import java.io.BufferedOutputStream
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.Executors
+import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import javax.servlet.http.HttpServletResponse
 
@@ -37,12 +38,12 @@ class PrintAdmissionTicketGenerator(
 
     private lateinit var drawing: XSSFDrawing
 
-
     override fun execute(response: HttpServletResponse, applications: List<ApplicationInfoVO>) {
         val targetWorkbook = generate(applications)
         try {
             setResponseHeaders()
-            targetWorkbook.write(httpServletResponse.outputStream)
+            val bufferedOutputStream = BufferedOutputStream(httpServletResponse.outputStream)
+            targetWorkbook.write(bufferedOutputStream)
         } catch (e: IOException) {
             throw ExcelExceptions.ExcelIOException().initCause(e)
         } finally {
@@ -60,13 +61,10 @@ class PrintAdmissionTicketGenerator(
         drawing = targetSheet.createDrawingPatriarch() as XSSFDrawing
 
         val styleMap = createStyleMap(sourceWorkbook, targetWorkbook)
-
         targetSheet.setDefaultColumnWidth(13)
 
-        val executorService = Executors.newFixedThreadPool(30)
-
-        applications.forEach { applicationInfoVo ->
-            executorService.submit {
+        val futures = applications.map { applicationInfoVo ->
+            CompletableFuture.runAsync {
                 val application = applicationInfoVo.application
                 imageCache.get(application.receiptCode!!) {
                     getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
@@ -74,8 +72,7 @@ class PrintAdmissionTicketGenerator(
             }
         }
 
-        executorService.shutdown()
-        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)
+        CompletableFuture.allOf(*futures.toTypedArray()).join()
 
         var currentRowIndex = 0
         applications.forEach { applicationInfoVo ->
@@ -85,14 +82,12 @@ class PrintAdmissionTicketGenerator(
 
             val imageBytes = imageCache.get(application.receiptCode!!) {
                 getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
-            } ?: getObjectPort.getObject(application.photoPath!!, PathList.PHOTO)
-
+            }
             copyImage(imageBytes, targetSheet, currentRowIndex)
             currentRowIndex += 20
         }
 
         sourceWorkbook.close()
-
         return targetWorkbook
     }
 
@@ -102,13 +97,15 @@ class PrintAdmissionTicketGenerator(
     }
 
     fun createStyleMap(sourceWorkbook: Workbook, targetWorkbook: Workbook): Map<CellStyle, CellStyle> {
-        return sourceWorkbook.numCellStyles.let { styleCount ->
-            (0 until styleCount).associate { i ->
-                val sourceStyle = sourceWorkbook.getCellStyleAt(i)
-                val targetStyle = targetWorkbook.createCellStyle()
-                targetStyle.cloneStyleFrom(sourceStyle)
-                sourceStyle to targetStyle
+        val styleCache = mutableMapOf<Short, CellStyle>()
+        return (0 until sourceWorkbook.numCellStyles).associate { i ->
+            val sourceStyle = sourceWorkbook.getCellStyleAt(i)
+            val targetStyle = styleCache.getOrPut(sourceStyle.index) {
+                val newStyle = targetWorkbook.createCellStyle()
+                newStyle.cloneStyleFrom(sourceStyle)
+                newStyle
             }
+            sourceStyle to targetStyle
         }
     }
 
@@ -179,17 +176,19 @@ class PrintAdmissionTicketGenerator(
         setValue(sheet, "E14", application.receiptCode.toString())
     }
 
-    fun copyImage(imageBytes: ByteArray, targetSheet: Sheet, targetRowIndex: Int) {
-        val workbook = targetSheet.workbook
-        val pictureId = workbook.addPicture(imageBytes, Workbook.PICTURE_TYPE_PNG)
-        val anchor = XSSFClientAnchor()
+    fun copyImage(imageBytes: ByteArray?, targetSheet: Sheet, targetRowIndex: Int) {
+        imageBytes?.let {
+            val workbook = targetSheet.workbook
+            val pictureId = workbook.addPicture(it, Workbook.PICTURE_TYPE_PNG)
+            val anchor = XSSFClientAnchor()
 
-        anchor.setCol1(0)
-        anchor.row1 = targetRowIndex + 3
-        anchor.setCol2(2)
-        anchor.row2 = targetRowIndex + 15
+            anchor.setCol1(0)
+            anchor.row1 = targetRowIndex + 3
+            anchor.setCol2(2)
+            anchor.row2 = targetRowIndex + 15
 
-        drawing.createPicture(anchor, pictureId)
+            drawing.createPicture(anchor, pictureId)
+        }
     }
 
     fun setValue(sheet: Sheet, position: String, value: String) {
@@ -207,17 +206,5 @@ class PrintAdmissionTicketGenerator(
         val time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년MM월dd일_HH시mm분"))
         val fileName = String(("$formatFilename$time.xlsx\"").toByteArray(Charsets.UTF_8), Charsets.ISO_8859_1)
         httpServletResponse.setHeader("Content-Disposition", fileName)
-    }
-
-    fun insertImageToCell(sheet: Sheet, rowIndex: Int, colIndex: Int, imageData: ByteArray) {
-        val patriarch = sheet.createDrawingPatriarch()
-        val anchor = patriarch.createAnchor(0, 0, 0, 0, colIndex, rowIndex, colIndex + 1, rowIndex + 1)
-
-        val picture = patriarch.createPicture(anchor, loadPictureData(sheet.workbook, imageData))
-        picture.resize()
-    }
-
-    fun loadPictureData(workbook: Workbook, imageData: ByteArray): Int {
-        return workbook.addPicture(imageData, Workbook.PICTURE_TYPE_JPEG)
     }
 }

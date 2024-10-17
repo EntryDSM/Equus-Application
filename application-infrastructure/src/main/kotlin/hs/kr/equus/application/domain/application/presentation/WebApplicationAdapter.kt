@@ -130,8 +130,8 @@ class WebApplicationAdapter(
         )
     }
 
-    @PostMapping("/final-submit")
-    fun submitApplicationFinal() = submitApplicationFinalUseCase.execute()
+//    @PostMapping("/final-submit")
+//    fun submitApplicationFinal() = submitApplicationFinalUseCase.execute()
 
     @GetMapping("/status")
     fun getMyApplicationStatus(): GetApplicationStatusResponse = getMyApplicationStatusUseCase.execute()

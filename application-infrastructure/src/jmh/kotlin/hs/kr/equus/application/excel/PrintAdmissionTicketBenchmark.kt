@@ -15,6 +15,7 @@ import hs.kr.equus.application.domain.graduationInfo.model.vo.StudentNumber
 import hs.kr.equus.application.domain.school.model.School
 import hs.kr.equus.application.domain.score.model.Score
 import hs.kr.equus.application.global.excel.generator.PrintAdmissionTicketGenerator
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.mockito.Mockito
 import org.openjdk.jmh.annotations.*
 import org.springframework.mock.web.MockHttpServletResponse
@@ -143,14 +144,14 @@ open class PrintAdmissionTicketBenchmark {
     @Benchmark
     fun benchmarkCreateStyleMap() {
         val sourceWorkbook = generator.loadSourceWorkbook()
-        val targetWorkbook = org.apache.poi.xssf.streaming.SXSSFWorkbook()
+        val targetWorkbook = XSSFWorkbook()
         generator.createStyleMap(sourceWorkbook, targetWorkbook)
     }
 
     @Benchmark
     fun benchmarkCopyRows() {
         val sourceWorkbook = generator.loadSourceWorkbook()
-        val targetWorkbook = org.apache.poi.xssf.streaming.SXSSFWorkbook()
+        val targetWorkbook = XSSFWorkbook()
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
         val styleMap = generator.createStyleMap(sourceWorkbook, targetWorkbook)
@@ -160,7 +161,7 @@ open class PrintAdmissionTicketBenchmark {
     @Benchmark
     fun benchmarkCopyRow() {
         val sourceWorkbook = generator.loadSourceWorkbook()
-        val targetWorkbook = org.apache.poi.xssf.streaming.SXSSFWorkbook()
+        val targetWorkbook = XSSFWorkbook()
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
         val styleMap = generator.createStyleMap(sourceWorkbook, targetWorkbook)
@@ -172,7 +173,7 @@ open class PrintAdmissionTicketBenchmark {
     @Benchmark
     fun benchmarkCopyCell() {
         val sourceWorkbook = generator.loadSourceWorkbook()
-        val targetWorkbook = org.apache.poi.xssf.streaming.SXSSFWorkbook()
+        val targetWorkbook = XSSFWorkbook()
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         val targetSheet = targetWorkbook.createSheet("수험표")
         val styleMap = generator.createStyleMap(sourceWorkbook, targetWorkbook)
@@ -192,7 +193,7 @@ open class PrintAdmissionTicketBenchmark {
 
     @Benchmark
     fun benchmarkCopyImage() {
-        val targetWorkbook = org.apache.poi.xssf.streaming.SXSSFWorkbook()
+        val targetWorkbook = XSSFWorkbook()
         val targetSheet = targetWorkbook.createSheet("수험표")
         val imageBytes = ByteArray(0)  // Mocked image byte array
         generator.copyImage(imageBytes, targetSheet, 0)
@@ -203,13 +204,5 @@ open class PrintAdmissionTicketBenchmark {
         val sourceWorkbook = generator.loadSourceWorkbook()
         val sourceSheet = sourceWorkbook.getSheetAt(0)
         generator.setValue(sourceSheet, "A1", "Test Value")
-    }
-
-    @Benchmark
-    fun benchmarkInsertImageToCell() {
-        val targetWorkbook = org.apache.poi.xssf.streaming.SXSSFWorkbook()
-        val targetSheet = targetWorkbook.createSheet("수험표")
-        val imageBytes = ByteArray(0)  // Mocked image byte array
-        generator.insertImageToCell(targetSheet, 0, 0, imageBytes)
     }
 }

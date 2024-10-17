@@ -37,7 +37,20 @@ class GetApplicationStatusByRegionUseCaseTest {
             Application(
                 streetAddress = "대구 동성로",
                 userId = UUID.randomUUID()
+            ),
+            Application(
+                streetAddress = "대구 동성로",
+                userId = UUID.randomUUID()
+            ),
+            Application(
+                streetAddress = "전북특별자치도 전주시",
+                userId = UUID.randomUUID()
+            ),
+            Application(
+                streetAddress = "강원특별자치도 양구군",
+                userId = UUID.randomUUID()
             )
+
         )
 
         Mockito.`when`(queryApplicationInfoListByStatusIsSubmittedPort.queryApplicationInfoListByStatusIsSubmitted(true))
@@ -48,18 +61,18 @@ class GetApplicationStatusByRegionUseCaseTest {
         val response = GetApplicationStatusByRegionResponse(
             seoul = 2,
             busan = 2,
-            daegu = 1,
+            daegu = 2,
             gwangju = 0,
             daejeon = 0,
             ulsan = 0,
             incheon = 0,
             jeju = 0,
-            gangwonDo = 0,
+            gangwonDo = 1,
             gyeonggiDo = 0,
             gyeongsangnamDo = 0,
             gyeongsangbukDo = 0,
             jeollanamDo = 0,
-            jeollabukDo = 0,
+            jeollabukDo = 1,
             chungcheongnamDo = 0,
             chungcheongbukDo = 0,
             sejong = 0

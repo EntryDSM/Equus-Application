@@ -19,7 +19,7 @@ class GetApplicationStatusByRegionUseCase(
         "울산" to { response: GetApplicationStatusByRegionResponse -> response.copy(ulsan = response.ulsan + 1) },
         "인천" to { response: GetApplicationStatusByRegionResponse -> response.copy(incheon = response.incheon + 1) },
         "제주" to { response: GetApplicationStatusByRegionResponse -> response.copy(jeju = response.jeju + 1) },
-        "강원특별자치도" to { response: GetApplicationStatusByRegionResponse -> response.copy(gangwonDo = response.gangwonDo + 1) },
+        "강원" to { response: GetApplicationStatusByRegionResponse -> response.copy(gangwonDo = response.gangwonDo + 1) },
         "경기" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeonggiDo = response.gyeonggiDo + 1) },
         "경남" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangnamDo = response.gyeongsangnamDo + 1) },
         "경북" to { response: GetApplicationStatusByRegionResponse -> response.copy(gyeongsangbukDo = response.gyeongsangbukDo + 1) },
@@ -49,7 +49,7 @@ class GetApplicationStatusByRegionUseCase(
         address: String
     ): GetApplicationStatusByRegionResponse {
         var updatedResponse = response
-        val applicantRegion = address.split(" ")[0]
+        val applicantRegion = address.substring(0 until 2)
 
         regionListMapping.forEach { (region, update) ->
             if (applicantRegion == region) {

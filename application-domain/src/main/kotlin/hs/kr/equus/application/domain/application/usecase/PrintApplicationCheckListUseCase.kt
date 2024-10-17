@@ -43,13 +43,12 @@ class PrintApplicationCheckListUseCase(
         val list = applicationInfoVOList.map {
             val application = applicationMap[it.receiptCode]!!
             val graduationInfo = graduationInfoMap[it.receiptCode]
-            val graduation = graduationInfo as? Graduation
             val applicationCase = applicationCaseMap[it.receiptCode]
-            val school = graduation?.schoolCode.let { schoolMap[it] }
+            val school = (graduationInfo as? Graduation)?.schoolCode.let { schoolMap[it] }
             val score = scoreList[it.receiptCode]
             ApplicationInfoVO(
                 application,
-                graduation,
+                graduationInfo,
                 applicationCase,
                 score,
                 school

@@ -21,13 +21,11 @@ class PrintApplicationInfoUseCase(
             .queryApplicationInfoListByStatusIsSubmitted(true)
             .map { application ->
                 val graduationInfo = queryGraduationInfoPort.queryGraduationInfoByApplication(application)
-                val graduation = graduationInfo as? Graduation
                 val applicationCase = queryApplicationCasePort.queryApplicationCaseByApplication(application)
-                val graduationCase = applicationCase as? GraduationCase
                 ApplicationInfoVO(
                     queryApplicationPort.queryApplicationByReceiptCode(application.receiptCode)!!,
-                    graduation,
-                    graduationCase,
+                    graduationInfo,
+                    applicationCase,
                     queryScorePort.queryScoreByReceiptCode(application.receiptCode),
                 )
             }

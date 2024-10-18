@@ -142,7 +142,7 @@ data class GraduationCase(
 
     fun gradesPerSubject(): Map<String, Array<String>> {
         val subjectNames = arrayOf(
-            "국어", "사회", "역사", "수학", "과학", "영어", "기술가정"
+            "국어", "사회", "역사", "수학", "과학", "기술가정", "영어"
         )
         val subjects = arrayOf(
             koreanGrade,
@@ -150,8 +150,8 @@ data class GraduationCase(
             historyGrade,
             mathGrade,
             scienceGrade,
+            techAndHomeGrade,
             englishGrade,
-            techAndHomeGrade
         )
 
         return subjectNames.zip(subjects).associate { (name, grades) ->

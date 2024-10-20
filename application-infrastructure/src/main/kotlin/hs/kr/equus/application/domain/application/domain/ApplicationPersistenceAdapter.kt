@@ -184,7 +184,7 @@ class ApplicationPersistenceAdapter(
     }
 
     override fun queryLatitudeAndLongitudeByStreetAddress(streetAddress: String): Pair<Double, Double> {
-        return locationPort.getLocationInfo(streetAddress).documents[0].address.let {
+        return locationPort.getLocationInfo(streetAddress = streetAddress).documents[0].address.let {
             Pair(it.y.toDouble(), it.x.toDouble())
         }
     }

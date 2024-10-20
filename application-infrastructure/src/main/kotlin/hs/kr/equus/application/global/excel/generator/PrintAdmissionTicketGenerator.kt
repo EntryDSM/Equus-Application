@@ -42,8 +42,7 @@ class PrintAdmissionTicketGenerator(
         val targetWorkbook = generate(applications)
         try {
             setResponseHeaders()
-            val bufferedOutputStream = BufferedOutputStream(httpServletResponse.outputStream)
-            targetWorkbook.write(bufferedOutputStream)
+            targetWorkbook.write(httpServletResponse.outputStream)
         } catch (e: IOException) {
             throw ExcelExceptions.ExcelIOException().initCause(e)
         } finally {

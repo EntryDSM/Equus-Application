@@ -34,4 +34,6 @@ interface QueryApplicationPort {
         pageSize: Long,
         offset: Long
     ): PagedResult<Applicant>
+
+    fun queryAllFirstRoundPassedApplication(): List<Application>
 }

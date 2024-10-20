@@ -190,7 +190,7 @@ class ApplicationPersistenceAdapter(
     override fun queryLatitudeAndLongitudeByStreetAddress(streetAddress: String): Pair<Double, Double> {
         return locationPort.getLocationInfo(
             streetAddress = streetAddress,
-            kakaoAuthorization = kakaoAuthorization
+            kakaoAuthorization = "KakaoAK $kakaoAuthorization"
         ).documents[0].address.let {
             Pair(it.y.toDouble(), it.x.toDouble())
         }

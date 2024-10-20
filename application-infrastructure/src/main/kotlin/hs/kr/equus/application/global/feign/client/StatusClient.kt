@@ -5,6 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestParam
 
 
@@ -16,7 +17,7 @@ interface StatusClient {
     @GetMapping("/internal/status/{receipt-code}")
     fun getStatusByReceiptCode(@PathVariable("receipt-code") receiptCode: Long): StatusInfoElement?
 
-    @PatchMapping("/internal/status/{receipt-code}/exam-code")
+    @PutMapping("/internal/status/{receipt-code}/exam-code")
     fun updateExamCode(@PathVariable("receipt-code") receiptCode: Long, @RequestParam examCode: String)
 }
 

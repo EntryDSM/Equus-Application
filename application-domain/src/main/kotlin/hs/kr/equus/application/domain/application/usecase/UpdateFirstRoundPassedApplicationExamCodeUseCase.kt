@@ -9,7 +9,7 @@ import hs.kr.equus.application.domain.application.spi.QueryLatitudeAndLongitudeP
 import hs.kr.equus.application.global.annotation.UseCase
 
 @UseCase
-class UpdateExamCodeUseCase(
+class UpdateFirstRoundPassedApplicationExamCodeUseCase(
     private val queryApplicationPort: QueryApplicationPort,
     private val queryLatitudeAndLongitudePort: QueryLatitudeAndLongitudePort,
     private val locationService: LocationService,

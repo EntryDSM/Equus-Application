@@ -12,6 +12,7 @@ import hs.kr.equus.application.domain.score.usecase.QueryStaticsScoreUseCase
 import hs.kr.equus.application.domain.score.usecase.dto.response.GetStaticsScoreResponse
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -30,7 +31,8 @@ class WebAdminAdapter(
     private val printApplicationInfoUseCase: PrintApplicationInfoUseCase,
     private val printApplicationCheckListUseCase: PrintApplicationCheckListUseCase,
     private val printAdmissionTicketUseCase: PrintAdmissionTicketUseCase,
-    private val getApplicationStatusByRegionUseCase: GetApplicationStatusByRegionUseCase
+    private val getApplicationStatusByRegionUseCase: GetApplicationStatusByRegionUseCase,
+    private val updateFirstRoundPassedApplicationExamCodeUseCase: UpdateFirstRoundPassedApplicationExamCodeUseCase
 ) {
 
     @GetMapping("/statics/score")
@@ -104,5 +106,10 @@ class WebAdminAdapter(
             chungcheongnamDo = response.chungcheongnamDo,
             chungcheongbukDo = response.chungcheongbukDo
         )
+    }
+
+    @PatchMapping("/exam-code")
+    fun updateFirstRoundPassedApplicationExamCode() {
+        updateFirstRoundPassedApplicationExamCodeUseCase.execute()
     }
 }

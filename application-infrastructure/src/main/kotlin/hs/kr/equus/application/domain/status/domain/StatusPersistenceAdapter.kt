@@ -41,4 +41,8 @@ class StatusPersistenceAdapter(
                 )
             }.orElse(null)
     }
+
+    override fun updateExamCode(receiptCode: Long, examCode: String) {
+        statusClient.updateExamCode(receiptCode, examCode)
+    }
 }

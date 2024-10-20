@@ -15,6 +15,7 @@ import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationCode
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QGraduationJpaEntity.graduationJpaEntity
 import hs.kr.equus.application.domain.graduationInfo.domain.entity.QQualificationJpaEntity.qualificationJpaEntity
 import hs.kr.equus.application.domain.status.exception.StatusExceptions
+import hs.kr.equus.application.global.feign.client.LocationPort
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
 import org.springframework.stereotype.Component
@@ -27,7 +28,8 @@ class ApplicationPersistenceAdapter(
     private val applicationMapper: ApplicationMapper,
     private val applicationJpaRepository: ApplicationJpaRepository,
     private val jpaQueryFactory: JPAQueryFactory,
-    private val statusClient: StatusClient
+    private val statusClient: StatusClient,
+    private val locationPort: LocationPort
 ) : ApplicationPort {
     override fun save(application: Application): Application {
         return applicationJpaRepository.save(
@@ -117,6 +119,20 @@ class ApplicationPersistenceAdapter(
         return PagedResult(items = applicants, hasNextPage = hasNextPage, totalSize = totalSize)
     }
 
+    override fun queryAllFirstRoundPassedApplication(): List<Application> {
+        val firstRoundPassStatusKeyList =
+            statusClient.getStatusList()
+                .filter { it.isFirstRoundPass }
+                .associateBy(StatusInfoElement::receiptCode)
+                .keys.toList()
+
+        return jpaQueryFactory
+            .select(applicationJpaEntity)
+            .from(applicationJpaEntity)
+            .where(applicationJpaEntity.receiptCode.`in`(firstRoundPassStatusKeyList))
+            .fetch()
+            .map { applicationMapper.toDomain(it)!! }
+    }
 
 
     private fun getApplicationTypes(isCommon: Boolean?, isMeister: Boolean?, isSocial: Boolean?): List<ApplicationType> {
@@ -165,6 +181,12 @@ class ApplicationPersistenceAdapter(
             .fetch()
             .map { applicationMapper.toDomain(it)!! }
 
+    }
+
+    override fun queryLatitudeAndLongitudeByStreetAddress(streetAddress: String): Pair<Double, Double> {
+        return locationPort.getLocationInfo(streetAddress).documents[0].address.let {
+            Pair(it.y.toDouble(), it.x.toDouble())
+        }
     }
 
     @Transactional

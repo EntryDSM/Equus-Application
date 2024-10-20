@@ -18,6 +18,7 @@ import hs.kr.equus.application.domain.status.exception.StatusExceptions
 import hs.kr.equus.application.global.feign.client.LocationPort
 import hs.kr.equus.application.global.feign.client.StatusClient
 import hs.kr.equus.application.global.feign.client.dto.response.StatusInfoElement
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -183,8 +184,14 @@ class ApplicationPersistenceAdapter(
 
     }
 
+    @Value("\${kakao.authorization}")
+    private lateinit var kakaoAuthorization: String
+
     override fun queryLatitudeAndLongitudeByStreetAddress(streetAddress: String): Pair<Double, Double> {
-        return locationPort.getLocationInfo(streetAddress = streetAddress).documents[0].address.let {
+        return locationPort.getLocationInfo(
+            streetAddress = streetAddress,
+            kakaoAuthorization = kakaoAuthorization
+        ).documents[0].address.let {
             Pair(it.y.toDouble(), it.x.toDouble())
         }
     }

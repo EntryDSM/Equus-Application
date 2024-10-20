@@ -11,6 +11,6 @@ interface LocationPort {
     @GetMapping("/v2/local/search/address.json")
     fun getLocationInfo(
         @RequestParam("query") streetAddress: String,
-        @RequestHeader("Authorization") kakaoAuthorization: String = "KakaoAK \${kakao.authorization}"
+        @RequestHeader("Authorization") kakaoAuthorization: String
     ): LocationElement
 }

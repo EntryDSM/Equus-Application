@@ -3,6 +3,7 @@ package hs.kr.equus.application.global.excel.generator
 import hs.kr.equus.application.domain.application.spi.PrintApplicationInfoPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.application.service.ApplicationService
+import hs.kr.equus.application.domain.application.spi.ApplicationQueryStatusPort
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
 import hs.kr.equus.application.domain.applicationCase.model.QualificationCase
 import hs.kr.equus.application.domain.graduationInfo.model.Graduation
@@ -19,7 +20,8 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class PrintApplicationInfoGenerator(
     private val applicationService: ApplicationService,
-    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort
+    private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
+    private val queryStatusPort: ApplicationQueryStatusPort
 ) : PrintApplicationInfoPort {
     override fun execute(
         httpServletResponse: HttpServletResponse,
@@ -140,5 +142,7 @@ class PrintApplicationInfoGenerator(
                 )
             )
         }
+        val status = queryStatusPort.queryStatusByReceiptCode(applicationInfoVO.application.receiptCode)
+        row.createCell(59).setCellValue(status?.examCode)
     }
 }

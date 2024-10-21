@@ -37,26 +37,33 @@ class UpdateFirstRoundPassedApplicationExamCodeUseCase(
 
         nonDaejeonApplications.sortBy { it.second }
 
-        var daejeonCounter = 1
-        var nonDaejeonCounter = 1
+        // 전형별 지역 카운터 변수 추가
+        var commonDaejeonCounter = 1
+        var commonNonDaejeonCounter = 1
+        var meisterDaejeonCounter = 1
+        var meisterNonDaejeonCounter = 1
+        var socialDaejeonCounter = 1
+        var socialNonDaejeonCounter = 1
 
         firstRoundPassedApplications.forEach {
+            val isDaejeon = it.isDaejeon!!
             val firstDigit = when (it.applicationType!!) {
                 ApplicationType.COMMON -> 1
                 ApplicationType.MEISTER -> 2
                 ApplicationType.SOCIAL -> 3
             }
 
-            val secondDigit = if (it.isDaejeon!!) 1 else 2
+            val secondDigit = if (isDaejeon) 1 else 2
 
-            val thirdDigit = if (it.isDaejeon!!) {
-                daejeonCounter++
-            } else {
-                nonDaejeonCounter++
+            val thirdDigit = when (it.applicationType) {
+                ApplicationType.COMMON -> if (isDaejeon) commonDaejeonCounter++ else commonNonDaejeonCounter++
+                ApplicationType.MEISTER -> if (isDaejeon) meisterDaejeonCounter++ else meisterNonDaejeonCounter++
+                ApplicationType.SOCIAL -> if (isDaejeon) socialDaejeonCounter++ else socialNonDaejeonCounter++
             }
 
             val examCode = "$firstDigit$secondDigit${thirdDigit.toString().padStart(3, '0')}"
-            applicationCommandStatusPort.updateExamCode(it.receiptCode!!, examCode)
+            applicationCommandStatusPort.updateExamCode(it.receiptCode, examCode)
         }
     }
+
 }

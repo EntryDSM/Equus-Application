@@ -4,6 +4,7 @@ import hs.kr.equus.application.domain.application.model.Application
 import hs.kr.equus.application.domain.application.model.types.ApplicationRemark
 import hs.kr.equus.application.domain.application.model.types.EducationalStatus.*
 import hs.kr.equus.application.domain.application.service.ApplicationService
+import hs.kr.equus.application.domain.application.spi.ApplicationQueryStatusPort
 import hs.kr.equus.application.domain.applicationCase.exception.ApplicationCaseExceptions
 import hs.kr.equus.application.domain.applicationCase.model.ApplicationCase
 import hs.kr.equus.application.domain.applicationCase.model.GraduationCase
@@ -31,7 +32,8 @@ class PdfDataConverter(
     private val getObjectPort: GetObjectPort,
     private val graduationInfoQuerySchoolPort: GraduationInfoQuerySchoolPort,
     private val queryApplicationCasePort: QueryApplicationCasePort,
-    private val applicationService: ApplicationService
+    private val applicationService: ApplicationService,
+    private val statusPort: ApplicationQueryStatusPort
 ) {
     fun applicationToInfo(application: Application, score: Score): PdfData {
         val values: MutableMap<String, Any> = HashMap()
@@ -296,6 +298,8 @@ class PdfDataConverter(
         values["selfIntroduction"] = setBlankIfNull(application.selfIntroduce)
         values["studyPlan"] = setBlankIfNull(application.studyPlan)
         values["newLineChar"] = "\n"
+        val status = statusPort.queryStatusByReceiptCode(application.receiptCode)
+        values["examCode"] = setBlankIfNull(status?.examCode)
     }
 
     private fun setTeacherInfo(application: Application, values: MutableMap<String, Any>) {

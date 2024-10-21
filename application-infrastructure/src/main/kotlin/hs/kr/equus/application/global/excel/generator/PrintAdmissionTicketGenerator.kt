@@ -2,6 +2,7 @@ package hs.kr.equus.application.global.excel.generator
 
 import com.github.benmanes.caffeine.cache.Caffeine
 import hs.kr.equus.application.domain.application.service.ApplicationService
+import hs.kr.equus.application.domain.application.spi.ApplicationQueryStatusPort
 import hs.kr.equus.application.domain.application.spi.PrintAdmissionTicketPort
 import hs.kr.equus.application.domain.application.usecase.dto.vo.ApplicationInfoVO
 import hs.kr.equus.application.domain.file.spi.GetObjectPort
@@ -27,7 +28,8 @@ import javax.servlet.http.HttpServletResponse
 class PrintAdmissionTicketGenerator(
     private val httpServletResponse: HttpServletResponse,
     private val applicationService: ApplicationService,
-    private val getObjectPort: GetObjectPort
+    private val getObjectPort: GetObjectPort,
+    private val statusPort: ApplicationQueryStatusPort
 ) : PrintAdmissionTicketPort {
     companion object {
         const val EXCEL_PATH = "/excel/excel-form.xlsx"
@@ -42,8 +44,7 @@ class PrintAdmissionTicketGenerator(
         val targetWorkbook = generate(applications)
         try {
             setResponseHeaders()
-            val bufferedOutputStream = BufferedOutputStream(httpServletResponse.outputStream)
-            targetWorkbook.write(bufferedOutputStream)
+            targetWorkbook.write(httpServletResponse.outputStream)
         } catch (e: IOException) {
             throw ExcelExceptions.ExcelIOException().initCause(e)
         } finally {
@@ -168,7 +169,9 @@ class PrintAdmissionTicketGenerator(
         val application = applicationInfoVo.application
         val school = applicationInfoVo.school
 
-        setValue(sheet, "E4", "")
+        val status = statusPort.queryStatusByReceiptCode(application.receiptCode!!)
+
+        setValue(sheet, "E4", status?.examCode ?: "")
         setValue(sheet, "E6", application.applicantName!!)
         setValue(sheet, "E8", school?.name ?: "")
         setValue(sheet, "E10", applicationService.translateIsDaejeon(application.isDaejeon))

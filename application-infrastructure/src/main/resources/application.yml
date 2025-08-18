@@ -8,6 +8,8 @@ feign:
     enabled: true
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   thymeleaf:
     prefix: classpath:/templates
     cache: false
